@@ -1,0 +1,52 @@
+{
+  "indirectInputs": [
+    {
+      "name": "redisIndirectInput",
+      "clusterType": "SENTINEL",
+      "masterName" : "master",
+      "hashMaps": [
+        {
+          "key": "1",
+          "data": {
+            "name": "abc"
+          }
+        },
+        {
+          "key": "2",
+          "data": {
+            "name": "xyz"
+          }
+        }
+      ],
+      "keyValues" : {
+        "k1" : "v1",
+        "k2" : "v2"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "redisObservation",
+      "clusterType": "SENTINEL",
+      "masterName" : "master",
+      "hashMaps": [
+        {
+          "key": "1",
+          "data": {
+            "name": "abc"
+          }
+        },
+        {
+          "key": "2",
+          "data": {
+            "name": "xyz"
+          }
+        }
+      ],
+      "keyValues" : {
+        "k1" : "v1",
+        "k2" : "v2"
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "directInput": {
+    "name": "httpDirectInput",
+    "path": "/path",
+    "request": {
+      "a": "b"
+    },
+    "method": "POST"
+  },
+  "indirectInputs": [
+    {
+      "name": "httpIndirectInput",
+      "specification": {
+        "request": {
+          "method": "POST",
+          "url": "/path"
+        },
+        "response": {
+          "status": 200,
+          "abc": {
+            "a" : "b"
+          },
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "httpObservation"
+    }
+  ],
+  "description": "An example of making a http request and setting indirect inputs on mock server"
+}
