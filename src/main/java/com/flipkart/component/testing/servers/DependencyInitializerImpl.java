@@ -67,7 +67,11 @@ class DependencyInitializerImpl extends DependencyInitializer {
                 dependencyInitializers.add(new RedisLocalServer((RedisObservation) observation));
             } else if (observation.isHBase()) {
                 dependencyInitializers.add(new HbaseServer((HBaseObservation) observation));
-            } // TODO: atul aerospike
+            } else if(observation.isElasticSearch()){
+                dependencyInitializers.add(new ElasticSearchLocalServer((ElasticSearchObservation) observation));
+            }
+
+            // TODO: atul aerospike
         }
         return dependencyInitializers;
     }
@@ -89,7 +93,7 @@ class DependencyInitializerImpl extends DependencyInitializer {
             } else if (indirectInput.isMysqlInput()) {
                 dependencyInitializers.add(new MysqlServer((MysqlIndirectInput) indirectInput));
             } else if (indirectInput.isElasticSearchInput()) {
-                dependencyInitializers.add(new ElasticSearchLocalServer());
+                dependencyInitializers.add(new ElasticSearchLocalServer((ElasticSearchIndirectInput) indirectInput));
             } else if (indirectInput.isRedisInput()) {
                 dependencyInitializers.add(new RedisLocalServer((RedisIndirectInput) indirectInput));
             } else if (indirectInput.isZkInput()) {

@@ -47,4 +47,13 @@ public class ObjectFactory {
             return new SingleHostBasedOperations();
         }
     }
+
+    public static ElasticSearchOperations getESOperations(ElasticSearchTestConfig elasticSearchTestConfig) {
+        if (elasticSearchTestConfig.getConnectionType() == ConnectionType.IN_MEMORY) {
+            return EmbeddedESOperations.getInstance(elasticSearchTestConfig);
+        } else {
+            return RemoteElasticSearchOperations.getInstance(elasticSearchTestConfig);
+        }
+
+    }
 }

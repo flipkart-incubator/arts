@@ -1,37 +1,50 @@
 package com.flipkart.component.testing.model;
 
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.Data;
+import com.flipkart.component.testing.Constants;
+import com.flipkart.component.testing.shared.ElasticSearchTestConfig;
+import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Elastic search Indirect Input
  */
 @JsonTypeName("elasticSearchIndirectInput")
 @Getter
-public class ElasticSearchIndirectInput implements IndirectInput {
-	/**
-	 * The name of the index,type to load the data to
-	 */
-	private final String indexName;
-	private final String typeName;
+public class ElasticSearchIndirectInput implements IndirectInput, ElasticSearchTestConfig {
 
-	/**
-	 * Map of data which needs to be loaded to elastic search
-	 */
-	private final Map<String, Object> esData;
+    @Getter(AccessLevel.PRIVATE)
+    private final ElasticSearchConnectionInfo connectionInfo;
+    private final List<DocumentsOfIndexAndType> documentsOfIndexAndType;
 
-	@JsonCreator
-	public ElasticSearchIndirectInput(@JsonProperty("indexName") String indexName,
-			@JsonProperty("typeName") String typeName, @JsonProperty("data") Map<String, Object> esData) {
+    @JsonCreator
+    public ElasticSearchIndirectInput(@JsonProperty("connectionInfo") ElasticSearchConnectionInfo connectionInfo,
+                                      @JsonProperty("documentsOfIndexAndType") List<DocumentsOfIndexAndType> documentsOfIndexAndType
+    ) {
+        this.connectionInfo = connectionInfo;
+        this.documentsOfIndexAndType = documentsOfIndexAndType;
+    }
 
-		this.indexName = indexName;
-		this.typeName = typeName;
-		this.esData = esData;
-	}
+    @Override
+    public String getClusterName() {
+        return Optional.ofNullable(connectionInfo.getClusterName()).orElse(Constants.ES_CLUSTER_NAME);
+    }
+
+    @Override
+    public String getHost() {
+        return Optional.ofNullable(connectionInfo.getHost()).orElse(Constants.ES_CLIENT_HOST);
+    }
+
+    @Override
+    public ConnectionType getConnectionType() {
+        return Optional.ofNullable(connectionInfo.getConnectionType()).orElse(ConnectionType.IN_MEMORY);
+    }
 
 }
+

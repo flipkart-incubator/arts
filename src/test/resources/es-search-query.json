@@ -1,0 +1,87 @@
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "range": {
+                "fsp": {
+                  "from": 400,
+                  "to": 5000000,
+                  "include_lower": true,
+                  "include_upper": true
+                }
+              }
+            },
+            {
+              "terms": {
+                "brand": [
+                  "Kenstar"
+                ]
+              }
+            },
+            {
+              "terms": {
+                "category_node_id": [
+                  "20268"
+                ]
+              }
+            },
+            {
+              "range": {
+                "discount_percent": {
+                  "from": 20,
+                  "to": 46,
+                  "include_lower": true,
+                  "include_upper": true
+                }
+              }
+            },
+            {
+              "terms": {
+                "vertical": [
+                  "electric_kettle"
+                ]
+              }
+            },
+            {
+              "bool": {
+                "must": [
+                  {
+                    "bool": {
+                      "must": {
+                        "term": {
+                          "listing_status": "ACTIVE"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "bool": {
+                      "must_not": {
+                        "term": {
+                          "is_valid": false
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "term": {
+                      "seller_id": "pi2981ctftizwe12"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "must_not": {
+            "term": {
+              "victor_refs": "EC301451076057032383"
+            }
+          }
+        }
+      }
+    }
+  }
+}

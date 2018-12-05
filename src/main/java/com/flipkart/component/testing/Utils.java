@@ -12,6 +12,7 @@ import org.dbunit.dataset.IDataSet;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -120,5 +121,20 @@ public class Utils {
         httpPost.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).build());
         httpPost.setEntity(new StringEntity(objectMapper.writeValueAsString(body), contentType));
         return httpClient.execute(httpPost);
+    }
+
+
+    /**
+     * returns the file content as string
+     * @param resource
+     * @return
+     */
+    public static String getFileString(String resource){
+        try {
+           return  new String(Files.readAllBytes(Paths.get(new File(resource).getAbsolutePath())));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+
+        }
     }
 }

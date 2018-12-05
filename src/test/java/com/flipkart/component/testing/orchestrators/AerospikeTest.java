@@ -11,6 +11,7 @@ import com.flipkart.component.testing.model.Observation;
 import com.flipkart.component.testing.model.TestData;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;;
+import org.junit.Ignore;
 import org.junit.Test;
 import com.google.common.collect.Lists;
 import static org.mockito.Mockito.mock;
@@ -21,6 +22,7 @@ public class AerospikeTest {
 
 
     @Test
+    @Ignore
     public void aerospikePutGetTest() throws Exception {
 
         File indirectInputJsonFile = new File("src/main/resources/AerospikeIndirectInput.json");
