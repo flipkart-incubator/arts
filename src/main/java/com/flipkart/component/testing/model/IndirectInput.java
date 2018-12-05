@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = RedisIndirectInput.class, name = "redisIndirectInput"),
         @JsonSubTypes.Type(value = ElasticSearchIndirectInput.class,name = "elasticSearchIndirectInput"),
         @JsonSubTypes.Type(value = ZookeeperIndirectInput.class, name = "zookeeperIndirectInput"),
+        @JsonSubTypes.Type(value = AerospikeIndirectInput.class, name = "aerospikeIndirectInput"),
+
 })
 public interface IndirectInput {
 
@@ -59,4 +61,9 @@ public interface IndirectInput {
 
     @JsonIgnore
     default boolean isZkInput() {return this instanceof ZookeeperIndirectInput;}
+
+    @JsonIgnore
+    default boolean isAerospikeInput() {return this instanceof AerospikeIndirectInput;}
+
+
 }

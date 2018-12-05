@@ -26,7 +26,10 @@ class TestDataLoaderImpl implements TestDataLoader {
             new ElasticSearchDataLoader().load((ElasticSearchIndirectInput) indirectInput);
         } else if(indirectInput.isZkInput()){
             //TODO: //not implemented
-        } else {
+        }else if (indirectInput.isAerospikeInput()) {
+            new AerospikeDataLoader().load((AerospikeIndirectInput) indirectInput);
+        }
+        else {
             throw new IllegalStateException("Unable to determine the loader for indirect Input" + indirectInput);
         }
     }

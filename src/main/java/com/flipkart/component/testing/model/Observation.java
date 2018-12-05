@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = MysqlObservation.class, name = "mysqlObservation"),
         @JsonSubTypes.Type(value = HBaseObservation.class, name = "hbaseObservation"),
         @JsonSubTypes.Type(value = RedisObservation.class, name = "redisObservation"),
-        @JsonSubTypes.Type(value = ElasticSearchObservation.class, name = "elasticSearchObservation")
+        @JsonSubTypes.Type(value = ElasticSearchObservation.class, name = "elasticSearchObservation"),
+        @JsonSubTypes.Type(value = AerospikeObservation.class, name = "AerospikeObservation")
+
 })
 public interface Observation {
 
@@ -47,10 +49,14 @@ public interface Observation {
     default boolean isRedis() {
         return this instanceof RedisObservation;
     }
+
     @JsonIgnore
     default boolean isElasticSearch(){
         return this instanceof ElasticSearchObservation;
     }
 
-
+    @JsonIgnore
+    default boolean isAerospike(){
+        return this instanceof AerospikeObservation;
+    }
 }

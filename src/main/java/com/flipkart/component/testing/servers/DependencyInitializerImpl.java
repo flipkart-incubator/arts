@@ -67,8 +67,7 @@ class DependencyInitializerImpl extends DependencyInitializer {
                 dependencyInitializers.add(new RedisLocalServer((RedisObservation) observation));
             } else if (observation.isHBase()) {
                 dependencyInitializers.add(new HbaseServer((HBaseObservation) observation));
-            }
-
+            } // TODO: atul aerospike
         }
         return dependencyInitializers;
     }
@@ -97,7 +96,10 @@ class DependencyInitializerImpl extends DependencyInitializer {
                 dependencyInitializers.add(new ZookeeperLocalServer());
             } else if (indirectInput.isHBaseInput()) {
                 dependencyInitializers.add(new HbaseServer((HBaseIndirectInput) indirectInput));
+            } else if (indirectInput.isAerospikeInput()) {
+                dependencyInitializers.add(new AerospikeServer((AerospikeIndirectInput) indirectInput));
             }
+
         }
         return dependencyInitializers;
     }

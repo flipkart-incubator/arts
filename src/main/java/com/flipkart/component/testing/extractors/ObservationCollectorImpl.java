@@ -31,6 +31,8 @@ class ObservationCollectorImpl implements ObservationCollector {
             return new RedisLocalConsumer().actualObservations((RedisObservation) expectedObservation);
         }else if(expectedObservation.isElasticSearch()){
             return new ElasticSearchLocalConsumer().actualObservations((ElasticSearchObservation) expectedObservation);
+        }else if(expectedObservation.isAerospike()){
+            return new AerospikeLocalConsumer().actualObservations((AerospikeObservation) expectedObservation);
         }
         throw new IllegalStateException("Consumer is not defined for observation" + expectedObservation);
     }

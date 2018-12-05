@@ -3,3 +3,7 @@ dataDir/
 log.dir/
 *.iml
 target/
+.DS_Store
+.classpath
+.project
+.settings/
