@@ -5,6 +5,7 @@ import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
 import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;

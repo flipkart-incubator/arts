@@ -12,10 +12,6 @@ public abstract class DependencyInitializer {
         return new DependencyInitializerImpl(testSpecification);
     }
 
-    public static void loadIndirectInput(HttpIndirectInput httpIndirectInput) {
-        DefaultMockServer.getInstance().load(httpIndirectInput);
-    }
-
     public abstract void shutDown();
 
 }

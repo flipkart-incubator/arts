@@ -53,6 +53,9 @@ public class ObjectFactory {
         } else {
             return RemoteElasticSearchOperations.getInstance(elasticSearchTestConfig);
         }
+    }
 
+    public static MockServerOperations getMockServerOperations(){
+        return MockServerOperationsImpl.getInstance();
     }
 }

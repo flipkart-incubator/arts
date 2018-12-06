@@ -4,6 +4,7 @@ import com.flipkart.component.testing.model.*;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
 import com.flipkart.component.testing.model.hbase.HBaseObservation;
+import com.flipkart.component.testing.model.http.HttpIndirectObservation;
 import com.flipkart.component.testing.model.http.HttpObservation;
 import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import com.flipkart.component.testing.model.mysql.MysqlObservation;
@@ -41,6 +42,8 @@ class ObservationCollectorImpl implements ObservationCollector {
             return new ElasticSearchLocalConsumer().actualObservations((ElasticSearchObservation) expectedObservation);
         }else if(expectedObservation.isAerospike()){
             return new AerospikeLocalConsumer().actualObservations((AerospikeObservation) expectedObservation);
+        }else if(expectedObservation.isHttpIndirect()){
+            return new HttpInteractionConsumer().actualObservations((HttpIndirectObservation) expectedObservation);
         }
         throw new IllegalStateException("Consumer is not defined for observation" + expectedObservation);
     }

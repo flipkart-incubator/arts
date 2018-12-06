@@ -96,7 +96,7 @@ class DependencyInitializerImpl extends DependencyInitializer {
 
         for (IndirectInput indirectInput : indirectInputs) {
             if (indirectInput.isHttpInput()) {
-                dependencyInitializers.add(DefaultMockServer.getInstance());
+                dependencyInitializers.add(new DefaultMockServer());
             } else if (indirectInput.isKafkaInput()) {
                 dependencyInitializers.add(new KafkaLocalServer());
             } else if (indirectInput.isMysqlInput()) {

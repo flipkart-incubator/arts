@@ -2,6 +2,7 @@ package com.flipkart.component.testing.loaders;
 
 import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.servers.DependencyInitializer;
+import com.flipkart.component.testing.shared.ObjectFactory;
 
 /**
  * Holds the responsibility of loading the HttpIndirectInput to the mock server
@@ -20,6 +21,6 @@ class HttpMockDataLoader implements TestDataLoader<HttpIndirectInput> {
      */
     @Override
     public void load(HttpIndirectInput indirectInput) {
-        DependencyInitializer.loadIndirectInput(indirectInput);
+        ObjectFactory.getMockServerOperations().load(indirectInput);
     }
 }

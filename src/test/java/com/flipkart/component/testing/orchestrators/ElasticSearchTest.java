@@ -6,6 +6,7 @@ import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservati
 import com.flipkart.component.testing.model.Observation;
 import com.flipkart.component.testing.model.TestSpecification;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
