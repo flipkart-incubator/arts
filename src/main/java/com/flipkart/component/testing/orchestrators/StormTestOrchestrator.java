@@ -20,9 +20,9 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
     private StormLocalCluster stormLocalCluster;
     private DelegateSpout delegateSpout;
 
-    public StormTestOrchestrator(TestableTopology testableTopology, Config config) {
+    public StormTestOrchestrator(TestableTopology testableTopology) {
         this.testableTopology = testableTopology;
-        this.testableTopology.prepareTopology(config);
+        this.testableTopology.prepareTopology();
     }
 
     /**

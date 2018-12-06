@@ -57,6 +57,16 @@ public class DelegateSpout extends BaseRichSpout {
         tuplesToBeEmitted--;
     }
 
+    @Override
+    public void activate(){
+        this.originalSpout.activate();
+    }
+
+    @Override
+    public void deactivate(){
+        this.originalSpout.deactivate();
+    }
+
     public boolean isDone(){
         return tuplesToBeEmitted == 0;
     }

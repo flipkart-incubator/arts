@@ -24,9 +24,8 @@ public interface TestableTopology {
 
     /**
      * prepares the topology: Build the map internally inside topology which are returned via getSpouts and getSinkBolts methods below
-     * @param config : config required for topology to initialize
      */
-    void prepareTopology(Config config);
+    void prepareTopology();
 
     /**
      * @return build the DAG associated with the topology
