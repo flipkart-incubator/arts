@@ -1,7 +1,7 @@
 package com.flipkart.component.testing.extractors;
 
-import com.flipkart.component.testing.Constants;
-import com.flipkart.component.testing.model.KafkaObservation;
+import com.flipkart.component.testing.internal.Constants;
+import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import kafka.api.FetchRequest;
 import kafka.api.FetchRequestBuilder;
 import kafka.javaapi.FetchResponse;
@@ -14,7 +14,7 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.flipkart.component.testing.Constants.KAFKA_BROKER_PORT;
+import static com.flipkart.component.testing.internal.Constants.KAFKA_BROKER_PORT;
 
 /**
  * Kafka Consumer which connects to local kafka server on port 5000

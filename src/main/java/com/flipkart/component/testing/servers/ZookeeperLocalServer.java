@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import static com.flipkart.component.testing.Constants.ZOOKEEPER_PORT;
-import static com.flipkart.component.testing.Utils.deleteFolder;
+import static com.flipkart.component.testing.internal.Constants.ZOOKEEPER_PORT;
+import static com.flipkart.component.testing.internal.Utils.deleteFolder;
 
 /**
  * Local Zookeeper server on PORT 2000

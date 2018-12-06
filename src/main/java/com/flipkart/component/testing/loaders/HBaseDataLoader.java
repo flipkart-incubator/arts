@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.loaders;
 
-import com.flipkart.component.testing.model.HBaseIndirectInput;
+import com.flipkart.component.testing.model.hbase.HBaseIndirectInput;
 import com.flipkart.component.testing.shared.HBaseAdminOperations;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.apache.hadoop.hbase.client.HTableInterface;

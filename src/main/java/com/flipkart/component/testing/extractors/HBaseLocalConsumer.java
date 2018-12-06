@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.extractors;
 
-import com.flipkart.component.testing.model.HBaseObservation;
+import com.flipkart.component.testing.model.hbase.HBaseObservation;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.KeyValue;

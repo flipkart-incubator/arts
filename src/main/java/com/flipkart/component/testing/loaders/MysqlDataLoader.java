@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.loaders;
 
-import com.flipkart.component.testing.model.MysqlIndirectInput;
+import com.flipkart.component.testing.model.mysql.MysqlIndirectInput;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -9,7 +9,7 @@ import org.dbunit.operation.DatabaseOperation;
 
 import java.sql.Connection;
 
-import static com.flipkart.component.testing.Utils.getDataSet;
+import static com.flipkart.component.testing.internal.Utils.getDataSet;
 
 public class MysqlDataLoader implements TestDataLoader<MysqlIndirectInput> {
 

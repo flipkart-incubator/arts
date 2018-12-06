@@ -2,8 +2,8 @@ package com.flipkart.component.testing.loaders;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
-import com.flipkart.component.testing.Utils;
-import com.flipkart.component.testing.model.RMQIndirectInput;
+import com.flipkart.component.testing.internal.Utils;
+import com.flipkart.component.testing.model.rmq.RMQIndirectInput;
 import com.flipkart.component.testing.shared.ObjectFactory;
 
 /**

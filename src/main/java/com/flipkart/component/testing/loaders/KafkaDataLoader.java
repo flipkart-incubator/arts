@@ -1,7 +1,7 @@
 package com.flipkart.component.testing.loaders;
 
-import com.flipkart.component.testing.Constants;
-import com.flipkart.component.testing.model.KafkaIndirectInput;
+import com.flipkart.component.testing.internal.Constants;
+import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;

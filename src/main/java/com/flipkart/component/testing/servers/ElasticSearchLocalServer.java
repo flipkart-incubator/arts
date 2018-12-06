@@ -1,12 +1,7 @@
 package com.flipkart.component.testing.servers;
 
-import clojure.lang.Obj;
-import com.flipkart.component.testing.Constants;
 import com.flipkart.component.testing.shared.ElasticSearchTestConfig;
 import com.flipkart.component.testing.shared.ObjectFactory;
-import org.elasticsearch.client.Client;
-import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
-import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
 
 class ElasticSearchLocalServer extends DependencyInitializer {
 

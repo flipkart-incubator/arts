@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flipkart.component.testing.HttpTestRunner;
-import com.flipkart.component.testing.model.AerospikeIndirectInput;
-import com.flipkart.component.testing.model.AerospikeObservation;
+import com.flipkart.component.testing.internal.HttpTestRunner;
+import com.flipkart.component.testing.model.TestSpecification;
+import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
+import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.model.Observation;
-import com.flipkart.component.testing.model.TestData;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;;
 import org.junit.Ignore;
@@ -33,10 +33,10 @@ public class AerospikeTest {
         File observationJsonFile = new File("src/main/resources/AerospikeObservation.json");
         String observationStr = FileUtils.readFileToString(observationJsonFile, "UTF-8");
         AerospikeObservation expectedObservation = new ObjectMapper().readValue(observationStr, AerospikeObservation.class);
-        TestData testData = new TestData(null, Lists.newArrayList(aerospikeIndirectInput),
+        TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(aerospikeIndirectInput),
                 Lists.newArrayList(expectedObservation));
 
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testData, () -> "");
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof AerospikeObservation);

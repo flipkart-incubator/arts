@@ -1,12 +1,12 @@
 package com.flipkart.component.testing.orchestrators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flipkart.component.testing.model.TestSpecification;
 import com.flipkart.component.testing.servers.DependencyInitializer;
-import com.flipkart.component.testing.HttpTestRunner;
+import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.SUT;
-import com.flipkart.component.testing.model.HttpDirectInput;
+import com.flipkart.component.testing.model.http.HttpDirectInput;
 import com.flipkart.component.testing.model.Observation;
-import com.flipkart.component.testing.model.TestData;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +18,7 @@ import java.util.List;
  * Single entry point for the test writer to orchestrate the test set up
  * and retrieving the observations for Api based test cases.
  */
-public class HttpTestOrchestrator extends BaseTestOrchestrator {
+class HttpTestOrchestrator extends BaseTestOrchestrator {
 
     private final HttpTestRunner testRunner;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -41,22 +41,22 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
     public void replay(File testDataFile, SUT sut) throws Exception {
         RecordLoader recordLoader = new RecordLoader(testDataFile);
         while (recordLoader.hasNext()) {
-            TestData testData = recordLoader.next();
-            run(testData, sut);
+            TestSpecification testSpecification = recordLoader.next();
+            run(testSpecification, sut);
         }
     }
 
     /**
      * run the test for the SUT
      *
-     * @param testData
+     * @param testSpecification
      * @param sut
      */
     @SuppressWarnings("unchecked")
-    public List<Observation> run(TestData testData, SUT sut) throws Exception {
+    public List<Observation> run(TestSpecification testSpecification, SUT sut) throws Exception {
 
         //spawn the services required for the test
-        DependencyInitializer dependencyInitializer = DependencyInitializer.getInstance(testData);
+        DependencyInitializer dependencyInitializer = DependencyInitializer.getInstance(testSpecification);
         try {
             dependencyInitializer.initialize();
 
@@ -64,12 +64,12 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
             sut.start();
 
             //load the data into the dependencies
-            this.testDataLoader.load(testData.getIndirectInputs());
+            this.testDataLoader.load(testSpecification.getIndirectInputs());
 
             //http test runner => making a http request
-            testRunner.run((HttpDirectInput) testData.getDirectInput(), sut.getUrl());
+            testRunner.run((HttpDirectInput) testSpecification.getDirectInput(), sut.getUrl());
 
-            List<Observation> list = this.observationCollector.actualObservations(testData.getObservations());
+            List<Observation> list = this.observationCollector.actualObservations(testSpecification.getObservations());
 
             return list;
         } finally {
@@ -83,7 +83,7 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
 
 
     /**
-     * Loads the records from a file line by line: Each line corresponds to schema as defined in TestData.java
+     * Loads the records from a file line by line: Each line corresponds to schema as defined in TestSpecification.java
      */
     class RecordLoader {
 
@@ -100,10 +100,10 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
             return line != null;
         }
 
-        TestData next() throws IOException {
-            TestData testData = objectMapper.readValue(line, TestData.class);
+        TestSpecification next() throws IOException {
+            TestSpecification testSpecification = objectMapper.readValue(line, TestSpecification.class);
             line = bufferedReader.readLine();
-            return testData;
+            return testSpecification;
         }
     }
 

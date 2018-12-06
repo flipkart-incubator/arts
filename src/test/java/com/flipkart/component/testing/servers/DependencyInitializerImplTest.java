@@ -1,6 +1,8 @@
 package com.flipkart.component.testing.servers;
 
 import com.flipkart.component.testing.model.*;
+import com.flipkart.component.testing.model.http.HttpIndirectInput;
+import com.flipkart.component.testing.model.http.HttpObservation;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,8 +23,8 @@ public class DependencyInitializerImplTest {
         List<Observation> observations = new ArrayList<>();
         observations.add(new HttpObservation(200, new HashMap(), new HashMap<>()));
 
-        TestData testData = new TestData(null, indirectInputList, observations);
-        DependencyInitializer dependencyInitializer = new DependencyInitializerImpl(testData);
+        TestSpecification testSpecification = new TestSpecification(null, indirectInputList, observations);
+        DependencyInitializer dependencyInitializer = new DependencyInitializerImpl(testSpecification);
 
         // each initializer should be initlaized only once
         // if the same server is getting initialized multiple times then this will fail due to address already in use

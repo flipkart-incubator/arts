@@ -2,19 +2,17 @@ package com.flipkart.component.testing.extractors;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flipkart.component.testing.model.ElasticSearchObservation;
+import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.search.SearchHit;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Reads from the local Elastic search Consumer

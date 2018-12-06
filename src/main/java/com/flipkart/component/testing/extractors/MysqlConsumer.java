@@ -1,12 +1,10 @@
 package com.flipkart.component.testing.extractors;
 
-import com.flipkart.component.testing.model.MysqlObservation;
+import com.flipkart.component.testing.model.mysql.MysqlObservation;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.filter.DefaultColumnFilter;
 
 import java.sql.Connection;
 import java.util.HashMap;

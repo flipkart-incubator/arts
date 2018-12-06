@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.shared;
 
-import com.flipkart.component.testing.Constants;
+import com.flipkart.component.testing.internal.Constants;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;

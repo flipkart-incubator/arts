@@ -4,7 +4,7 @@ import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.client.policy.WritePolicy;
 import com.aerospike.client.*;
-import com.flipkart.component.testing.model.AerospikeIndirectInput;
+import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
 
 import java.util.List;
 import java.util.Map;

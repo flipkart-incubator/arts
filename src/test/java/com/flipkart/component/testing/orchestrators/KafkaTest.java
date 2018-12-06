@@ -1,7 +1,9 @@
 package com.flipkart.component.testing.orchestrators;
 
 import com.flipkart.component.testing.model.*;
-import com.flipkart.component.testing.HttpTestRunner;
+import com.flipkart.component.testing.internal.HttpTestRunner;
+import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
+import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,8 +25,8 @@ public class KafkaTest {
         List<String> msgs = messages.stream().map(m -> (String) m).collect(Collectors.toList());
         KafkaObservation expectedObservation = new KafkaObservation(msgs, topic);
 
-        TestData testData = new TestData(null, newArrayList(indirectInput), newArrayList(expectedObservation));
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testData, () -> "");
+        TestSpecification testSpecification = new TestSpecification(null, newArrayList(indirectInput), newArrayList(expectedObservation));
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
 
 
         Assert.assertTrue(observations.size() == 1);

@@ -1,8 +1,8 @@
 package com.flipkart.component.testing.orchestrators;
 
+import com.flipkart.component.testing.model.TestSpecification;
 import com.flipkart.component.testing.servers.DependencyInitializer;
 import com.flipkart.component.testing.model.Observation;
-import com.flipkart.component.testing.model.TestData;
 import com.flipkart.component.testing.storm.functional.DelegateSpout;
 import com.flipkart.component.testing.storm.functional.TestableTopology;
 import org.apache.storm.Config;
@@ -29,13 +29,13 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
      * modify the spouts and bolts as per configuration
      */
     @SuppressWarnings("unchecked")
-    public List<Observation> execute(TestData testData, int tuplesToBeEmitted) throws Exception {
+    public List<Observation> execute(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
 
-        // spawn the services required for testData
-        DependencyInitializer.getInstance(testData).initialize();
+        // spawn the services required for testSpecification
+        DependencyInitializer.getInstance(testSpecification).initialize();
 
         //load the indirect inputs
-        testDataLoader.load(testData.getIndirectInputs());
+        testDataLoader.load(testSpecification.getIndirectInputs());
 
         //wrap the spouts to track the emitted tuples
         Map<String, BaseRichSpout> spouts = testableTopology.getSpouts();
@@ -49,7 +49,7 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
         this.waitForCompletion();
 
         //collect the observations
-        return this.observationCollector.actualObservations(testData.getObservations());
+        return this.observationCollector.actualObservations(testSpecification.getObservations());
 
     }
 

@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.shared;
 
-import com.flipkart.component.testing.Constants;
+import com.flipkart.component.testing.internal.Constants;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -8,8 +8,6 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
 import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
-
-import java.io.IOException;
 
 public class EmbeddedESOperations implements ElasticSearchOperations {
 

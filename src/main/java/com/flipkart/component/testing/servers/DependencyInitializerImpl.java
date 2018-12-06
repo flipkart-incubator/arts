@@ -1,6 +1,15 @@
 package com.flipkart.component.testing.servers;
 
 import com.flipkart.component.testing.model.*;
+import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
+import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
+import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
+import com.flipkart.component.testing.model.hbase.HBaseIndirectInput;
+import com.flipkart.component.testing.model.hbase.HBaseObservation;
+import com.flipkart.component.testing.model.mysql.MysqlIndirectInput;
+import com.flipkart.component.testing.model.mysql.MysqlObservation;
+import com.flipkart.component.testing.model.redis.RedisIndirectInput;
+import com.flipkart.component.testing.model.redis.RedisObservation;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,16 +21,16 @@ import java.util.Set;
 class DependencyInitializerImpl extends DependencyInitializer {
 
 
-    private final TestData testData;
+    private final TestSpecification testSpecification;
     private Set<DependencyInitializer> dependencyInitializers;
 
-    DependencyInitializerImpl(TestData testData) {
-        this.testData = testData;
+    DependencyInitializerImpl(TestSpecification testSpecification) {
+        this.testSpecification = testSpecification;
     }
 
     @Override
     public void initialize() throws Exception {
-        Set<DependencyInitializer> initializersForIndirectInputs = this.initializersForIndirectInputs(this.testData.getIndirectInputs());
+        Set<DependencyInitializer> initializersForIndirectInputs = this.initializersForIndirectInputs(this.testSpecification.getIndirectInputs());
 
         Set<Class> dependencyClasses = new HashSet<>();
         for (DependencyInitializer dependencyInitializer : initializersForIndirectInputs) {
@@ -31,7 +40,7 @@ class DependencyInitializerImpl extends DependencyInitializer {
             }
         }
 
-        Set<DependencyInitializer> initializersForObservations = this.initializersForObservations(this.testData.getObservations());
+        Set<DependencyInitializer> initializersForObservations = this.initializersForObservations(this.testSpecification.getObservations());
 
         for (DependencyInitializer dependencyInitializer : initializersForObservations) {
             if (!dependencyClasses.contains(dependencyInitializer.getClass())) {

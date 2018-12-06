@@ -1,6 +1,14 @@
 package com.flipkart.component.testing.extractors;
 
 import com.flipkart.component.testing.model.*;
+import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
+import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
+import com.flipkart.component.testing.model.hbase.HBaseObservation;
+import com.flipkart.component.testing.model.http.HttpObservation;
+import com.flipkart.component.testing.model.kafka.KafkaObservation;
+import com.flipkart.component.testing.model.mysql.MysqlObservation;
+import com.flipkart.component.testing.model.redis.RedisObservation;
+import com.flipkart.component.testing.model.rmq.RMQObservation;
 
 import java.io.IOException;
 

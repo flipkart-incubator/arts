@@ -2,15 +2,15 @@ package com.flipkart.component.testing.servers;
 
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.flipkart.component.testing.Utils;
-import com.flipkart.component.testing.model.HttpIndirectInput;
+import com.flipkart.component.testing.internal.Utils;
+import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static com.flipkart.component.testing.Constants.HTTP_MOCK_SERVER_PORT;
+import static com.flipkart.component.testing.internal.Constants.HTTP_MOCK_SERVER_PORT;
 
 
 /**

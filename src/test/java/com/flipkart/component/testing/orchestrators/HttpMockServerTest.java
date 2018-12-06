@@ -1,13 +1,13 @@
 package com.flipkart.component.testing.orchestrators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flipkart.component.testing.model.TestData;
+import com.flipkart.component.testing.model.TestSpecification;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.flipkart.component.testing.HttpTestRunner;
-import com.flipkart.component.testing.model.HttpIndirectInput;
+import com.flipkart.component.testing.internal.HttpTestRunner;
+import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.model.IndirectInput;
 import com.flipkart.component.testing.model.Observation;
 import org.junit.Assert;
@@ -48,10 +48,10 @@ public class HttpMockServerTest {
 
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
-        TestData testData = new TestData(null, Lists.newArrayList(indirectInput), Lists.newArrayList());
+        TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(indirectInput), Lists.newArrayList());
 
-        System.out.println(objectMapper.writeValueAsString(testData));
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testData, () -> "");
+        System.out.println(objectMapper.writeValueAsString(testSpecification));
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
 
         HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:7777/abc").asJson();
 
@@ -89,8 +89,8 @@ public class HttpMockServerTest {
 
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
-        TestData testData = new TestData(null, Lists.newArrayList(indirectInput), Lists.newArrayList());
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testData, () -> "");
+        TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(indirectInput), Lists.newArrayList());
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
 
         HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:7777/abc").header("abc","custom").asJson();
 

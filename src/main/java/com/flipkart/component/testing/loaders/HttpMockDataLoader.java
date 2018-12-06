@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.loaders;
 
-import com.flipkart.component.testing.model.HttpIndirectInput;
+import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.servers.DependencyInitializer;
 
 /**

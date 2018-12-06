@@ -1,9 +1,8 @@
 package com.flipkart.component.testing.shared;
 
-import com.flipkart.component.testing.Constants;
+import com.flipkart.component.testing.internal.Constants;
 import com.flipkart.component.testing.model.ConnectionType;
-import com.flipkart.component.testing.model.MysqlConnectionType;
-import com.flipkart.component.testing.model.RedisClusterType;
+import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
 import com.rabbitmq.client.Address;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
@@ -41,7 +40,7 @@ public class ObjectFactory {
     }
 
     public static RedisOperations getRedisOperations(RedisTestConfig redisTestConfig) {
-        if (redisTestConfig.getClusterType() == RedisClusterType.SENTINEL) {
+        if (redisTestConfig.isSentinel()) {
             return SentinelBasedOperations.getFromPool(redisTestConfig);
         } else {
             return new SingleHostBasedOperations();

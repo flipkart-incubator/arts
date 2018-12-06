@@ -1,14 +1,12 @@
 package com.flipkart.component.testing.loaders;
 
 
-import com.flipkart.component.testing.Utils;
-import com.flipkart.component.testing.model.DocumentsOfIndexAndType;
-import com.flipkart.component.testing.model.ElasticSearchIndirectInput;
-import com.flipkart.component.testing.model.ElasticSearchObservation;
+import com.flipkart.component.testing.internal.Utils;
+import com.flipkart.component.testing.model.elasticsearch.DocumentsOfIndexAndType;
+import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -19,7 +17,6 @@ import org.elasticsearch.client.Client;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndirectInput> {
 

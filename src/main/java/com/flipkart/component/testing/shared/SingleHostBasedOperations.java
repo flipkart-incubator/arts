@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.shared;
 
-import com.flipkart.component.testing.Constants;
+import com.flipkart.component.testing.internal.Constants;
 import redis.clients.jedis.Jedis;
 import redis.embedded.RedisServer;
 

@@ -2,7 +2,7 @@ package com.flipkart.component.testing.extractors;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
-import com.flipkart.component.testing.model.RMQObservation;
+import com.flipkart.component.testing.model.rmq.RMQObservation;
 import com.flipkart.component.testing.shared.ObjectFactory;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.servers;
 
-import com.flipkart.component.testing.model.MysqlConnectionType;
+import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
 import com.flipkart.component.testing.shared.MysqlConnectionConfig;
 import com.flipkart.component.testing.shared.ObjectFactory;
 

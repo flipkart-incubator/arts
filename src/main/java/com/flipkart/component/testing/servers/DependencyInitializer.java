@@ -1,15 +1,15 @@
 package com.flipkart.component.testing.servers;
 
 
-import com.flipkart.component.testing.model.HttpIndirectInput;
-import com.flipkart.component.testing.model.TestData;
+import com.flipkart.component.testing.model.http.HttpIndirectInput;
+import com.flipkart.component.testing.model.TestSpecification;
 
 public abstract class DependencyInitializer {
 
     public abstract void initialize() throws Exception;
 
-    public static DependencyInitializer getInstance(TestData testData) {
-        return new DependencyInitializerImpl(testData);
+    public static DependencyInitializer getInstance(TestSpecification testSpecification) {
+        return new DependencyInitializerImpl(testSpecification);
     }
 
     public static void loadIndirectInput(HttpIndirectInput httpIndirectInput) {

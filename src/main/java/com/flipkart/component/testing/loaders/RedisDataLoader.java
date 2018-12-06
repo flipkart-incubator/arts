@@ -1,10 +1,9 @@
 package com.flipkart.component.testing.loaders;
 
-import com.flipkart.component.testing.model.RedisHashMap;
-import com.flipkart.component.testing.model.RedisIndirectInput;
+import com.flipkart.component.testing.model.redis.RedisHashMap;
+import com.flipkart.component.testing.model.redis.RedisIndirectInput;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisSentinelPool;
 
 import java.util.List;
 import java.util.Map;

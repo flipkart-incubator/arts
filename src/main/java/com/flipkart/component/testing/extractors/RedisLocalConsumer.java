@@ -1,7 +1,7 @@
 package com.flipkart.component.testing.extractors;
 
-import com.flipkart.component.testing.model.RedisHashMap;
-import com.flipkart.component.testing.model.RedisObservation;
+import com.flipkart.component.testing.model.redis.RedisHashMap;
+import com.flipkart.component.testing.model.redis.RedisObservation;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import redis.clients.jedis.Jedis;
 
@@ -24,7 +24,7 @@ class RedisLocalConsumer implements ObservationCollector<RedisObservation> {
         Jedis jedis = ObjectFactory.getRedisOperations(expectedObservation).getJedis();
         List<RedisHashMap> redisHashMaps = loadHashMaps(expectedObservation.getHashMaps(), jedis);
         Map<String,String> keyValues = loadKeyValues(expectedObservation.getKeyValues(), jedis);
-        return new RedisObservation(redisHashMaps, expectedObservation.getClusterType(), expectedObservation.getMasterName(), keyValues);
+        return new RedisObservation(expectedObservation,redisHashMaps, keyValues);
     }
 
     private Map<String, String> loadKeyValues(Map<String, String> keyValues, Jedis jedis) {

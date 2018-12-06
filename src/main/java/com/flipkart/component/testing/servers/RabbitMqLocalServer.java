@@ -1,10 +1,10 @@
 package com.flipkart.component.testing.servers;
 
-import com.flipkart.component.testing.Utils;
+import com.flipkart.component.testing.internal.Utils;
 import org.apache.qpid.server.Broker;
 import org.apache.qpid.server.BrokerOptions;
 
-import static com.flipkart.component.testing.Constants.RMQ_SERVER_PORT;
+import static com.flipkart.component.testing.internal.Constants.RMQ_SERVER_PORT;
 
 /**
  * Local RMQ sever on PORT 5672

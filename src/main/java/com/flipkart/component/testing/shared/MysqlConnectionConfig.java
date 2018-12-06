@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.shared;
 
-import com.flipkart.component.testing.model.MysqlConnectionType;
+import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
 
 import java.util.ArrayList;
 import java.util.List;

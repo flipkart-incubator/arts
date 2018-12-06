@@ -7,8 +7,8 @@ import kafka.server.KafkaServerStartable;
 import java.io.File;
 import java.util.Properties;
 
-import static com.flipkart.component.testing.Constants.KAFKA_BROKER_PORT;
-import static com.flipkart.component.testing.Utils.deleteFolder;
+import static com.flipkart.component.testing.internal.Constants.KAFKA_BROKER_PORT;
+import static com.flipkart.component.testing.internal.Utils.deleteFolder;
 
 /**
  * Local Kafka Server on PORT 5000

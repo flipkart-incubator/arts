@@ -1,7 +1,9 @@
 package com.flipkart.component.testing.orchestrators;
 
-import com.flipkart.component.testing.HttpTestRunner;
+import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.model.*;
+import com.flipkart.component.testing.model.rmq.RMQIndirectInput;
+import com.flipkart.component.testing.model.rmq.RMQObservation;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,8 +28,8 @@ public class RMQTest {
         List<String> msgs = messages.stream().map(m -> (String) m).collect(Collectors.toList());
         RMQObservation expectedObservation = new RMQObservation(msgs, queue);
 
-        TestData testData = new TestData(null, newArrayList(indirectInput), newArrayList(expectedObservation));
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testData, () -> "");
+        TestSpecification testSpecification = new TestSpecification(null, newArrayList(indirectInput), newArrayList(expectedObservation));
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof RMQObservation);

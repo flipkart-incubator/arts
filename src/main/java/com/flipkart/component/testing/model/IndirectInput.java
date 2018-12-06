@@ -3,6 +3,15 @@ package com.flipkart.component.testing.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
+import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
+import com.flipkart.component.testing.model.hbase.HBaseIndirectInput;
+import com.flipkart.component.testing.model.http.HttpIndirectInput;
+import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
+import com.flipkart.component.testing.model.mysql.MysqlIndirectInput;
+import com.flipkart.component.testing.model.redis.RedisIndirectInput;
+import com.flipkart.component.testing.model.rmq.RMQIndirectInput;
+import com.flipkart.component.testing.model.zookeeper.ZookeeperIndirectInput;
 
 /**
  * Interface for Indirect Input

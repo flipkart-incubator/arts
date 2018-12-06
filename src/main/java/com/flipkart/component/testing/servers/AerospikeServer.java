@@ -3,7 +3,7 @@ package com.flipkart.component.testing.servers;
 import com.aerospike.client.*;
 import com.aerospike.client.policy.ScanPolicy;
 import com.aerospike.client.policy.WritePolicy;
-import com.flipkart.component.testing.model.AerospikeIndirectInput;
+import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
 
 class AerospikeServer extends DependencyInitializer{
     AerospikeClient client = null;

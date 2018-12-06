@@ -1,8 +1,8 @@
 package com.flipkart.component.testing.extractors;
 
-import com.flipkart.component.testing.model.HttpObservation;
+import com.flipkart.component.testing.model.http.HttpObservation;
 
-import static com.flipkart.component.testing.TestContext.httpResponseMap;
+import static com.flipkart.component.testing.internal.TestContext.httpResponseMap;
 
 class HttpResponseConsumer implements ObservationCollector<HttpObservation> {
 

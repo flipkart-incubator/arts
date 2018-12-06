@@ -2,7 +2,7 @@ package com.flipkart.component.testing.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.ToString;
+import com.flipkart.component.testing.model.http.HttpDirectInput;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
