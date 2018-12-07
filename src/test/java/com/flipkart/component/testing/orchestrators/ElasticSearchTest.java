@@ -17,7 +17,6 @@ public class ElasticSearchTest {
 
 
 	@Test
-	@Ignore
 	public void test() throws Exception {
 
 		ObjectMapper objectMapper = new ObjectMapper();

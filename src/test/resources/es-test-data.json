@@ -2,11 +2,6 @@
   "indirectInputs": [
     {
       "name": "elasticSearchIndirectInput",
-      "connectionInfo": {
-        "clusterName": "santa-stage3",
-        "host": "10.33.85.209",
-        "connectionType": "REMOTE"
-      },
       "documentsOfIndexAndType": [
         {
           "suffixOfindex": "1",
@@ -102,11 +97,6 @@
   "observations": [
     {
       "name": "elasticSearchObservation",
-      "connectionInfo": {
-        "clusterName": "santa-stage3",
-        "host": "10.33.85.209",
-        "connectionType": "REMOTE"
-      },
       "documentsToFetch": [
         {
           "suffixOfindex": "1",

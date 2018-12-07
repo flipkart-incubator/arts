@@ -35,17 +35,17 @@ public class ElasticSearchIndirectInput implements IndirectInput, ElasticSearchT
 
     @Override
     public String getClusterName() {
-        return Optional.ofNullable(connectionInfo.getClusterName()).orElse(Constants.ES_CLUSTER_NAME);
+        return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getClusterName).orElse(Constants.ES_CLUSTER_NAME);
     }
 
     @Override
     public String getHost() {
-        return Optional.ofNullable(connectionInfo.getHost()).orElse(Constants.ES_CLIENT_HOST);
+        return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getHost).orElse(Constants.ES_CLIENT_HOST);
     }
 
     @Override
     public ConnectionType getConnectionType() {
-        return Optional.ofNullable(connectionInfo.getConnectionType()).orElse(ConnectionType.IN_MEMORY);
+        return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getConnectionType).orElse(ConnectionType.IN_MEMORY);
     }
 
 }
