@@ -1,0 +1,20 @@
+{
+  "indirectInputs": [
+    {
+      "name": "rmqIndirectInput",
+      "messages": [
+        "msg1",
+        "msg2",
+        "msg3"
+      ],
+      "queue": "abc",
+      "routingKey": ""
+    }
+  ],
+  "observations": [
+    {
+      "name": "rmqObservation",
+      "queue": "abc"
+    }
+  ]
+}

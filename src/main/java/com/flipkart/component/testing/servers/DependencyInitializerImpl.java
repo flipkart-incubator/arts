@@ -111,6 +111,8 @@ class DependencyInitializerImpl extends DependencyInitializer {
                 dependencyInitializers.add(new HbaseServer((HBaseIndirectInput) indirectInput));
             } else if (indirectInput.isAerospikeInput()) {
                 dependencyInitializers.add(new AerospikeServer((AerospikeIndirectInput) indirectInput));
+            } else if (indirectInput.isRMQInput()){
+                dependencyInitializers.add(new RabbitMqLocalServer());
             }
 
         }

@@ -12,14 +12,14 @@ import java.util.List;
 @Getter
 public class RMQIndirectInput implements IndirectInput {
 
-    private final List<Object> messages;
+    private final List<String> messages;
 
     private final String queue;
 
     private final String routingKey;
 
     @JsonCreator
-    public RMQIndirectInput(@JsonProperty("messages") List<Object> messages,
+    public RMQIndirectInput(@JsonProperty("messages") List<String> messages,
                             @JsonProperty("queue") String queue,
                             @JsonProperty("routingKey") String routingKey) {
         this.queue = queue;

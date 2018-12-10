@@ -31,25 +31,36 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
     @SuppressWarnings("unchecked")
     public List<Observation> execute(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
 
-        // spawn the services required for testSpecification
-        DependencyInitializer.getInstance(testSpecification).initialize();
+        DependencyInitializer dependencyInitializer = DependencyInitializer.getInstance(testSpecification);
 
-        //load the indirect inputs
-        testDataLoader.load(testSpecification.getIndirectInputs());
+        try {
 
-        //wrap the spouts to track the emitted tuples
-        Map<String, BaseRichSpout> spouts = testableTopology.getSpouts();
-        spouts.keySet().forEach(spoutId -> spouts.put(spoutId, wrapSpout(spouts, spoutId, tuplesToBeEmitted)));
+            // spawn the services required for testSpecification
+            dependencyInitializer.initialize();
 
-        //start the storm cluster
-        this.stormLocalCluster = new StormLocalCluster(testableTopology);
-        this.stormLocalCluster.start();
+            //load the indirect inputs
+            testDataLoader.load(testSpecification.getIndirectInputs());
 
-        //wait for completion
-        this.waitForCompletion();
+            //wrap the spouts to track the emitted tuples
+            Map<String, BaseRichSpout> spouts = testableTopology.getSpouts();
+            spouts.keySet().forEach(spoutId -> spouts.put(spoutId, wrapSpout(spouts, spoutId, tuplesToBeEmitted)));
 
-        //collect the observations
-        return this.observationCollector.actualObservations(testSpecification.getObservations());
+            //start the storm cluster
+            this.stormLocalCluster = new StormLocalCluster(testableTopology);
+            this.stormLocalCluster.start();
+
+            //wait for completion
+            this.waitForCompletion();
+
+            //collect the observations
+            return this.observationCollector.actualObservations(testSpecification.getObservations());
+        } finally {
+            try {
+                dependencyInitializer.shutDown();
+            } catch (Exception e) {
+                System.out.println("Error in shutting down all dependencies : You may face problems in next run");
+            }
+        }
 
     }
 
@@ -60,6 +71,7 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
 
     /**
      * wrapping spout is needed to track the number of tuples to be emitted and acts as a trigger on when the topology execution is complete
+     *
      * @param spouts
      * @param spoutId
      * @param tuplesToBeEmitted
@@ -74,6 +86,7 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
 
     /**
      * tracks the tuples to emit and waits for 1000 seconds before giving up
+     *
      * @throws InterruptedException
      */
     private void waitForCompletion() throws InterruptedException {

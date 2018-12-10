@@ -39,9 +39,9 @@ public class RMQLoader implements TestDataLoader<RMQIndirectInput> {
      *
      * @param msg
      */
-    private void pushMessage(Object msg) {
+    private void pushMessage(String msg) {
         try {
-            this.channel.basicPublish("", rmqIndirectInput.getRoutingKey(), MessageProperties.PERSISTENT_TEXT_PLAIN, Utils.toByteArray(msg));
+            this.channel.basicPublish("", rmqIndirectInput.getQueue(), MessageProperties.PERSISTENT_TEXT_PLAIN,  msg.toString().getBytes());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
