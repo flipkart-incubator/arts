@@ -3,24 +3,44 @@
     {
       "name": "redisIndirectInput",
       "clusterType": "SENTINEL",
-      "masterName" : "master",
-      "hashMaps": [
-        {
-          "key": "1",
-          "data": {
-            "name": "abc"
+      "masterName": "master",
+      "dbToDSMap": {
+        "7": {
+          "hashMap": {
+            "outerKey1": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            },
+            "outerKey2": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            }
+          },
+          "keyValues": {
+            "k1": "v1",
+            "k2": "v2"
           }
         },
-        {
-          "key": "2",
-          "data": {
-            "name": "xyz"
+        "8": {
+          "hashMap": {
+            "outerKey1": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            },
+            "outerKey2": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            }
+          },
+          "keyValues": {
+            "k1": "v1",
+            "k2": "v2"
+          },
+          "set" : {
+            "setKey" : ["v1", "v2"]
           }
+
         }
-      ],
-      "keyValues" : {
-        "k1" : "v1",
-        "k2" : "v2"
       }
     }
   ],
@@ -28,25 +48,11 @@
     {
       "name": "redisObservation",
       "clusterType": "SENTINEL",
-      "masterName" : "master",
-      "hashMaps": [
-        {
-          "key": "1",
-          "data": {
-            "name": "abc"
-          }
-        },
-        {
-          "key": "2",
-          "data": {
-            "name": "xyz"
-          }
-        }
-      ],
-      "keyValues" : {
-        "k1" : "v1",
-        "k2" : "v2"
-      }
+      "masterName": "master",
+      "dbIndices": [
+        7,
+        8
+      ]
     }
   ]
 }

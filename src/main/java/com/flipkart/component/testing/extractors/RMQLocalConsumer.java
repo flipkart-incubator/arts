@@ -15,7 +15,7 @@ import java.util.List;
 class RMQLocalConsumer implements ObservationCollector<RMQObservation> {
 
     /**
-     * rmq specifics : channel used to consume messages
+     * rmq specifics : channel used to collect messages
      */
     private final Channel channel;
 

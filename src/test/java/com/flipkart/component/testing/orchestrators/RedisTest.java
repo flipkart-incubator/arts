@@ -28,8 +28,6 @@ public class RedisTest {
         Assert.assertTrue(observations.get(0) instanceof RedisObservation);
 
         RedisObservation actualObservation = (RedisObservation) observations.get(0);
-        Assert.assertEquals(expectedObservation.getHashMaps(), actualObservation.getHashMaps());
-        Assert.assertEquals(expectedObservation.getKeyValues(),actualObservation.getKeyValues());
     }
 
 }

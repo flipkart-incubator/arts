@@ -9,31 +9,32 @@ import com.flipkart.component.testing.shared.RedisTestConfig;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @JsonTypeName("RedisIndirectInput")
 @Getter
 public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
-
-    private final List<RedisHashMap> hashMaps;
-
-    private final Map<String,String> keyValues;
 
     @Getter(AccessLevel.PACKAGE)
     private final ClusterType clusterType;
 
     private final String masterName;
 
+    @Getter(AccessLevel.PRIVATE)
+    private final Map<Integer, RedisDataStructures> dbToDSMap;
+
     @JsonCreator
-    public RedisIndirectInput(@JsonProperty("hashMaps") List<RedisHashMap> hashMaps,
-                              @JsonProperty("clusterType") ClusterType clusterType,
+    public RedisIndirectInput(@JsonProperty("clusterType") ClusterType clusterType,
                               @JsonProperty("masterName") String masterName,
-                              @JsonProperty("keyValues") Map<String,String> keyValues) {
-        this.hashMaps = hashMaps;
+                              @JsonProperty("dbToDSMap") Map<String, RedisDataStructures> dbToDSMap
+    ) {
         this.clusterType = clusterType;
         this.masterName = masterName;
-        this.keyValues = keyValues;
+        this.dbToDSMap = new HashMap<>();
+        dbToDSMap.forEach((k,v) -> this.dbToDSMap.put(Integer.parseInt(k), v));
     }
 
     @JsonIgnore
@@ -41,4 +42,24 @@ public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
         return this.clusterType == ClusterType.SENTINEL;
     }
 
+
+    @JsonIgnore
+    public Set<Integer> getDBIndices() {
+        return dbToDSMap.keySet();
+    }
+
+    @JsonIgnore
+    public Map<String, Map<String, String>> getHashMaps(int dbIndex) {
+        return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getHashMap());
+    }
+
+    @JsonIgnore
+    public Map<String, String> getKeyValues(int dbIndex) {
+        return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getKeyValues());
+    }
+
+    @JsonIgnore
+    public Map<String, Set<String>> getSets(int dbIndex){
+        return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getSet());
+    }
 }
