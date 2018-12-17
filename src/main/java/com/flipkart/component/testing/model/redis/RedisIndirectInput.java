@@ -45,7 +45,7 @@ public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
 
     @JsonIgnore
     public Set<Integer> getDBIndices() {
-        return dbToDSMap.keySet();
+        return Collections.unmodifiableSet(dbToDSMap.keySet());
     }
 
     @JsonIgnore

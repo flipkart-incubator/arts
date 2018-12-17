@@ -25,7 +25,6 @@ public class RedisObservation implements Observation, RedisTestConfig {
 
     private final Set<Integer> dbIndices;
 
-    @Getter(AccessLevel.PRIVATE)
     private Map<Integer, RedisDataStructures> dbToDSMap;
 
     @JsonCreator
@@ -65,4 +64,5 @@ public class RedisObservation implements Observation, RedisTestConfig {
     public void addSet(int dbIndex, Map<String, Set<String>> set) {
         this.dbToDSMap.get(dbIndex).addSet(set);
     }
+
 }
