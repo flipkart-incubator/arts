@@ -18,7 +18,7 @@ import java.util.List;
  * Single entry point for the test writer to orchestrate the test set up
  * and retrieving the observations for Api based test cases.
  */
-class HttpTestOrchestrator extends BaseTestOrchestrator {
+public class HttpTestOrchestrator extends BaseTestOrchestrator {
 
     private final HttpTestRunner testRunner;
     private ObjectMapper objectMapper = new ObjectMapper();

@@ -1,10 +1,13 @@
 package com.flipkart.component.testing.internal;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.model.http.HttpDirectInput;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
@@ -22,14 +25,20 @@ public class HttpTestRunner {
      * @return
      */
     public void run(HttpDirectInput directInput, String url) throws IOException {
-        HttpDirectInput httpDirectInput = directInput;
         HttpResponse httpResponse = null;
-        if(directInput.isPost()) {
-            httpResponse = Utils.getPostResponse(url + "/" + httpDirectInput.getPath(), httpDirectInput.getRequest(), ContentType.APPLICATION_JSON);
-        }else if(directInput.isGet()){
-            HttpClient httpClient = HttpClientBuilder.create().build(); //TODO:PAVAN
-            HttpGet httpGet = new HttpGet(url + httpDirectInput.getPath());
+        HttpClient httpClient = HttpClientBuilder.create().build(); //TODO:PAVAN
+
+        if (directInput.isPost()) {
+            httpResponse = Utils.getPostResponse(url + "/" + directInput.getPath(), directInput.getRequest(), directInput.getHeaders(), ContentType.APPLICATION_JSON);
+        } else if (directInput.isGet()) {
+            HttpGet httpGet = new HttpGet(url + directInput.getPath());
+            directInput.getHeaders().forEach(httpGet::addHeader);
             httpResponse = httpClient.execute(httpGet);
+        } else if (directInput.isPut()) {
+            HttpPut httpPut = new HttpPut(url + directInput.getPath());
+            directInput.getHeaders().forEach(httpPut::addHeader);
+            httpPut.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(directInput.getRequest()), ContentType.APPLICATION_JSON));
+            httpResponse = httpClient.execute(httpPut);
         }
 
         Map<String, Object> httpResponseMap = new HashMap<>();

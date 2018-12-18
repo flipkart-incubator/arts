@@ -1,10 +1,13 @@
 package com.flipkart.component.testing.internal;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flipkart.component.testing.model.http.HttpDirectInput;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -14,6 +17,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,12 +118,7 @@ public class Utils {
 
 
     public static HttpResponse getPostResponse(String url, Object body, ContentType contentType) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        httpClient = HttpClientBuilder.create().build(); //TODO:PAVAN
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).build());
-        httpPost.setEntity(new StringEntity(objectMapper.writeValueAsString(body), contentType));
-        return httpClient.execute(httpPost);
+        return getPostResponse(url, body, new HashMap<>(), contentType);
     }
 
 
@@ -135,5 +134,15 @@ public class Utils {
             throw new RuntimeException(e);
 
         }
+    }
+
+    public static HttpResponse getPostResponse(String url, Object body, Map<String, String> headers, ContentType contentType) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        httpClient = HttpClientBuilder.create().build(); //TODO:PAVAN
+        HttpPost httpPost = new HttpPost(url);
+        headers.forEach(httpPost::addHeader);
+        httpPost.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).build());
+        httpPost.setEntity(new StringEntity(objectMapper.writeValueAsString(body), contentType));
+        return httpClient.execute(httpPost);
     }
 }

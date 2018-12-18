@@ -7,19 +7,25 @@ import com.flipkart.component.testing.model.DirectInput;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Map;
+
 @JsonTypeName("httpDirectInput")
 @Getter
 @ToString
 public class HttpDirectInput extends HttpInput implements DirectInput {
 
     private final Object request;
+    private final Map<String, String> headers;
+
 
     @JsonCreator
     public HttpDirectInput(@JsonProperty("path") String path,
                            @JsonProperty("method") METHOD method,
-                           @JsonProperty("json") Object request){
+                           @JsonProperty("json") Object request,
+                           @JsonProperty("headers") Map<String,String> headers){
         super(path, method);
         this.request = request;
+        this.headers = headers;
     }
 
 }
