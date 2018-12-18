@@ -7,6 +7,9 @@ import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 
+import java.util.Map;
+import java.util.Set;
+
 public class HBaseDataLoader implements TestDataLoader<HBaseIndirectInput> {
 
 	/**
@@ -23,8 +26,10 @@ public class HBaseDataLoader implements TestDataLoader<HBaseIndirectInput> {
 		for (int row = 0; row < hBaseIndirectInput.getRows().size(); row++) {
 			p = new Put(Bytes.toBytes(hBaseIndirectInput.getRows().get(row).getRowKey()));
 			for (String colFamily : hBaseIndirectInput.getRows().get(row).getData().keySet()) {
-				for (String qualifier : hBaseIndirectInput.getRows().get(row).getData().get(colFamily).keySet()) {
-					String qualValue = hBaseIndirectInput.getRows().get(row).getData().get(colFamily).get(qualifier);
+				Map<String, String> qualifierMap = hBaseIndirectInput.getRows().get(row).getData().get(colFamily);
+				if(qualifierMap.isEmpty()) return;
+				for (String qualifier : qualifierMap.keySet()) {
+					String qualValue = qualifierMap.get(qualifier);
 					p.add(Bytes.toBytes(colFamily), Bytes.toBytes(qualifier), Bytes.toBytes(qualValue));
 				}
 			}

@@ -40,16 +40,4 @@ public class HBaseTest {
 		Assert.assertEquals(expectedObservation.getRows(), actualObservation.getRows());
 	}
 
-
-//	@After
-//	public void after() {
-//		if(HbaseLocalServer.hbaseUtility!=null) {
-//			try {
-//				HbaseLocalServer.hbaseUtility.shutdownMiniCluster();
-//			} catch (Exception e) {
-//				throw new RuntimeException("Could not stop Hbase mini cluster");
-//			}
-//		}
-//	}
-
 }
