@@ -10,7 +10,6 @@ import com.flipkart.component.testing.model.mysql.MysqlIndirectInput;
 import com.flipkart.component.testing.model.mysql.MysqlObservation;
 import com.flipkart.component.testing.model.redis.RedisIndirectInput;
 import com.flipkart.component.testing.model.redis.RedisObservation;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,8 +19,6 @@ import java.util.Set;
  * A Registry for all services required for testing
  */
 class DependencyInitializerImpl extends DependencyInitializer {
-
-
     private final Iterable<TestSpecification> testSpecifications;
     private Set<DependencyInitializer> dependencyInitializers = new HashSet<>();
     private Set<Class> dependencyClasses = new HashSet<>();

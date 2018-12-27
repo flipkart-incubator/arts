@@ -76,7 +76,7 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
             return list;
         } finally {
             try {
-                dependencyInitializer.shutDown();
+               dependencyInitializer.shutDown();
             } catch (Exception e) {
                 System.out.println("Error in shutting down all dependencies : You may face problems in next run");
             }

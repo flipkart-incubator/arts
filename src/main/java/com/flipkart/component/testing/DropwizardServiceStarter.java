@@ -31,18 +31,18 @@ public class DropwizardServiceStarter implements SUT {
         this.serviceConfigPath = serviceConfigPath;
         this.serviceUrl = serviceUrl;
         this.serviceclass = serviceClass;
-
     }
+
 
     @Override
     public void start() {
         try {
-            String[] args = new String[]{"server", this.serviceConfigPath};
-            Object serviceClassInstance = serviceclass.newInstance();
-            Method run = serviceClassInstance.getClass().getMethod("run", String[].class);
-            run.invoke(serviceClassInstance, new Object[]{args});
-        } catch (Exception var3) {
-            throw new RuntimeException(var3);
+                String[] args = new String[]{"server", this.serviceConfigPath};
+                Object serviceClassInstance = serviceclass.newInstance();
+                Method run = serviceClassInstance.getClass().getMethod("run", String[].class);
+                run.invoke(serviceClassInstance, new Object[]{args});
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
