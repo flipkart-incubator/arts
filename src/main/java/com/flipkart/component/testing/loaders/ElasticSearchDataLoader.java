@@ -29,20 +29,18 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
     public void load(ElasticSearchIndirectInput elasticSearchIndirectInput) {
         Client client = ObjectFactory.getESOperations(elasticSearchIndirectInput).getClient();
 
-        // is this way of id generation ok ??
-        int id = 1;
         BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
         createMapping(elasticSearchIndirectInput.getDocumentsOfIndexAndType(), client);
 
         for (DocumentsOfIndexAndType documentsOfIndexAndType : elasticSearchIndirectInput.getDocumentsOfIndexAndType()) {
             for (Map<String, Object> data : documentsOfIndexAndType.getDocuments()) {
 
-                IndexRequestBuilder indexRequestBuilder = client.prepareIndex(documentsOfIndexAndType.getIndex(), documentsOfIndexAndType.getType(), String.valueOf(id)).setSource(data);
+                if(!data.containsKey("_id")) throw new IllegalArgumentException("_id must be present for each document");
+                IndexRequestBuilder indexRequestBuilder = client.prepareIndex(documentsOfIndexAndType.getIndex(), documentsOfIndexAndType.getType(), String.valueOf(data.get("_id"))).setSource(data);
 
                 //add routingKey If Present
                 Optional.ofNullable(documentsOfIndexAndType.getRoutingKey()).ifPresent(rk -> indexRequestBuilder.setRouting(data.get(rk).toString()));
                 bulkRequestBuilder.add(indexRequestBuilder);
-                id = id + 1;
             }
         }
         BulkResponse bulkItemResponses = bulkRequestBuilder.execute().actionGet();

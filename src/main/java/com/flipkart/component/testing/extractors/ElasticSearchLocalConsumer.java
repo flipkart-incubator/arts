@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Reads from the local Elastic search Consumer
@@ -31,6 +32,7 @@ class ElasticSearchLocalConsumer implements ObservationCollector<ElasticSearchOb
     @Override
     public ElasticSearchObservation actualObservations(ElasticSearchObservation expectedObservation) {
         Client client = ObjectFactory.getESOperations(expectedObservation).getClient();
+        refresh(expectedObservation, client);
         List<ElasticSearchObservation.DocumentsToFetch> documents = new ArrayList<>();
         try {
             for (ElasticSearchObservation.DocumentsToFetch documentsToFetch : expectedObservation.getDocumentsToFetch()) {
@@ -47,7 +49,16 @@ class ElasticSearchLocalConsumer implements ObservationCollector<ElasticSearchOb
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
-        return new ElasticSearchObservation(documents);
+        return new ElasticSearchObservation(documents, expectedObservation.getConnectionInfo());
+    }
+
+    private void refresh(ElasticSearchObservation expectedObservation, Client client) {
+        String[] indices = expectedObservation.getDocumentsToFetch().stream().map(ElasticSearchObservation.DocumentsToFetch::getIndexName).toArray(String[]::new);
+        client.admin().indices().prepareRefresh(indices);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+        }
     }
 
     private ElasticSearchObservation.DocumentsToFetch prepareResponseDoc(SearchResponse searchResponse, String routingKey, String queryFile) {

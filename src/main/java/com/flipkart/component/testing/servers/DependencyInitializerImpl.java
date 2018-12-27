@@ -11,6 +11,7 @@ import com.flipkart.component.testing.model.mysql.MysqlObservation;
 import com.flipkart.component.testing.model.redis.RedisIndirectInput;
 import com.flipkart.component.testing.model.redis.RedisObservation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,36 +22,39 @@ import java.util.Set;
 class DependencyInitializerImpl extends DependencyInitializer {
 
 
-    private final TestSpecification testSpecification;
-    private Set<DependencyInitializer> dependencyInitializers;
+    private final Iterable<TestSpecification> testSpecifications;
+    private Set<DependencyInitializer> dependencyInitializers = new HashSet<>();
+    private Set<Class> dependencyClasses = new HashSet<>();
 
     DependencyInitializerImpl(TestSpecification testSpecification) {
-        this.testSpecification = testSpecification;
+        List<TestSpecification> testSpecifications = new ArrayList<>();
+        testSpecifications.add(testSpecification);
+        this.testSpecifications = testSpecifications;
+    }
+
+    DependencyInitializerImpl(Iterable<TestSpecification> testSpecifications) {
+        this.testSpecifications = testSpecifications;
     }
 
     @Override
-    public void initialize() throws Exception {
-        Set<DependencyInitializer> initializersForIndirectInputs = this.initializersForIndirectInputs(this.testSpecification.getIndirectInputs());
+    public void initialize() {
+        //initialize the required dependencies for all test specifications
+        testSpecifications.forEach( ts -> {
+            this.initializersForIndirectInputs(ts.getIndirectInputs()).forEach(this::initializeIfNotAlready);
+            this.initializersForObservations(ts.getObservations()).forEach(this::initializeIfNotAlready);
+        });
+    }
 
-        Set<Class> dependencyClasses = new HashSet<>();
-        for (DependencyInitializer dependencyInitializer : initializersForIndirectInputs) {
+    private void initializeIfNotAlready(DependencyInitializer dependencyInitializer) {
+        try {
             if (!dependencyClasses.contains(dependencyInitializer.getClass())) {
                 dependencyInitializer.initialize();
                 dependencyClasses.add(dependencyInitializer.getClass());
+                this.dependencyInitializers.add(dependencyInitializer);
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        Set<DependencyInitializer> initializersForObservations = this.initializersForObservations(this.testSpecification.getObservations());
-
-        for (DependencyInitializer dependencyInitializer : initializersForObservations) {
-            if (!dependencyClasses.contains(dependencyInitializer.getClass())) {
-                dependencyInitializer.initialize();
-                dependencyClasses.add(dependencyInitializer.getClass());
-            }
-        }
-
-        this.dependencyInitializers = initializersForIndirectInputs;
-        this.dependencyInitializers.addAll(initializersForObservations);
     }
 
     @Override
@@ -76,7 +80,7 @@ class DependencyInitializerImpl extends DependencyInitializer {
                 dependencyInitializers.add(new RedisLocalServer((RedisObservation) observation));
             } else if (observation.isHBase()) {
                 dependencyInitializers.add(new HbaseServer((HBaseObservation) observation));
-            } else if(observation.isElasticSearch()){
+            } else if (observation.isElasticSearch()) {
                 dependencyInitializers.add(new ElasticSearchLocalServer((ElasticSearchObservation) observation));
             }
 
@@ -111,7 +115,7 @@ class DependencyInitializerImpl extends DependencyInitializer {
                 dependencyInitializers.add(new HbaseServer((HBaseIndirectInput) indirectInput));
             } else if (indirectInput.isAerospikeInput()) {
                 dependencyInitializers.add(new AerospikeServer((AerospikeIndirectInput) indirectInput));
-            } else if (indirectInput.isRMQInput()){
+            } else if (indirectInput.isRMQInput()) {
                 dependencyInitializers.add(new RabbitMqLocalServer());
             }
 

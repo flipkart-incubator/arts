@@ -10,6 +10,7 @@
           "mappingFile": "src/main/resources/listing_index_mapping.json",
           "documents": [
             {
+              "_id" : "LSTMIXDGUQ4YBNGMNPBVBWK91",
               "routingKey": "pi2981ctftizwe12",
               "listing_id": "LSTMIXDGUQ4YBNGMNPBVBWK91",
               "product_id": "MIXDGUQ4YBNGMNPB",
@@ -37,6 +38,7 @@
               "is_valid": true
             },
             {
+              "_id" : "LSTEKTE9RSGKGUGRZJ4AOGC6B",
               "routingKey": "pi2981ctftizwe12",
               "listing_id": "LSTEKTE9RSGKGUGRZJ4AOGC6B",
               "product_id": "EKTE9RSGKGUGRZJ4",
@@ -67,6 +69,7 @@
               "is_valid": true
             },
             {
+              "_id" : "LSTBOK9780767908832G691T0",
               "routingKey": "9d90765e32024afd",
               "listing_id": "LSTBOK9780767908832G691T0",
               "product_id": "9780767908832",

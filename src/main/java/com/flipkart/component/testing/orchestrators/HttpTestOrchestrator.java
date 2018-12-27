@@ -12,7 +12,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Single entry point for the test writer to orchestrate the test set up
@@ -72,6 +74,37 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
             List<Observation> list = this.observationCollector.actualObservations(testSpecification.getObservations());
 
             return list;
+        } finally {
+            try {
+                dependencyInitializer.shutDown();
+            } catch (Exception e) {
+                System.out.println("Error in shutting down all dependencies : You may face problems in next run");
+            }
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public Map<TestSpecification, List<Observation>> chain(Iterable<TestSpecification> testSpecifications, SUT sut) throws Exception {
+        DependencyInitializer dependencyInitializer = DependencyInitializer.getInstance(testSpecifications);
+        try {
+            dependencyInitializer.initialize();
+            //start the system under test
+            sut.start();
+
+            Map<TestSpecification, List<Observation>> map = new HashMap<>();
+
+            for (TestSpecification testSpecification : testSpecifications) {
+                this.testDataLoader.load(testSpecification.getIndirectInputs());
+
+                //http test runner => making a http request
+                testRunner.run((HttpDirectInput) testSpecification.getDirectInput(), sut.getUrl());
+
+                List<Observation> list = this.observationCollector.actualObservations(testSpecification.getObservations());
+
+                map.put(testSpecification, list);
+            }
+            return map;
         } finally {
             try {
                 dependencyInitializer.shutDown();

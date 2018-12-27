@@ -12,6 +12,10 @@ public abstract class DependencyInitializer {
         return new DependencyInitializerImpl(testSpecification);
     }
 
+    public static DependencyInitializer getInstance(Iterable<TestSpecification> testSpecifications){
+        return new DependencyInitializerImpl(testSpecifications);
+    }
+
     public abstract void shutDown();
 
 }

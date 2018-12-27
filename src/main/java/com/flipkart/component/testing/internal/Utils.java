@@ -20,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Utils {
 
@@ -140,7 +141,7 @@ public class Utils {
         ObjectMapper objectMapper = new ObjectMapper();
         httpClient = HttpClientBuilder.create().build(); //TODO:PAVAN
         HttpPost httpPost = new HttpPost(url);
-        headers.forEach(httpPost::addHeader);
+        Optional.ofNullable(headers).orElse(new HashMap<>()).forEach(httpPost::addHeader);
         httpPost.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).build());
         httpPost.setEntity(new StringEntity(objectMapper.writeValueAsString(body), contentType));
         return httpClient.execute(httpPost);
