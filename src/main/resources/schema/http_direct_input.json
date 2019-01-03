@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Http Direct Input",
+  "description": "Http Direct Input",
+  "type": "object",
+  "properties": {
+    "path": {
+      "description": "Path of the rest api should start with /",
+      "type": "string",
+      "pattern" : "^[/]*"
+    },
+    "method": {
+      "description": "http method allowed values of GET/POST/PUT",
+      "type": "string",
+      "enum" : ["GET", "POST", "PUT"]
+    }
+  },
+  "required": ["path", "method"]
+}

@@ -10,7 +10,13 @@ public interface ElasticSearchOperations {
 
     void stopCluster();
 
-    void refresh();
+    void refresh(String[] indices);
 
+    void deleteIndex(String index);
 
+    boolean isIndexPresent(String index);
+
+    void createIndex(String index, String type, String mappingFileContent);
+
+    void deleteIndices();
 }

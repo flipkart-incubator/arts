@@ -2,6 +2,7 @@ package com.flipkart.component.testing.orchestrators;
 
 import com.flipkart.component.testing.loaders.TestDataLoader;
 import com.flipkart.component.testing.extractors.ObservationCollector;
+import com.flipkart.component.testing.servers.DependencyRegistry;
 
 /**
  * Common code for all test orchestrator
@@ -19,9 +20,16 @@ abstract class BaseTestOrchestrator {
     protected final ObservationCollector observationCollector;
 
 
+    /**
+     * helps in registering the dependencies
+     */
+    protected final DependencyRegistry dependencyRegistry;
+
+
     BaseTestOrchestrator() {
         this.testDataLoader = TestDataLoader.INSTANCE;
         this.observationCollector = ObservationCollector.INSTANCE;
+        this.dependencyRegistry = DependencyRegistry.INSTANCE;
     }
 
 }

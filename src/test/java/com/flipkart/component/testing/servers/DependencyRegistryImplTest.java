@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.mock;
 
-public class DependencyInitializerImplTest {
+public class DependencyRegistryImplTest {
 
     @Test
     public void test() throws Exception {
@@ -24,10 +24,11 @@ public class DependencyInitializerImplTest {
         observations.add(new HttpObservation(200, new HashMap(), new HashMap<>()));
 
         TestSpecification testSpecification = new TestSpecification(null, indirectInputList, observations);
-        DependencyInitializer dependencyInitializer = new DependencyInitializerImpl(testSpecification);
-
         // each initializer should be initlaized only once
         // if the same server is getting initialized multiple times then this will fail due to address already in use
-        dependencyInitializer.initialize();
+        DependencyRegistry.INSTANCE.registerAndInitialize(testSpecification);
+        DependencyRegistry.INSTANCE.registerAndInitialize(testSpecification);
+
+
     }
 }

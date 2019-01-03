@@ -9,4 +9,6 @@ public interface RedisOperations {
     void start();
 
     void stop();
+
+    void flushAll();
 }

@@ -18,20 +18,13 @@ import java.util.Set;
 /**
  * A Registry for all services required for testing
  */
-class DependencyInitializerImpl extends DependencyInitializer {
-    private final Iterable<TestSpecification> testSpecifications;
+class DependencyRegistryImpl implements DependencyRegistry {
+
+
+    private List<TestSpecification> testSpecifications = new ArrayList<>();
     private Set<DependencyInitializer> dependencyInitializers = new HashSet<>();
     private Set<Class> dependencyClasses = new HashSet<>();
 
-    DependencyInitializerImpl(TestSpecification testSpecification) {
-        List<TestSpecification> testSpecifications = new ArrayList<>();
-        testSpecifications.add(testSpecification);
-        this.testSpecifications = testSpecifications;
-    }
-
-    DependencyInitializerImpl(Iterable<TestSpecification> testSpecifications) {
-        this.testSpecifications = testSpecifications;
-    }
 
     @Override
     public void initialize() {
@@ -57,6 +50,11 @@ class DependencyInitializerImpl extends DependencyInitializer {
     @Override
     public void shutDown() {
         dependencyInitializers.forEach(DependencyInitializer::shutDown);
+    }
+
+    @Override
+    public void clean() {
+        dependencyInitializers.forEach(DependencyInitializer::clean);
     }
 
 
@@ -97,7 +95,7 @@ class DependencyInitializerImpl extends DependencyInitializer {
 
         for (IndirectInput indirectInput : indirectInputs) {
             if (indirectInput.isHttpInput()) {
-                dependencyInitializers.add(new DefaultMockServer());
+                dependencyInitializers.add(DependencyFactory.getMockServer());
             } else if (indirectInput.isKafkaInput()) {
                 dependencyInitializers.add(new KafkaLocalServer());
             } else if (indirectInput.isMysqlInput()) {
@@ -118,5 +116,15 @@ class DependencyInitializerImpl extends DependencyInitializer {
 
         }
         return dependencyInitializers;
+    }
+
+    /**
+     * registers the dependencies for test specification.
+     *
+     * @param testSpecification
+     */
+    @Override
+    public void registerDependencies(TestSpecification testSpecification) {
+        this.testSpecifications.add(testSpecification);
     }
 }

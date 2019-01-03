@@ -16,6 +16,7 @@ class SentinelBasedOperations implements RedisOperations {
     private final RedisTestConfig redisTestConfig;
 
     private static Map<String, SentinelBasedOperations> pool= Maps.newHashMap();
+    private Jedis jedis;
 
     public static SentinelBasedOperations getFromPool(RedisTestConfig redisTestConfig){
         if(pool.containsKey(redisTestConfig.getMasterName())){
@@ -36,9 +37,12 @@ class SentinelBasedOperations implements RedisOperations {
 
     @Override
     public Jedis getJedis() {
-        Set<String> sentinelHosts = JedisUtil.sentinelHosts(redisCluster);
-        JedisSentinelPool pool = new JedisSentinelPool(redisTestConfig.getMasterName(), sentinelHosts);
-        return pool.getResource();
+        if(jedis == null){
+            Set<String> sentinelHosts = JedisUtil.sentinelHosts(redisCluster);
+            JedisSentinelPool pool = new JedisSentinelPool(redisTestConfig.getMasterName(), sentinelHosts);
+            jedis = pool.getResource();
+        }
+        return jedis;
     }
 
     @Override
@@ -49,5 +53,10 @@ class SentinelBasedOperations implements RedisOperations {
     @Override
     public void stop() {
         redisCluster.stop();
+    }
+
+    @Override
+    public void flushAll() {
+        this.getJedis().flushAll();
     }
 }

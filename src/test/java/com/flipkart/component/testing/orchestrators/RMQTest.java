@@ -22,7 +22,7 @@ public class RMQTest {
 
 
         TestSpecification testSpecification = new ObjectMapper().readValue(this.getClass().getClassLoader().getResourceAsStream("rmq-example.json"),TestSpecification.class);
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof RMQObservation);

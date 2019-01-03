@@ -36,7 +36,7 @@ public class AerospikeTest {
         TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(aerospikeIndirectInput),
                 Lists.newArrayList(expectedObservation));
 
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof AerospikeObservation);

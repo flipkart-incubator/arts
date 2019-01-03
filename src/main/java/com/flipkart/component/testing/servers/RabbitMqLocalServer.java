@@ -9,7 +9,7 @@ import static com.flipkart.component.testing.internal.Constants.RMQ_SERVER_PORT;
 /**
  * Local RMQ sever on PORT 5672
  */
-class RabbitMqLocalServer extends DependencyInitializer {
+class RabbitMqLocalServer implements DependencyInitializer {
     private final Broker broker = new Broker();
 
     @Override
@@ -29,6 +29,16 @@ class RabbitMqLocalServer extends DependencyInitializer {
     @Override
     public void shutDown() {
         broker.shutdown();
+    }
+
+    @Override
+    public void clean() {
+        broker.shutdown();
+        try {
+            this.initialize();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String findResourcePath(String fileName) {

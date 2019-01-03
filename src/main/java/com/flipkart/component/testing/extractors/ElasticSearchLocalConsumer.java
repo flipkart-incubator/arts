@@ -3,6 +3,7 @@ package com.flipkart.component.testing.extractors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
+import com.flipkart.component.testing.shared.ElasticSearchOperations;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -31,8 +32,9 @@ class ElasticSearchLocalConsumer implements ObservationCollector<ElasticSearchOb
      */
     @Override
     public ElasticSearchObservation actualObservations(ElasticSearchObservation expectedObservation) {
-        Client client = ObjectFactory.getESOperations(expectedObservation).getClient();
-        refresh(expectedObservation, client);
+        ElasticSearchOperations esOperations = ObjectFactory.getESOperations(expectedObservation);
+        Client client = esOperations.getClient();
+        refresh(expectedObservation, esOperations);
         List<ElasticSearchObservation.DocumentsToFetch> documents = new ArrayList<>();
         try {
             for (ElasticSearchObservation.DocumentsToFetch documentsToFetch : expectedObservation.getDocumentsToFetch()) {
@@ -52,9 +54,9 @@ class ElasticSearchLocalConsumer implements ObservationCollector<ElasticSearchOb
         return new ElasticSearchObservation(documents, expectedObservation.getConnectionInfo());
     }
 
-    private void refresh(ElasticSearchObservation expectedObservation, Client client) {
+    private void refresh(ElasticSearchObservation expectedObservation, ElasticSearchOperations esOperations) {
         String[] indices = expectedObservation.getDocumentsToFetch().stream().map(ElasticSearchObservation.DocumentsToFetch::getIndexName).toArray(String[]::new);
-        client.admin().indices().prepareRefresh(indices);
+        esOperations.refresh(indices);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

@@ -4,7 +4,7 @@ import com.flipkart.component.testing.shared.HBaseAdminOperations;
 import com.flipkart.component.testing.shared.HbaseTestConfig;
 import com.flipkart.component.testing.shared.ObjectFactory;
 
-class HbaseServer extends DependencyInitializer {
+class HbaseServer implements DependencyInitializer {
 
     private final HbaseTestConfig hbaseTestConfig;
     private HBaseAdminOperations hBaseAdminOperations;
@@ -20,7 +20,6 @@ class HbaseServer extends DependencyInitializer {
     @Override
     public void initialize() {
         this.hBaseAdminOperations.startCluster();
-        this.hBaseAdminOperations.deleteTable(this.hbaseTestConfig);
 
         if(this.hbaseTestConfig.shouldCreateTable()){
             this.hBaseAdminOperations.createTable(this.hbaseTestConfig);
@@ -33,6 +32,12 @@ class HbaseServer extends DependencyInitializer {
      */
     @Override
     public void shutDown() {
+        this.hBaseAdminOperations.deleteTable(this.hbaseTestConfig);
         this.hBaseAdminOperations.stopCluster();
+    }
+
+    @Override
+    public void clean() {
+        this.hBaseAdminOperations.deleteTable(this.hbaseTestConfig);
     }
 }

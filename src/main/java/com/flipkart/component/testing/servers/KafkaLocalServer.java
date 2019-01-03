@@ -13,7 +13,7 @@ import static com.flipkart.component.testing.internal.Utils.deleteFolder;
 /**
  * Local Kafka Server on PORT 5000
  */
-class KafkaLocalServer extends DependencyInitializer {
+class KafkaLocalServer implements DependencyInitializer {
     private KafkaServerStartable kafka;
     private static final String KAFKA_LOG_DIR_CONF = "log.dir";
     private static final int BROKER_ID = 0;
@@ -44,6 +44,12 @@ class KafkaLocalServer extends DependencyInitializer {
     @Override
     public void shutDown() {
         kafka.shutdown();
+    }
+
+    @Override
+    public void clean() {
+        kafka.shutdown();
+        this.initialize();
     }
 
 

@@ -9,6 +9,8 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
 
+
+//TODO:PAVAN see if all the operations can be moved out similar to Hbase and ES rather than exposing channel and connection for mysql and rmq
 public class ObjectFactory {
 
     public static MysqlConnection getMysqlConnection(MysqlConnectionConfig mysqlConnectionConfig) {

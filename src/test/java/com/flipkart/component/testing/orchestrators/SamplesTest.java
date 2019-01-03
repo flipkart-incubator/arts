@@ -21,7 +21,7 @@ public class SamplesTest {
     public void sample1() throws Exception {
         File file = new File(this.getClass().getClassLoader().getResource("sample1.json").getFile());
         TestSpecification testSpecification = new ObjectMapper().readValue(file, TestSpecification.class);
-        List<Observation> observations = new HttpTestOrchestrator().run(testSpecification, () -> "http://localhost:7777");
+        List<Observation> observations = new HttpTestOrchestrator(() -> "http://localhost:7777").run(testSpecification);
 
         Assert.assertEquals(1, observations.size());
         Assert.assertTrue(observations.get(0) instanceof HttpObservation);
@@ -40,7 +40,7 @@ public class SamplesTest {
     public void badIndirectInput() throws Exception {
         File file = new File(this.getClass().getClassLoader().getResource("badIndirectInput.json").getFile());
         TestSpecification testSpecification = new ObjectMapper().readValue(file, TestSpecification.class);
-        List<Observation> observations = new HttpTestOrchestrator().run(testSpecification, () -> "http://localhost:7777");
+        List<Observation> observations = new HttpTestOrchestrator(() -> "http://localhost:7777").run(testSpecification);
     }
 
 }

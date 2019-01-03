@@ -15,4 +15,6 @@ public interface MockServerOperations {
     void start();
 
     void shutDown();
+
+    void clearAll();
 }

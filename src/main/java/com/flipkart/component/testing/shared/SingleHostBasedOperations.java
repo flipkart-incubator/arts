@@ -9,6 +9,7 @@ import java.io.IOException;
 class SingleHostBasedOperations implements RedisOperations {
 
     private RedisServer redisServer;
+    private Jedis jedis;
 
     SingleHostBasedOperations() {
         try {
@@ -20,7 +21,10 @@ class SingleHostBasedOperations implements RedisOperations {
 
     @Override
     public Jedis getJedis() {
-        return new Jedis();
+        if(jedis == null){
+            jedis = new Jedis();
+        }
+        return jedis;
     }
 
     @Override
@@ -31,5 +35,10 @@ class SingleHostBasedOperations implements RedisOperations {
     @Override
     public void stop() {
         this.redisServer.stop();
+    }
+
+    @Override
+    public void flushAll() {
+        this.getJedis().flushAll();
     }
 }

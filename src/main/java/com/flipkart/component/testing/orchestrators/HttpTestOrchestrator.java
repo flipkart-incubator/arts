@@ -1,20 +1,17 @@
 package com.flipkart.component.testing.orchestrators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flipkart.component.testing.model.TestSpecification;
-import com.flipkart.component.testing.servers.DependencyInitializer;
-import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.SUT;
-import com.flipkart.component.testing.model.http.HttpDirectInput;
+import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.model.Observation;
+import com.flipkart.component.testing.model.TestSpecification;
+import com.flipkart.component.testing.model.http.HttpDirectInput;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Single entry point for the test writer to orchestrate the test set up
@@ -23,60 +20,37 @@ import java.util.Map;
 public class HttpTestOrchestrator extends BaseTestOrchestrator {
 
     private final HttpTestRunner testRunner;
+    private final SUT sut;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public HttpTestOrchestrator() {
+    public HttpTestOrchestrator(SUT sut) {
         testRunner = new HttpTestRunner();
+        this.sut = sut;
     }
 
     //For Test Purpose
     HttpTestOrchestrator(HttpTestRunner httpTestRunner) {
         this.testRunner = httpTestRunner;
-    }
-
-    /**
-     * Replays the testDataFile to the url specified
-     *
-     * @param testDataFile
-     * @throws IOException
-     */
-    public void replay(File testDataFile, SUT sut) throws Exception {
-        RecordLoader recordLoader = new RecordLoader(testDataFile);
-        while (recordLoader.hasNext()) {
-            TestSpecification testSpecification = recordLoader.next();
-            run(testSpecification, sut);
-        }
+        this.sut = () -> "";
     }
 
     /**
      * run the test for the SUT
      *
      * @param testSpecification
-     * @param sut
      */
-    @SuppressWarnings("unchecked")
-    public List<Observation> run(TestSpecification testSpecification, SUT sut) throws Exception {
+    public List<Observation> run(TestSpecification testSpecification) throws Exception {
 
         //spawn the services required for the test
-        DependencyInitializer dependencyInitializer = DependencyInitializer.getInstance(testSpecification);
+
         try {
-            dependencyInitializer.initialize();
-
-            //start the system under test
+            dependencyRegistry.registerAndInitialize(testSpecification);
             sut.start();
-
-            //load the data into the dependencies
-            this.testDataLoader.load(testSpecification.getIndirectInputs());
-
-            //http test runner => making a http request
-            testRunner.run((HttpDirectInput) testSpecification.getDirectInput(), sut.getUrl());
-
-            List<Observation> list = this.observationCollector.actualObservations(testSpecification.getObservations());
-
-            return list;
+            return loadRunCollect(testSpecification, sut);
         } finally {
             try {
-               dependencyInitializer.shutDown();
+                dependencyRegistry.shutDown();
             } catch (Exception e) {
                 System.out.println("Error in shutting down all dependencies : You may face problems in next run");
             }
@@ -84,34 +58,90 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
     }
 
 
-    @SuppressWarnings("unchecked")
-    public Map<TestSpecification, List<Observation>> chain(Iterable<TestSpecification> testSpecifications, SUT sut) throws Exception {
-        DependencyInitializer dependencyInitializer = DependencyInitializer.getInstance(testSpecifications);
+    /**
+     * chain the list of specifications : initialize once: shutdown once: run multiple tests => chaining
+     *
+     * @param testSpecifications
+     * @return
+     * @throws Exception
+     */
+    public Map<TestSpecification, List<Observation>> chain(Iterable<TestSpecification> testSpecifications) throws Exception {
+        Map<TestSpecification, List<Observation>> map = new HashMap<>();
         try {
-            dependencyInitializer.initialize();
-            //start the system under test
+            dependencyRegistry.registerAndInitialize(testSpecifications);
             sut.start();
-
-            Map<TestSpecification, List<Observation>> map = new HashMap<>();
-
             for (TestSpecification testSpecification : testSpecifications) {
-                this.testDataLoader.load(testSpecification.getIndirectInputs());
-
-                //http test runner => making a http request
-                testRunner.run((HttpDirectInput) testSpecification.getDirectInput(), sut.getUrl());
-
-                List<Observation> list = this.observationCollector.actualObservations(testSpecification.getObservations());
-
+                List<Observation> list = loadRunCollect(testSpecification, sut);
                 map.put(testSpecification, list);
             }
             return map;
         } finally {
             try {
-                dependencyInitializer.shutDown();
+                dependencyRegistry.shutDown();
             } catch (Exception e) {
                 System.out.println("Error in shutting down all dependencies : You may face problems in next run");
             }
         }
+    }
+
+
+    /**
+     * run multiple tests: initialize & shutdown  dependencies for each test
+     *
+     * @param testSpecifications
+     * @return
+     * @throws Exception
+     */
+    public LinkedHashMap<TestSpecification, List<Observation>> runMultiple(List<TestSpecification> testSpecifications) {
+        LinkedHashMap<TestSpecification, List<Observation>> observations = new LinkedHashMap<>();
+        try {
+            for (TestSpecification testSpecification : testSpecifications) {
+                try {
+                    observations.put(testSpecification, runLite(testSpecification, sut));
+                } catch (Exception e) {
+                    //not to block other tests
+                    observations.put(testSpecification, null);
+                } finally {
+                    dependencyRegistry.clean();
+                }
+            }
+        } finally {
+            try {
+                dependencyRegistry.shutDown();
+            } catch (Exception e) {
+                System.out.println("Error in shutting down all dependencies : You may face problems in next run");
+            }
+        }
+
+        return observations;
+
+    }
+
+
+    /**
+     * A lite weight run of a test case cleaning up the dependency after started.
+     * @param testSpecification
+     * @param sut
+     * @return
+     * @throws Exception
+     */
+    public List<Observation> runLite(TestSpecification testSpecification, SUT sut) throws Exception {
+        try{
+            dependencyRegistry.registerAndInitialize(testSpecification);
+            sut.start();
+            return loadRunCollect(testSpecification, sut);
+        } finally {
+            dependencyRegistry.clean();
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private List<Observation> loadRunCollect(TestSpecification testSpecification, SUT sut) throws IOException {
+        this.testDataLoader.load(testSpecification.getIndirectInputs());
+        //http test runner => making a http request
+        testRunner.run((HttpDirectInput) testSpecification.getDirectInput(), sut.getUrl());
+        return this.observationCollector.actualObservations(testSpecification.getObservations());
     }
 
 

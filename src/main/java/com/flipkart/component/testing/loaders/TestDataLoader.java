@@ -21,14 +21,6 @@ public interface TestDataLoader<T extends IndirectInput> {
     void load(T indirectInput);
 
     /**
-     * unloads the data TODO:PAVAN visit back
-     */
-
-    default void unload() {
-
-    }
-
-    /**
      * A utility method for load multiple data sets
      *
      * @param indirectInputs

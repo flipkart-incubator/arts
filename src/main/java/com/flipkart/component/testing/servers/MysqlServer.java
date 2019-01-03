@@ -3,6 +3,7 @@ package com.flipkart.component.testing.servers;
 import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
 import com.flipkart.component.testing.shared.MysqlConnectionConfig;
 import com.flipkart.component.testing.shared.ObjectFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 
-class MysqlServer extends DependencyInitializer{
+class MysqlServer implements DependencyInitializer{
 
     private final MysqlConnectionConfig connectionConfig;
 
@@ -27,6 +28,11 @@ class MysqlServer extends DependencyInitializer{
     @Override
     public void shutDown() {
 
+    }
+
+    @Override
+    public void clean() {
+        initialize();
     }
 
     /**

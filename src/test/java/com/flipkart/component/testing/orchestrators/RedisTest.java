@@ -22,7 +22,7 @@ public class RedisTest {
         TestSpecification testSpecification = objectMapper.readValue(this.getClass().getClassLoader().getResourceAsStream("redis-example.json"),TestSpecification.class);
         RedisObservation expectedObservation = (RedisObservation) testSpecification.getObservations().get(0);
 
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof RedisObservation);

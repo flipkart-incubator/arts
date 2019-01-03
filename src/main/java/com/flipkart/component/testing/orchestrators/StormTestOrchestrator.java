@@ -1,11 +1,9 @@
 package com.flipkart.component.testing.orchestrators;
 
-import com.flipkart.component.testing.model.TestSpecification;
-import com.flipkart.component.testing.servers.DependencyInitializer;
 import com.flipkart.component.testing.model.Observation;
+import com.flipkart.component.testing.model.TestSpecification;
 import com.flipkart.component.testing.storm.functional.DelegateSpout;
 import com.flipkart.component.testing.storm.functional.TestableTopology;
-import org.apache.storm.Config;
 import org.apache.storm.topology.base.BaseRichSpout;
 
 import java.util.List;
@@ -30,13 +28,10 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
      */
     @SuppressWarnings("unchecked")
     public List<Observation> execute(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
-
-        DependencyInitializer dependencyInitializer = DependencyInitializer.getInstance(testSpecification);
-
         try {
 
             // spawn the services required for testSpecification
-            dependencyInitializer.initialize();
+            dependencyRegistry.registerAndInitialize(testSpecification);
 
             //load the indirect inputs
             testDataLoader.load(testSpecification.getIndirectInputs());
@@ -56,7 +51,7 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
             return this.observationCollector.actualObservations(testSpecification.getObservations());
         } finally {
             try {
-                dependencyInitializer.shutDown();
+                dependencyRegistry.shutDown();
             } catch (Exception e) {
                 System.out.println("Error in shutting down all dependencies : You may face problems in next run");
             }

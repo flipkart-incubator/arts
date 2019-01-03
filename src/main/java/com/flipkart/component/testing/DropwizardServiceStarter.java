@@ -13,6 +13,7 @@ public class DropwizardServiceStarter implements SUT {
     private final String serviceConfigPath;
     private final String serviceUrl;
     private Class<?> serviceclass;
+    private boolean serviceStarted = false;
 
     /**
      * @param serviceConfigPath the config path where the service yml resides
@@ -37,12 +38,16 @@ public class DropwizardServiceStarter implements SUT {
     @Override
     public void start() {
         try {
-                String[] args = new String[]{"server", this.serviceConfigPath};
-                Object serviceClassInstance = serviceclass.newInstance();
-                Method run = serviceClassInstance.getClass().getMethod("run", String[].class);
-                run.invoke(serviceClassInstance, new Object[]{args});
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            if(serviceStarted) {
+                return;
+            }
+            serviceStarted = true;
+            String[] args = new String[]{"server", this.serviceConfigPath};
+            Object serviceClassInstance = serviceclass.newInstance();
+            Method run = serviceClassInstance.getClass().getMethod("run", String[].class);
+            run.invoke(serviceClassInstance, new Object[]{args});
+        } catch (Exception var3) {
+            throw new RuntimeException(var3);
         }
     }
 

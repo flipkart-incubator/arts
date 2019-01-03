@@ -21,7 +21,7 @@ public class ElasticSearchTest {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		TestSpecification testSpecification = objectMapper.readValue(this.getClass().getClassLoader().getResourceAsStream("es-test-data.json"), TestSpecification.class);
-		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
+		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
 		Assert.assertTrue(observations.size() == 1);
 		Assert.assertTrue(observations.get(0) instanceof ElasticSearchObservation);
 		ElasticSearchObservation actualObservation = (ElasticSearchObservation) observations.get(0);

@@ -56,13 +56,16 @@ class MockServerOperationsImpl implements MockServerOperations {
 
     @Override
     public void shutDown() {
-        if (wireMockServer != null) {
-            wireMockServer.stop();
-            try {
-                Thread.sleep(2000L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        wireMockServer.stop();
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public void clearAll() {
+        wireMockServer.resetAll();
     }
 }

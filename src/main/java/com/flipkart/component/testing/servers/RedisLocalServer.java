@@ -2,12 +2,13 @@ package com.flipkart.component.testing.servers;
 
 import com.flipkart.component.testing.shared.RedisTestConfig;
 import com.flipkart.component.testing.shared.ObjectFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * starts a Redis local server
  */
 
-public class RedisLocalServer extends DependencyInitializer {
+public class RedisLocalServer implements DependencyInitializer {
 
     private final RedisTestConfig redisTestConfig;
 
@@ -23,6 +24,11 @@ public class RedisLocalServer extends DependencyInitializer {
     @Override
     public void shutDown() {
         ObjectFactory.getRedisOperations(this.redisTestConfig).stop();
+    }
+
+    @Override
+    public void clean() {
+        ObjectFactory.getRedisOperations(this.redisTestConfig).flushAll();
     }
 
 }

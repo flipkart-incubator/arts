@@ -4,6 +4,7 @@ package com.flipkart.component.testing.loaders;
 import com.flipkart.component.testing.internal.Utils;
 import com.flipkart.component.testing.model.elasticsearch.DocumentsOfIndexAndType;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
+import com.flipkart.component.testing.shared.ElasticSearchOperations;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -27,10 +28,11 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
      */
     @Override
     public void load(ElasticSearchIndirectInput elasticSearchIndirectInput) {
-        Client client = ObjectFactory.getESOperations(elasticSearchIndirectInput).getClient();
+        ElasticSearchOperations esOperations = ObjectFactory.getESOperations(elasticSearchIndirectInput);
+        Client client = esOperations.getClient();
 
         BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
-        createMapping(elasticSearchIndirectInput.getDocumentsOfIndexAndType(), client);
+        createMapping(elasticSearchIndirectInput.getDocumentsOfIndexAndType(), client, esOperations);
 
         for (DocumentsOfIndexAndType documentsOfIndexAndType : elasticSearchIndirectInput.getDocumentsOfIndexAndType()) {
             for (Map<String, Object> data : documentsOfIndexAndType.getDocuments()) {
@@ -46,7 +48,7 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
         BulkResponse bulkItemResponses = bulkRequestBuilder.execute().actionGet();
 
         String[] indices = elasticSearchIndirectInput.getDocumentsOfIndexAndType().stream().map(DocumentsOfIndexAndType::getIndex).toArray(String[]::new);
-        client.admin().indices().prepareRefresh(indices);
+        esOperations.refresh(indices);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
@@ -59,18 +61,18 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
      * @param documentsOfIndexAndTypeList
      * @param client
      */
-    private void createMapping(List<DocumentsOfIndexAndType> documentsOfIndexAndTypeList, Client client) {
+    private void createMapping(List<DocumentsOfIndexAndType> documentsOfIndexAndTypeList, Client client, ElasticSearchOperations esOperations) {
         for (DocumentsOfIndexAndType documentsOfIndexAndType : documentsOfIndexAndTypeList) {
             String mappingFileContent = Utils.getFileString(documentsOfIndexAndType.getMappingFile());
             String index = documentsOfIndexAndType.getIndex();
             String type = documentsOfIndexAndType.getType();
-            IndicesExistsResponse indicesExistsResponse = client.admin().indices().exists(new IndicesExistsRequest().indices(new String[]{index})).actionGet();
 
-            if (indicesExistsResponse.isExists()) {
-                DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest().indices(index);
-                client.admin().indices().delete(deleteIndexRequest).actionGet();
+            if (esOperations.isIndexPresent(index)) {
+                throw new IllegalStateException("index is already present before loading the data, this should not be the case");
             }
-            client.admin().indices().create(new CreateIndexRequest(index).mapping(type, mappingFileContent)).actionGet();
+
+            esOperations.createIndex(index, type, mappingFileContent);
+
         }
 
     }

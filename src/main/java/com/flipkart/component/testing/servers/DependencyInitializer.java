@@ -1,21 +1,12 @@
 package com.flipkart.component.testing.servers;
 
 
-import com.flipkart.component.testing.model.http.HttpIndirectInput;
-import com.flipkart.component.testing.model.TestSpecification;
+interface DependencyInitializer {
 
-public abstract class DependencyInitializer {
+    void initialize() throws Exception;
 
-    public abstract void initialize() throws Exception;
+    void shutDown();
 
-    public static DependencyInitializer getInstance(TestSpecification testSpecification) {
-        return new DependencyInitializerImpl(testSpecification);
-    }
-
-    public static DependencyInitializer getInstance(Iterable<TestSpecification> testSpecifications){
-        return new DependencyInitializerImpl(testSpecifications);
-    }
-
-    public abstract void shutDown();
+    void clean();
 
 }

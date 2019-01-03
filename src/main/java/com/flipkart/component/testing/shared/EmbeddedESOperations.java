@@ -1,6 +1,10 @@
 package com.flipkart.component.testing.shared;
 
 import com.flipkart.component.testing.internal.Constants;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -51,12 +55,36 @@ public class EmbeddedESOperations implements ElasticSearchOperations {
 
 
     @Override
-    public void stopCluster(){
+    public void stopCluster() {
         this.cluster.stop();
     }
 
     @Override
-    public void refresh() {
+    public void refresh(String[] indices) {
         this.cluster.refreshIndices();
+        this.transportClient.admin().indices().prepareRefresh(indices);
     }
+
+    @Override
+    public void deleteIndex(String index) {
+        DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest().indices(index);
+        this.transportClient.admin().indices().delete(deleteIndexRequest).actionGet();
+    }
+
+    @Override
+    public boolean isIndexPresent(String index) {
+        IndicesExistsResponse indicesExistsResponse = this.transportClient.admin().indices().exists(new IndicesExistsRequest().indices(new String[]{index})).actionGet();
+        return indicesExistsResponse.isExists();
+    }
+
+    @Override
+    public void createIndex(String index, String type, String mappingFileContent) {
+        this.transportClient.admin().indices().create(new CreateIndexRequest(index).mapping(type, mappingFileContent)).actionGet();
+    }
+
+    @Override
+    public void deleteIndices() {
+        this.transportClient.admin().indices().prepareDelete("_all").get();
+    }
+
 }

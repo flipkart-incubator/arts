@@ -33,7 +33,7 @@ public class MysqlTest {
         MysqlObservation expectedObservation = new MysqlObservation(map, "abc", MysqlConnectionType.IN_MEMORY);
 
         TestSpecification testSpecification = new TestSpecification(null, newArrayList(indirectInput), newArrayList(expectedObservation));
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification, () -> "");
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue( observations.get(0) instanceof MysqlObservation);

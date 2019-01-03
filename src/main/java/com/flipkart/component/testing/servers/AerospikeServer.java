@@ -4,8 +4,9 @@ import com.aerospike.client.*;
 import com.aerospike.client.policy.ScanPolicy;
 import com.aerospike.client.policy.WritePolicy;
 import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-class AerospikeServer extends DependencyInitializer{
+class AerospikeServer implements DependencyInitializer{
     AerospikeClient client = null;
     AerospikeIndirectInput aerospikeIndirectInput;
 
@@ -22,6 +23,11 @@ class AerospikeServer extends DependencyInitializer{
     public void shutDown() {
         deleteData();
         client.close();
+    }
+
+    @Override
+    public void clean() {
+        throw new NotImplementedException();
     }
 
     private void deleteData(){
