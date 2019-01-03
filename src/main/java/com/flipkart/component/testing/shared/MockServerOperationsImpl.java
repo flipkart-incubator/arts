@@ -4,6 +4,7 @@ import com.flipkart.component.testing.internal.Utils;
 import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.model.http.HttpIndirectObservation;
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ContentType;
@@ -21,7 +22,7 @@ class MockServerOperationsImpl implements MockServerOperations {
 
 
     private MockServerOperationsImpl() {
-        wireMockServer = new WireMockServer(options().port(HTTP_MOCK_SERVER_PORT));
+        wireMockServer = new WireMockServer(options().extensions(new ResponseTemplateTransformer(false)).port(HTTP_MOCK_SERVER_PORT));
     }
 
     public static MockServerOperations getInstance() {
