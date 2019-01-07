@@ -4,6 +4,7 @@ import com.flipkart.component.testing.model.redis.RedisIndirectInput;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import redis.clients.jedis.Jedis;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ public class RedisDataLoader implements TestDataLoader<RedisIndirectInput> {
             loadKeyValues(indirectInput.getKeyValues(dbIndex), jedis);
             loadSet(indirectInput.getSets(dbIndex), jedis);
             loadSortedSet(indirectInput.getSortedSets(dbIndex), jedis);
+            loadLists(indirectInput.getLists(dbIndex), jedis);
         });
     }
 
@@ -40,4 +42,10 @@ public class RedisDataLoader implements TestDataLoader<RedisIndirectInput> {
         if(sortedSets == null) return;
         sortedSets.forEach((set, scoreToMemberMap) -> scoreToMemberMap.forEach((member, score) -> jedis.zadd(set, score, member)));
     }
+
+    private void loadLists(Map<String, List<String>> lists, Jedis jedis) {
+        if(lists == null) return;
+        lists.forEach((key, list) -> jedis.rpush(key, list.toArray(new String[list.size()])));
+    }
+
 }

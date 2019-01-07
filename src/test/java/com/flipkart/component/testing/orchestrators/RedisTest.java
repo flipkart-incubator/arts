@@ -34,7 +34,7 @@ public class RedisTest {
         assertEquals(2, actualObservation.getDbToDSMap().get(7).getHashMap().size());
         assertEquals(2, actualObservation.getDbToDSMap().get(7).getKeyValues().size());
         assertEquals(1, actualObservation.getDbToDSMap().get(7).getSortedSets().size());
-
+        assertEquals(1, actualObservation.getDbToDSMap().get(7).getLists().size());
     }
 
 }

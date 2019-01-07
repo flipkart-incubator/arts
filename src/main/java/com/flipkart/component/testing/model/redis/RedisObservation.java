@@ -68,4 +68,8 @@ public class RedisObservation implements Observation, RedisTestConfig {
     public void addSortedSet(Integer dbIndex, Map<String, Map<String, Double>> sortedSet) {
         this.dbToDSMap.get(dbIndex).addSortedSet(sortedSet);
     }
+
+    public void addLists(Integer dbIndex, Map<String, List<String>> lists){
+        this.dbToDSMap.get(dbIndex).addLists(lists);
+    }
 }

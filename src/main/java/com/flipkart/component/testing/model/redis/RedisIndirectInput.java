@@ -9,10 +9,7 @@ import com.flipkart.component.testing.shared.RedisTestConfig;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @JsonTypeName("redisIndirectInput")
 @Getter
@@ -66,5 +63,10 @@ public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
     @JsonIgnore
     public Map<String, Map<String, Double>> getSortedSets(int dbIndex){
         return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getSortedSets());
+    }
+
+    @JsonIgnore
+    public Map<String, List<String>> getLists(int dbIndex){
+        return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getLists());
     }
 }

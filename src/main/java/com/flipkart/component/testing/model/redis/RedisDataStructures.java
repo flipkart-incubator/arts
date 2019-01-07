@@ -2,10 +2,7 @@ package com.flipkart.component.testing.model.redis;
 
 import lombok.Data;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Data
 public class RedisDataStructures {
@@ -22,11 +19,14 @@ public class RedisDataStructures {
 
     private Map<String, Map<String,Double>> sortedSets;
 
+    private Map<String, List<String>> lists;
+
     public RedisDataStructures(){
         this.hashMap = new HashMap<>();
         this.keyValues = new HashMap<>();
         this.set = new HashMap<>();
         this.sortedSets = new HashMap<>();
+        this.lists = new HashMap<>();
     }
 
     public void addHashMap(Map<String,Map<String, String>> hashMap) {
@@ -43,5 +43,8 @@ public class RedisDataStructures {
 
     public void addSortedSet(Map<String, Map<String, Double>> sortedSets) {
         this.sortedSets = sortedSets;
+    }
+    public void addLists(Map<String, List<String>> lists) {
+        this.lists = lists;
     }
 }
