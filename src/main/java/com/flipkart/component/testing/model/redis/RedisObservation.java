@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@JsonTypeName("RedisObservation")
+@JsonTypeName("redisObservation")
 @Getter
 public class RedisObservation implements Observation, RedisTestConfig {
 
@@ -65,4 +65,7 @@ public class RedisObservation implements Observation, RedisTestConfig {
         this.dbToDSMap.get(dbIndex).addSet(set);
     }
 
+    public void addSortedSet(Integer dbIndex, Map<String, Map<String, Double>> sortedSet) {
+        this.dbToDSMap.get(dbIndex).addSortedSet(sortedSet);
+    }
 }

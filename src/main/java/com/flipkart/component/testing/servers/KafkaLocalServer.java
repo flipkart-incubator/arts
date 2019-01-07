@@ -11,7 +11,6 @@ import static com.flipkart.component.testing.internal.Constants.KAFKA_BROKER_POR
 import static com.flipkart.component.testing.internal.Utils.deleteFolder;
 
 /**
- * Local Kafka Server on PORT 5000
  */
 class KafkaLocalServer implements DependencyInitializer {
     private KafkaServerStartable kafka;

@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 public class RedisTest {
@@ -28,6 +30,11 @@ public class RedisTest {
         Assert.assertTrue(observations.get(0) instanceof RedisObservation);
 
         RedisObservation actualObservation = (RedisObservation) observations.get(0);
+        assertEquals(2, actualObservation.getDbToDSMap().size());
+        assertEquals(2, actualObservation.getDbToDSMap().get(7).getHashMap().size());
+        assertEquals(2, actualObservation.getDbToDSMap().get(7).getKeyValues().size());
+        assertEquals(1, actualObservation.getDbToDSMap().get(7).getSortedSets().size());
+
     }
 
 }

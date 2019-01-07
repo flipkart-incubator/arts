@@ -20,10 +20,13 @@ public class RedisDataStructures {
 
     private Map<String, Set<String>> set;
 
+    private Map<String, Map<String,Double>> sortedSets;
+
     public RedisDataStructures(){
         this.hashMap = new HashMap<>();
         this.keyValues = new HashMap<>();
         this.set = new HashMap<>();
+        this.sortedSets = new HashMap<>();
     }
 
     public void addHashMap(Map<String,Map<String, String>> hashMap) {
@@ -36,5 +39,9 @@ public class RedisDataStructures {
 
     public void addSet(Map<String, Set<String>> set){
         this.set = set;
+    }
+
+    public void addSortedSet(Map<String, Map<String, Double>> sortedSets) {
+        this.sortedSets = sortedSets;
     }
 }

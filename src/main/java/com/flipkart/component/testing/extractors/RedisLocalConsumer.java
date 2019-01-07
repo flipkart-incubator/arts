@@ -3,6 +3,7 @@ package com.flipkart.component.testing.extractors;
 import com.flipkart.component.testing.model.redis.RedisObservation;
 import com.flipkart.component.testing.shared.ObjectFactory;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Tuple;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ class RedisLocalConsumer implements ObservationCollector<RedisObservation> {
             actualObservation.addHashMap(dbIndex, collector.hashMaps);
             actualObservation.addKeyValues(dbIndex, collector.keyValues);
             actualObservation.addSet(dbIndex, collector.set);
+            actualObservation.addSortedSet(dbIndex, collector.sortedSet);
         });
 
         return actualObservation;
@@ -41,13 +43,16 @@ class RedisLocalConsumer implements ObservationCollector<RedisObservation> {
         private final Jedis jedis;
         Map<String, Map<String, String>> hashMaps;
         Map<String, String> keyValues;
-        public Map<String, Set<String>> set;
+        Map<String, Set<String>> set;
+        Map<String, Map<String,Double>> sortedSet;
+
 
         Collector(Jedis jedis, int dbIndex) {
             this.jedis = jedis;
             this.jedis.select(dbIndex);
             this.hashMaps = new HashMap<>();
             this.keyValues = new HashMap<>();
+            this.sortedSet = new HashMap<>();
             this.set = new HashMap<>();
         }
 
@@ -61,6 +66,10 @@ class RedisLocalConsumer implements ObservationCollector<RedisObservation> {
             } else if("set".equals(type)){
                 Set<String> smembers = jedis.smembers(key);
                 set.put(key, smembers);
+            } else if ("zset".equals(type)){
+                Set<Tuple> tuples = jedis.zrangeWithScores(key, 0, -1);
+                sortedSet.putIfAbsent(key, new HashMap<>());
+                tuples.forEach(tuple -> sortedSet.get(key).put(tuple.getElement(),tuple.getScore()));
             }
         }
 

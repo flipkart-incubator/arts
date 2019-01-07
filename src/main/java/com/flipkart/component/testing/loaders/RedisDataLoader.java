@@ -17,6 +17,7 @@ public class RedisDataLoader implements TestDataLoader<RedisIndirectInput> {
             loadHashMaps(indirectInput.getHashMaps(dbIndex), jedis);
             loadKeyValues(indirectInput.getKeyValues(dbIndex), jedis);
             loadSet(indirectInput.getSets(dbIndex), jedis);
+            loadSortedSet(indirectInput.getSortedSets(dbIndex), jedis);
         });
     }
 
@@ -33,5 +34,10 @@ public class RedisDataLoader implements TestDataLoader<RedisIndirectInput> {
     private void loadKeyValues(Map<String, String> keyValues, Jedis jedis) {
         if (keyValues == null) return;
         keyValues.forEach(jedis::set);
+    }
+
+    private void loadSortedSet(Map<String, Map<String, Double>> sortedSets, Jedis jedis) {
+        if(sortedSets == null) return;
+        sortedSets.forEach((set, scoreToMemberMap) -> scoreToMemberMap.forEach((member, score) -> jedis.zadd(set, score, member)));
     }
 }

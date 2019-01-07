@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@JsonTypeName("RedisIndirectInput")
+@JsonTypeName("redisIndirectInput")
 @Getter
 public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
 
@@ -61,5 +61,10 @@ public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
     @JsonIgnore
     public Map<String, Set<String>> getSets(int dbIndex){
         return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getSet());
+    }
+
+    @JsonIgnore
+    public Map<String, Map<String, Double>> getSortedSets(int dbIndex){
+        return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getSortedSets());
     }
 }

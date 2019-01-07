@@ -19,6 +19,12 @@
           "keyValues": {
             "k1": "v1",
             "k2": "v2"
+          },
+          "sortedSets" : {
+            "set1" : {
+              "mem1" : 1,
+              "mem2" : 2
+            }
           }
         },
         "8": {
