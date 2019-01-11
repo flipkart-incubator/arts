@@ -77,6 +77,8 @@ class DependencyRegistryImpl implements DependencyRegistry {
                 dependencyInitializers.add(new HbaseServer((HBaseObservation) observation));
             } else if (observation.isElasticSearch()) {
                 dependencyInitializers.add(new ElasticSearchLocalServer((ElasticSearchObservation) observation));
+            } else if(observation.isKafka()){
+                dependencyInitializers.add(new KafkaLocalServer());
             }
 
             // TODO: atul aerospike
