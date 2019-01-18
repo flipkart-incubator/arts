@@ -45,7 +45,7 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
             this.stormLocalCluster.start();
 
             //wait for completion
-            this.waitForCompletion();
+            this.waitForCompletion(testSpecification.getTtlInMs());
 
             //collect the observations
             return this.observationCollector.actualObservations(testSpecification.getObservations());
@@ -84,16 +84,17 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
      *
      * @throws InterruptedException
      */
-    private void waitForCompletion() throws InterruptedException {
+    private void waitForCompletion(int ttl) throws Exception {
         int totalTimeWaited = 0;
-        while (!this.delegateSpout.isDone() && totalTimeWaited < 100000) {
+        while (!this.delegateSpout.isDone() && totalTimeWaited < ttl) {
             System.out.println("waiting for completion : total Time Waited in seconds" + totalTimeWaited / 1000);
             Thread.sleep(1000);
             totalTimeWaited += 1000;
         }
 
-        if (totalTimeWaited > 100000) {
+        if (totalTimeWaited > ttl) {
             System.out.println("giving up: waited for" + totalTimeWaited / 1000);
+            throw new Exception("ttl "+ ttl/1000 + "s expired");
         }
     }
 

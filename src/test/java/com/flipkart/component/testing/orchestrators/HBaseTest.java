@@ -28,7 +28,7 @@ public class HBaseTest {
 		String observationStr = "{\"name\":\"hbaseObservation\",\"tableName\":\"t1\",\"connectionType\":\"IN_MEMORY\",\"rows\":[{\"rowKey\":\"rk1\",\"data\":{\"cf1\":{\"k1\":\"v1\",\"k2\":\"v2\"}}},{\"rowKey\":\"rk2\",\"data\":{\"cf1\":{\"k1\":\"v1\"}}}]}";
 		HBaseObservation expectedObservation = new ObjectMapper().readValue(observationStr, HBaseObservation.class);
 
-		TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(hBaseIndirectInput),
+		TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(hBaseIndirectInput),
 				Lists.newArrayList(expectedObservation));
 
 		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);

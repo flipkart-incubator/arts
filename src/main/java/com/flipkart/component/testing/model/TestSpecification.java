@@ -15,6 +15,7 @@ import java.util.List;
 @ToString
 public class TestSpecification {
 
+    private final Integer ttlInMs;
     private final DirectInput directInput;
     private final List<IndirectInput> indirectInputs;
     private final List<Observation> observations;
@@ -22,11 +23,14 @@ public class TestSpecification {
     @Setter
     private String description;
 
-    public TestSpecification(@JsonProperty("directInput") DirectInput directInput,
+    public TestSpecification(@JsonProperty("ttlInMs") Integer ttlInMs,
+                             @JsonProperty("directInput") DirectInput directInput,
                              @JsonProperty("indirectInputs") List<IndirectInput> indirectInputs,
                              @JsonProperty("observations") List<Observation> observations){
         this.directInput = directInput;
         this.indirectInputs = indirectInputs;
         this.observations = observations;
+        //ttl should lie bwn 10 - 100s, otherwise default to 100s
+        this.ttlInMs = (ttlInMs!= null && ttlInMs >= 10000 && ttlInMs <= 100000) ? ttlInMs : 100000;
     }
 }

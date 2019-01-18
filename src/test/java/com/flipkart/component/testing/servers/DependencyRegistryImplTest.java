@@ -23,7 +23,7 @@ public class DependencyRegistryImplTest {
         List<Observation> observations = new ArrayList<>();
         observations.add(new HttpObservation(200, new HashMap(), new HashMap<>()));
 
-        TestSpecification testSpecification = new TestSpecification(null, indirectInputList, observations);
+        TestSpecification testSpecification = new TestSpecification(null, null, indirectInputList, observations);
         // each initializer should be initlaized only once
         // if the same server is getting initialized multiple times then this will fail due to address already in use
         DependencyRegistry.INSTANCE.registerAndInitialize(testSpecification);

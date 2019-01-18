@@ -48,7 +48,7 @@ public class HttpMockServerTest {
 
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
-        TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(indirectInput), Lists.newArrayList());
+        TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(indirectInput), Lists.newArrayList());
 
         System.out.println(objectMapper.writeValueAsString(testSpecification));
         List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
@@ -89,7 +89,7 @@ public class HttpMockServerTest {
 
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
-        TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(indirectInput), Lists.newArrayList());
+        TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(indirectInput), Lists.newArrayList());
         List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
 
         HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:7777/abc").header("abc","custom").asJson();

@@ -26,7 +26,7 @@ public class KafkaTest {
         List<String> msgs = messages.stream().map(m -> (String) m).collect(Collectors.toList());
         KafkaObservation expectedObservation = new KafkaObservation(msgs, topic);
 
-        TestSpecification testSpecification = new TestSpecification(null, newArrayList(indirectInput), newArrayList(expectedObservation));
+        TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(expectedObservation));
         List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
 
 

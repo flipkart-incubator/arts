@@ -33,7 +33,7 @@ public class AerospikeTest {
         File observationJsonFile = new File("src/main/resources/AerospikeObservation.json");
         String observationStr = FileUtils.readFileToString(observationJsonFile, "UTF-8");
         AerospikeObservation expectedObservation = new ObjectMapper().readValue(observationStr, AerospikeObservation.class);
-        TestSpecification testSpecification = new TestSpecification(null, Lists.newArrayList(aerospikeIndirectInput),
+        TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(aerospikeIndirectInput),
                 Lists.newArrayList(expectedObservation));
 
         List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
