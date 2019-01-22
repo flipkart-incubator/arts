@@ -1,20 +1,24 @@
 package com.flipkart.component.testing.servers;
 
 
+import com.flipkart.component.testing.internal.Utils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServerStartable;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import static com.flipkart.component.testing.internal.Constants.KAFKA_BROKER_PORT;
-import static com.flipkart.component.testing.internal.Utils.deleteFolder;
 
 /**
  */
 class KafkaLocalServer implements DependencyInitializer {
     private KafkaServerStartable kafka;
     private static final String KAFKA_LOG_DIR_CONF = "log.dir";
+    private static final String KAFKA_DATA_DIR = "dataDir";
+    private static final String LOGS_DIR = "logs";
     private static final int BROKER_ID = 0;
 
 
@@ -24,11 +28,8 @@ class KafkaLocalServer implements DependencyInitializer {
     public void initialize() {
         Properties kafkaProperties = getKafkaProperties();
 
-        File kafkaLogDir = new File(kafkaProperties.getProperty(KAFKA_LOG_DIR_CONF));
+        deleteFolders();
 
-        if (kafkaLogDir.exists()) {
-            deleteFolder(kafkaLogDir);
-        }
 
         KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
 
@@ -38,6 +39,11 @@ class KafkaLocalServer implements DependencyInitializer {
         //start local kafka broker
         kafka = new KafkaServerStartable(kafkaConfig);
         kafka.startup();
+    }
+
+    private void deleteFolders() {
+        List<File> folders = Arrays.asList(new File(KAFKA_LOG_DIR_CONF), new File(KAFKA_DATA_DIR), new File(LOGS_DIR));
+        folders.stream().filter(File::exists).forEach(Utils::deleteFolder);
     }
 
     @Override
