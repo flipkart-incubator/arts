@@ -15,12 +15,11 @@ import java.util.*;
 @Getter
 public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
 
-    @Getter(AccessLevel.PACKAGE)
     private final ClusterType clusterType;
 
     private final String masterName;
 
-    @Getter(AccessLevel.PRIVATE)
+
     private final Map<Integer, RedisDataStructures> dbToDSMap;
 
     @JsonCreator

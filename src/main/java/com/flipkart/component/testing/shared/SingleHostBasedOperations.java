@@ -8,15 +8,23 @@ import java.io.IOException;
 
 class SingleHostBasedOperations implements RedisOperations {
 
+    private static SingleHostBasedOperations instance;
     private RedisServer redisServer;
     private Jedis jedis;
 
-    SingleHostBasedOperations() {
+    private SingleHostBasedOperations() {
         try {
             this.redisServer = new RedisServer(Constants.REDIS_SERVER_PORT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static SingleHostBasedOperations getInstance(){
+        if(instance == null) {
+            instance = new SingleHostBasedOperations();
+        }
+        return instance;
     }
 
     @Override

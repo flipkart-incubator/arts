@@ -45,7 +45,7 @@ public class ObjectFactory {
         if (redisTestConfig.isSentinel()) {
             return SentinelBasedOperations.getFromPool(redisTestConfig);
         } else {
-            return new SingleHostBasedOperations();
+            return SingleHostBasedOperations.getInstance();
         }
     }
 
