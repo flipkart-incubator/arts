@@ -6,10 +6,9 @@ import com.flipkart.component.testing.SUT;
 import com.flipkart.component.testing.model.Observation;
 import com.flipkart.component.testing.model.TestSpecification;
 import com.flipkart.component.testing.servers.DependencyRegistry;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.flipkart.component.testing.storm.functional.TestableTopology;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,7 +95,19 @@ public class SpecificationRunner {
         } catch (Exception e) {
             System.out.println("Error in shutting down all dependencies : You may face problems in next run");
         }
+    }
 
+
+    /**
+     * runLite for a storm topology
+     * @param testableTopology
+     * @param specFile
+     * @param tuplesToBeEmitted
+     */
+    public List<Observation> runLite(TestableTopology testableTopology, String specFile, int tuplesToBeEmitted) throws Exception {
+        TestSpecification testSpecification = objectMapper.readValue(new File(specFile), TestSpecification.class);
+        List<Observation> observations = new StormTestOrchestrator(testableTopology).executeLite(testSpecification, tuplesToBeEmitted);
+        return observations;
     }
 
 }

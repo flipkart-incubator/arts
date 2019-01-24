@@ -24,45 +24,65 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
     }
 
     /**
-     * modify the spouts and bolts as per configuration
+     * executes a storm test as per specification
+     * @param testSpecification
+     * @param tuplesToBeEmitted : Number of tuples that are expected to be emitted
+     * @return
+     * @throws Exception
      */
-    @SuppressWarnings("unchecked")
     public List<Observation> execute(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
         try {
-
-            // spawn the services required for testSpecification
-            dependencyRegistry.registerAndInitialize(testSpecification);
-
-            //load the indirect inputs
-            testDataLoader.load(testSpecification.getIndirectInputs());
-
-            //wrap the spouts to track the emitted tuples
-            Map<String, BaseRichSpout> spouts = testableTopology.getSpouts();
-            spouts.keySet().forEach(spoutId -> spouts.put(spoutId, wrapSpout(spouts, spoutId, tuplesToBeEmitted)));
-
-            //start the storm cluster
-            this.stormLocalCluster = new StormLocalCluster(testableTopology);
-            this.stormLocalCluster.start();
-
-            //wait for completion
-            this.waitForCompletion(testSpecification.getTtlInMs());
-
-            //collect the observations
-            return this.observationCollector.actualObservations(testSpecification.getObservations());
+            return this.executeInner(testSpecification,tuplesToBeEmitted);
         } finally {
-            try {
-                dependencyRegistry.shutDown();
-            } catch (Exception e) {
-                System.out.println("Error in shutting down all dependencies : You may face problems in next run");
-            }
+            this.shutDown();
         }
+    }
 
+    private void shutDown() {
+        this.dependencyRegistry.shutDown();
+    }
+
+    /**
+     * executes a storm test as per specification
+     * @param testSpecification
+     * @param tuplesToBeEmitted : Number of tuples that are expected to be emitted
+     * @return
+     * @throws Exception
+     */
+    public List<Observation> executeLite(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
+        try {
+            return this.executeInner(testSpecification,tuplesToBeEmitted);
+        } finally {
+            dependencyRegistry.clean();
+            this.stormLocalCluster.tearDown();
+        }
     }
 
 
-    public void cleanUp() {
-        this.stormLocalCluster.tearDown();
+
+    @SuppressWarnings("unchecked")
+    private List<Observation> executeInner(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
+        // spawn the services required for testSpecification
+        dependencyRegistry.registerAndInitialize(testSpecification);
+
+        //load the indirect inputs
+        testDataLoader.load(testSpecification.getIndirectInputs());
+
+        //wrap the spouts to track the emitted tuples
+        Map<String, BaseRichSpout> spouts = testableTopology.getSpouts();
+        spouts.keySet().forEach(spoutId -> spouts.put(spoutId, wrapSpout(spouts, spoutId, tuplesToBeEmitted)));
+
+        //start the storm cluster
+        this.stormLocalCluster = new StormLocalCluster(testableTopology);
+        this.stormLocalCluster.start();
+
+        //wait for completion
+        this.waitForCompletion(testSpecification.getTtlInMs());
+
+        //collect the observations
+        return this.observationCollector.actualObservations(testSpecification.getObservations());
     }
+
 
     /**
      * wrapping spout is needed to track the number of tuples to be emitted and acts as a trigger on when the topology execution is complete

@@ -22,6 +22,8 @@ class KafkaLocalServer implements DependencyInitializer {
     private static final int BROKER_ID = 0;
 
 
+    private ZookeeperLocalServer zookeeperLocalServer;
+
     KafkaLocalServer() {
     }
 
@@ -34,7 +36,8 @@ class KafkaLocalServer implements DependencyInitializer {
         KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
 
         //start local zookeeper
-        new ZookeeperLocalServer().initialize();
+        this.zookeeperLocalServer = new ZookeeperLocalServer();
+        this.zookeeperLocalServer.initialize();
 
         //start local kafka broker
         kafka = new KafkaServerStartable(kafkaConfig);
@@ -54,6 +57,7 @@ class KafkaLocalServer implements DependencyInitializer {
     @Override
     public void clean() {
         kafka.shutdown();
+        this.zookeeperLocalServer.shutDown();
         this.initialize();
     }
 
