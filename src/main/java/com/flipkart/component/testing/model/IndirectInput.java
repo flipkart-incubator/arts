@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
+import com.flipkart.component.testing.model.hazelcast.EmbeddedHZIndirectInput;
+import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
+import com.flipkart.component.testing.model.hazelcast.ServerHZIndirectInput;
 import com.flipkart.component.testing.model.hbase.HBaseIndirectInput;
 import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
@@ -29,7 +32,8 @@ import com.flipkart.component.testing.model.zookeeper.ZookeeperIndirectInput;
         @JsonSubTypes.Type(value = ElasticSearchIndirectInput.class,name = "elasticSearchIndirectInput"),
         @JsonSubTypes.Type(value = ZookeeperIndirectInput.class, name = "zookeeperIndirectInput"),
         @JsonSubTypes.Type(value = AerospikeIndirectInput.class, name = "aerospikeIndirectInput"),
-
+        @JsonSubTypes.Type(value = EmbeddedHZIndirectInput.class, name = "embeddedhzIndirectInput"),
+        @JsonSubTypes.Type(value = ServerHZIndirectInput.class, name = "serverhzIndirectInput")
 })
 public interface IndirectInput {
 
@@ -73,6 +77,9 @@ public interface IndirectInput {
 
     @JsonIgnore
     default boolean isAerospikeInput() {return this instanceof AerospikeIndirectInput;}
+
+    @JsonIgnore
+    default boolean isHazelcastInput() {return this instanceof HazelcastIndirectInput; }
 
 
 }

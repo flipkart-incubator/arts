@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
+import com.flipkart.component.testing.model.hazelcast.HazelcastObservation;
 import com.flipkart.component.testing.model.hbase.HBaseObservation;
 import com.flipkart.component.testing.model.http.HttpIndirectObservation;
 import com.flipkart.component.testing.model.http.HttpObservation;
@@ -25,7 +26,9 @@ import com.flipkart.component.testing.model.rmq.RMQObservation;
         @JsonSubTypes.Type(value = RedisObservation.class, name = "redisObservation"),
         @JsonSubTypes.Type(value = ElasticSearchObservation.class, name = "elasticSearchObservation"),
         @JsonSubTypes.Type(value = AerospikeObservation.class, name = "AerospikeObservation"),
-        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation")
+        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation"),
+        @JsonSubTypes.Type(value = HazelcastObservation.class, name = "hazelcastObservation")
+
 
 })
 public interface Observation {
@@ -72,4 +75,9 @@ public interface Observation {
 
     @JsonIgnore
     default boolean isHttpIndirect() {return this instanceof HttpIndirectObservation;}
+
+    @JsonIgnore
+    default boolean isHazelcast() {
+        return this instanceof HazelcastObservation;
+    }
 }

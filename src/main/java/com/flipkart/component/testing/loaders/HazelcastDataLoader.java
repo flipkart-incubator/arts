@@ -1,0 +1,62 @@
+package com.flipkart.component.testing.loaders;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flipkart.component.testing.internal.Constants;
+import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
+import com.flipkart.component.testing.model.hazelcast.HazelcastMap;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+
+import java.util.Map;
+
+import static com.flipkart.component.testing.internal.Constants.*;
+
+/**
+ * @author siddharth.t
+ */
+public class HazelcastDataLoader implements TestDataLoader<HazelcastIndirectInput> {
+
+    private ObjectMapper objectMapper;
+
+    @Override
+    public void load(HazelcastIndirectInput indirectInput) {
+        try {
+
+            this.objectMapper = new ObjectMapper();
+            HazelcastInstance hazelcastInstance = null;
+            if(indirectInput.isServerMode())
+                hazelcastInstance = Hazelcast.getHazelcastInstanceByName(HZ_INSTANCE_NAME);
+            else {
+                if(indirectInput.isEmbeddedMode())
+                hazelcastInstance = Hazelcast.getAllHazelcastInstances().iterator().next();
+            }
+            loadMaps(indirectInput.getMaps(), hazelcastInstance);
+        } catch (Exception e) {
+            throw new RuntimeException("Hazelcast key map class not found", e);
+        }
+    }
+
+
+    private void loadMaps(Map<String, HazelcastMap> map, HazelcastInstance hazelcastClient)
+            throws ClassNotFoundException {
+        for (Map.Entry<String, HazelcastMap> mapNameToHazelCastMap : map.entrySet()) {
+
+            String mapName = mapNameToHazelCastMap.getKey();
+            HazelcastMap hazelcastMapDS = mapNameToHazelCastMap.getValue();
+
+            for (Map.Entry<Object, Object> mapEntry : hazelcastMapDS.getMapData().entrySet()) {
+
+                Object key = mapEntry.getKey();
+                Object value = mapEntry.getValue();
+                Class keyClass = Class.forName(hazelcastMapDS.getKeyClass());
+                Class valueClass = Class.forName(hazelcastMapDS.getValueClass());
+
+                key = this.objectMapper.convertValue(key, keyClass);
+                value = this.objectMapper.convertValue(value, valueClass);
+                hazelcastClient.getMap(mapName).putIfAbsent(key, value);
+
+            }
+        }
+    }
+
+}
