@@ -48,12 +48,12 @@ public class HazelCastLocalServer implements DependencyInitializer {
     @Override
     public void shutDown() {
         hazelcastInstance.shutdown();
-        zookeeperLocalServer.shutDown();
     }
 
     @Override
     public void clean() {
         shutDown();
+        zookeeperLocalServer.shutDown();
         initialize();
     }
 
