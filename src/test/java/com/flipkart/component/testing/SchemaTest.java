@@ -16,14 +16,9 @@ public class SchemaTest {
     @Test
     public void testHttpDirectInput() throws FileNotFoundException {
         JSONObject jsonSchema = new JSONObject(
-                new JSONTokener(new FileReader(new File(
-                        Objects.requireNonNull(
-                                this.getClass().getClassLoader().getResource("schema/http_direct_input.json")).getFile()
-                            ))));
+                new JSONTokener(new FileReader(new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("schema/http_direct_input.json")).getFile()))));
         JSONObject jsonSubject = new JSONObject(
-                new JSONTokener(new FileReader(new File(
-                        Objects.requireNonNull(this.getClass().getClassLoader().getResource("http-direct-input.json")).getFile()
-                            ))));
+                new JSONTokener(new FileReader(new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("http-direct-input.json")).getFile()))));
 
         Schema schema = SchemaLoader.load(jsonSchema);
         schema.validate(jsonSubject);
