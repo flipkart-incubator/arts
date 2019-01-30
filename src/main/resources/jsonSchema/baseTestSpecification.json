@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Test specification json schema",
+  "required": [
+    "directInput",
+    "indirectInputs","observations"
+  ],
+  "properties": {
+    "directInput": {
+      "$ref": "file:src/main/resources/jsonSchema/directInput.json#/"
+    },
+    "indirectInputs": {
+      "$ref": "file:src/main/resources/jsonSchema/inDirectInput.json#/"
+    },
+    "observations":{
+      "$ref": "file:src/main/resources/jsonSchema/observations.json#/"
+
+    }
+  }
+}

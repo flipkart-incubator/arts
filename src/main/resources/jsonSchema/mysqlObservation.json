@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "description": "Mysql observation",
+  "properties": {
+    "databaseName": {
+      "type": "string",
+      "description": "database name"
+    },
+    "connectionType": {
+      "type": "string",
+      "description": "type of connection",
+      "enum": [
+        "REMOTE","LOCALHOST"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "description": "table data",
+      "patternProperties": {
+        "tablename": {
+          "type": "array",
+          "description": "The table Schema"
+        }
+      }
+    }
+  }
+}

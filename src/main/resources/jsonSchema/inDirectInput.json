@@ -1,0 +1,41 @@
+{
+  "type": "array",
+  "description": "schema for indirect inputs",
+  "items": {
+    "type": "object",
+    "description": "The Items Schema",
+    "required": [
+      "name"
+    ],
+    "anyOf": [
+      {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name of indirect input",
+            "enum": [
+              "elasticSearchIndirectInput",
+              "httpIndirectInput",
+              "redisIndirectInput",
+              "AerospikeIndirectInput",
+              "rmqIndirectInput",
+              "hbaseIndirectInput",
+              "kafkaIndirectInput",
+              "mysqlIndirectInput"
+            ]
+          }
+        },
+        "allOf": [
+          {"$ref": "file:src/main/resources/jsonSchema/elasticSearchIndirecInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/redisIndirectInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/httpIndirectInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/rmqIndirectInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/aerospikeIndirectInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/hbaseIndirectInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/kafkaIndirectInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/mysqlIndirectInput.json#/"}
+        ]
+      }
+    ]
+  }
+}

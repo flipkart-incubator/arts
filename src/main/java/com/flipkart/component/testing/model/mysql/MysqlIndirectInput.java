@@ -58,13 +58,4 @@ public class MysqlIndirectInput implements IndirectInput, MysqlConnectionConfig 
         this.tablesData = tablesData;
         this.connectionType = connectionType;
     }
-
-    public MysqlIndirectInput(
-            String databaseName,
-            List<String> ddlStatements,
-            Map<String,List<Map<String, Object>>> tablesData
-    ) {
-        this(databaseName,ddlStatements,tablesData,MysqlConnectionType.IN_MEMORY);
-    }
-
 }

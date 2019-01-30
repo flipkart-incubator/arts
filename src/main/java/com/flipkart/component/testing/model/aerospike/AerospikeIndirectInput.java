@@ -19,7 +19,7 @@ public class AerospikeIndirectInput implements IndirectInput {
     }
 
     @JsonCreator
-    public AerospikeIndirectInput(@JsonProperty("data") AerospikeData data){
+    public AerospikeIndirectInput(@JsonProperty("aerospikeData") AerospikeData data){
         this.data = data;
     }
 }

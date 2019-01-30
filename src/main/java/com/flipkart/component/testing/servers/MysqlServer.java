@@ -3,7 +3,6 @@ package com.flipkart.component.testing.servers;
 import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
 import com.flipkart.component.testing.shared.MysqlConnectionConfig;
 import com.flipkart.component.testing.shared.ObjectFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -53,9 +52,14 @@ class MysqlServer implements DependencyInitializer{
             String dropDatabase = "DROP DATABASE IF EXISTS " + connectionConfig.getDatabaseName();
             this.executeDatabaseStatement(dropDatabase, connection);
             this.executeDatabaseStatement(createDatabase, connection);
+
+        } catch(Exception e){
+            throw new RuntimeException("Could not connect to MySql", e);
         } finally {
             try {
-                connection.close();
+                if(connection != null){
+                    connection.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

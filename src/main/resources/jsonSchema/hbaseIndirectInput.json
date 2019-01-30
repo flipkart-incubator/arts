@@ -1,0 +1,51 @@
+{
+  "description": "Hbase Indirect Input schema",
+  "properties": {
+    "tableName": {
+      "type": "string",
+      "description": "table name"
+    },
+    "connectionType": {
+      "type": "string",
+      "description": "type of connection",
+      "enum": ["REMOTE","LOCALHOST"]
+    },
+    "hbaseSiteConfig": {
+      "type": "object",
+      "description": "type of connection"
+    },
+    "rows": {
+      "type": "array",
+      "description": "list of rows",
+      "items": {
+        "type": "object",
+        "required": [
+          "rowKey",
+          "data"
+        ],
+        "properties": {
+          "rowKey": {
+            "type": "string",
+            "description": " row key"
+          },
+          "data": {
+            "type": "object",
+            "description": "contains columnfamily name having respective row data in the K-V pair ",
+            "patternProperties": {
+              "columnFamilyName": {
+                "type": "object",
+                "description": "name of eacg column family",
+                "patternProperties": {
+                  "Key": {
+                    "type": "string",
+                    "description": " data in the form of K-V pair"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

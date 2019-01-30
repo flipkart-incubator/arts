@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "description": "direct input Schema",
+  "required": [
+    "name",
+    "path",
+    "method",
+    "headers",
+    "json"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "name of direct input types. for ex httpDirectInput"
+    },
+    "path": {
+      "type": "string",
+      "description": "endpoint of the api",
+      "examples": ["/path/subpath"]
+    },
+    "method": {
+      "type": "string",
+      "description": "type of method",
+      "enum": ["GET", "POST", "PUT","DELETE"]
+    },
+    "headers": {
+      "type": "object",
+      "description": "headers for the api call"
+    },
+    "json": {
+      "type": "object",
+      "description": " request parameters"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "description": "RMQ Observation",
+  "properties": {
+    "queue": {
+      "type": "string",
+      "description": "queue value"
+    },
+    "messages": {
+      "type": "array",
+      "description": "array of messages",
+      "items": {
+        "type": "string",
+        "description": "messages"
+      }
+    }
+  }
+}

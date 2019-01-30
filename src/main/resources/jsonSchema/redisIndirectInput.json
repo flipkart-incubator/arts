@@ -1,0 +1,88 @@
+{
+  "description": "Redis Indirect Input",
+  "type": "object",
+  "properties": {
+    "clusterType": {
+      "type": "string",
+      "description": "type of cluster",
+      "examples": [
+        "SENTINEL"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "master name",
+      "examples": [
+        "master"
+      ]
+    },
+    "masterName": {
+      "type": "string",
+      "description": "master name",
+      "examples": [
+        "master"
+      ]
+    },
+    "dbToDSMap": {
+      "type": "object",
+      "title": "db to DSMap",
+      "patternProperties": {
+        "dbNumber": {
+          "type": "object",
+          "description": "db to DS map number. It has to an integer only but passed in the form of string",
+          "properties": {
+            "hashMap": {
+              "type": "object",
+              "description": "hashmap schema",
+              "patternProperties": {
+                "outerKeys":{
+                  "type": "object",
+                  "description": "outer keys. consists of K-V pair as its value",
+                  "patternProperties": {
+                    "innerKeys":{
+                      "type": "object",
+                      "description": "K-V pairs"
+                    }
+                  }
+                }
+              }
+            },
+            "keyValues": {
+              "type": "object",
+              "description": "key value pairs"
+            },
+            "sortedSets": {
+              "type": "object",
+              "description": "Resid priority queue",
+              "patternProperties": {
+                "setname": {
+                  "type": "object",
+                  "description": "name ",
+                  "patternProperties": {
+                    "memname": {
+                      "type": "integer",
+                      "description": "Resid priority queue"
+                    }
+                  }
+                }
+              }
+            },
+            "lists": {
+              "type": "object",
+              "description": "list of ids",
+              "patternProperties": {
+                "1key": {
+                  "description": "Id",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

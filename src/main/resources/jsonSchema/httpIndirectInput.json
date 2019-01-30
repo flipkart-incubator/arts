@@ -1,0 +1,51 @@
+{
+  "description": "http indirect input",
+  "properties":{
+    "specification": {
+      "type": "object",
+      "description": "indirect input specifications",
+      "required": [
+        "request",
+        "response"
+      ],
+      "properties": {
+        "request": {
+          "type": "object",
+          "description": " http request details",
+          "required": [
+            "method",
+            "url"
+          ],
+          "properties": {
+            "method": {
+              "type": "string",
+              "description": "method name",
+              "enum": [
+                "GET",
+                "PUT",
+                "POST"
+              ]
+            },
+            "url": {
+              "type": "string",
+              "description": "endpoint url"
+            }
+          }
+        },
+        "response": {
+          "type": "object",
+          "description": "response details",
+          "required": [
+            "body"
+          ],
+          "properties": {
+            "body": {
+              "type": "object",
+              "description": "expected response body"
+            }
+          }
+        }
+      }
+    }
+  }
+}

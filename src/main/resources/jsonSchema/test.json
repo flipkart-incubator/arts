@@ -1,0 +1,231 @@
+{
+  "directInput": {
+    "name": "httpDirectInput",
+    "path": "/v1/rule/AU1VN/version/1/segment_documents?groupid=1:2&batchsize=1000",
+    "method": "POST",
+    "headers": {},
+    "json": {}
+  },
+  "indirectInputs": [
+    {
+      "name": "httpIndirectInput",
+      "specification": {
+        "request": {
+          "method": "GET",
+          "url": "/v1/rule/AU1VN/version/1"
+        },
+        "response": {
+          "body": {
+
+          }
+        }
+      }
+    },
+    {
+      "name": "elasticSearchIndirectInput",
+      "documentsOfIndexAndType": [{
+        "suffixOfindex": "1",
+        "type": "listing",
+        "routingKey": "seller_id",
+        "mappingFile": "src/main/resources/listing_index_mapping.json",
+        "documents": [{
+          "_id": "LSTMIXDGUQ4YBNGMNPBVBWK91"
+
+
+        }]
+      }]
+    },
+    {
+      "name": "redisIndirectInput",
+      "clusterType": "SENTINEL",
+      "masterName": "master",
+      "dbToDSMap": {
+        "7": {
+          "hashMap": {
+            "outerKey1": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            },
+            "outerKey2": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            }
+          },
+          "keyValues": {
+            "k1": "v1",
+            "k2": "v2"
+          }
+        },
+        "8": {
+          "hashMap": {
+            "outerKey1": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            },
+            "outerKey2": {
+              "innerKey1": "innerValue1",
+              "innerKey2": "innerValue2"
+            }
+          },
+          "keyValues": {
+            "k1": "v1",
+            "k2": "v2"
+          },
+          "set" : {
+            "setKey" : ["v1", "v2"]
+          }
+
+        }
+      }
+    },
+    {
+      "name": "AerospikeIndirectInput",
+      "aerospikeData": {
+        "namespace": "test",
+        "host": "172.28.128.4",
+        "port": 3000,
+        "set": "testSet",
+        "records": [{
+          "cghc": {
+            "bin1": "String1",
+            "bin2": "String2"
+          }
+        }, {
+          "keygc2": {
+            "bin1": "String3",
+            "bin2": "String4"
+          }
+        }]
+      }
+    },
+    {
+      "name": "hbaseIndirectInput",
+      "tableName": "t1",
+      "connectionType": "REMOTE",
+      "hbaseSiteConfig":{
+        "K":"V"
+      },
+      "rows": [{
+        "rowKey": "rk1",
+        "data": {
+          "cf1": {
+            "k1": "v1",
+            "k2": "v2"
+          }
+        }
+
+      }]
+    },
+    {
+      "name": "kafkaIndirectInput",
+      "topic": "",
+      "serializerClass": "",
+      "messages": ["",""]
+    },
+    {
+      "name": "mysqlIndirectInput",
+      "databaseName": "",
+      "ddlStatements": ["", ""],
+      "connectionType": "LOCALHOST",
+      "tablesData": {
+        "table1": [{
+          "KeyTable2": "V1"
+        }
+        ],
+        "table2": [{
+          "KeyTable2": 0
+
+        }]
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "elasticSearchObservation",
+      "documentsToFetch": [
+        {
+          "suffixOfindex": "1",
+          "typeName": "listing",
+          "routingKey": "pi2981ctftizwe12",
+          "queryFile": "es-search-query.json"
+        }
+      ]
+    },
+    {
+      "name": "redisObservation",
+      "clusterType": "SENTINEL",
+      "masterName": "master",
+      "dbIndices": [
+        7,
+        8
+      ]
+    },
+    {
+      "name": "kafkaObservation",
+      "topic": "",
+      "messages": ["", ""]
+    },
+    {
+      "name" : "mysqlObservation",
+      "databaseName": "",
+      "connectionType": "LOCALHOST",
+      "data": {
+        "table1": [],
+        "table2": []
+      }
+    },
+    {
+      "name": "httpObservation",
+      "statuscode": 200,
+      "headers": {},
+      "response": {}
+    },
+    {
+      "name": "rmqObservation",
+      "queue": "abc",
+      "messages":["abc"]
+    },
+    {
+      "name": "hbaseObservation",
+      "tableName": "t1",
+      "connectionType": "REMOTE",
+      "rows": [{
+        "rowKey": "rk1",
+        "data": {
+          "cf1": {
+            "k1": "v1",
+            "k2": "v2"
+          }
+        }
+      }, {
+        "rowKey": "rk2",
+        "data": {
+          "cf1": {
+            "k1": "v1"
+          }
+        }
+      }]
+    },
+    {
+      "name": "AerospikeObservation",
+      "aerospikeData": {
+        "namespace": "test",
+        "host": "172.28.128.4",
+        "port": 3000,
+        "set": "testSet",
+        "records": [{
+          "key1": {
+            "bin1": "String1",
+            "bin2": "String2"
+          }
+        }, {
+          "key2": {
+            "bin1": "String3",
+            "bin2": "String4"
+          }
+        }]
+      }
+    }
+
+  ]
+}

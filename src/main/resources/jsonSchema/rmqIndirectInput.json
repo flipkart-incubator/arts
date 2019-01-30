@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "description": "RMQ indirect input",
+  "properties": {
+    "messages": {
+      "type": "array",
+      "description": "array of messages",
+      "items": {
+        "type": "string",
+        "description": "messages"
+      }
+    },
+    "queue": {
+      "type": "string",
+      "description": "queue value"
+    },
+    "routingKey": {
+      "type": "string",
+      "description": "routing key"
+    }
+  }
+}

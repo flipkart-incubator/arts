@@ -1,0 +1,36 @@
+{
+  "description": "elastic observation",
+  "properties": {
+  "documentsToFetch": {
+    "type": "array",
+    "description": " list of documents to be fetched for verification",
+    "items": {
+      "type": "object",
+      "required": [
+        "suffixOfindex",
+        "typeName",
+        "routingKey",
+        "queryFile"
+      ],
+      "properties": {
+        "suffixOfindex": {
+          "type": "string",
+          "description": "provide suffix to be appended with index name 'regression_'"
+        },
+        "typeName": {
+          "type": "string",
+          "description": "type name"
+        },
+        "routingKey": {
+          "type": "string",
+          "description": "routing key for the document"
+        },
+        "queryFile": {
+          "type": "string",
+          "description": "relative path of the file providing query for search"
+        }
+      }
+    }
+  }
+}
+}
