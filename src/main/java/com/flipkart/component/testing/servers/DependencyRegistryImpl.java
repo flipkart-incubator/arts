@@ -118,7 +118,8 @@ class DependencyRegistryImpl implements DependencyRegistry {
             } else if (indirectInput.isRMQInput()) {
                 dependencyInitializers.add(new RabbitMqLocalServer());
             } else if (indirectInput.isHazelcastInput()) {
-                dependencyInitializers.add(new HazelCastLocalServer((HazelcastIndirectInput) indirectInput));
+                if(((HazelcastIndirectInput) indirectInput).isServerMode())
+                dependencyInitializers.add(new HazelCastLocalServer((HazelcastIndirectInput)indirectInput));
             }
 
         }

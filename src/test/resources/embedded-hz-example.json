@@ -1,0 +1,54 @@
+{
+  "directInput": {
+    "name": "httpDirectInput",
+    "path": "/path",
+    "request": {
+      "a": "b"
+    },
+    "method": "POST"
+  },
+  "indirectInputs": [
+    {
+      "name": "httpIndirectInput",
+      "specification": {
+        "request": {
+          "method": "POST",
+          "url": "/path"
+        },
+        "response": {
+          "status": 200,
+          "body": {
+            "a" : "b"
+          },
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        }
+      }
+    },
+    {
+      "name": "embeddedhzIndirectInput",
+      "hazelcastDS": {
+        "maps": {
+          "testMap": {
+            "mapData": {
+              "testKey": "testValue"
+            },
+            "keyClass": "java.lang.String",
+            "valueClass": "java.lang.String"
+          }
+        }
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "hazelcastObservation",
+      "dsToFetch": {
+        "maps": [
+          "testMap"
+        ]
+      }
+    }
+  ]
+}

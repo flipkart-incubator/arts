@@ -44,5 +44,4 @@ public class ServerHZIndirectInput implements HazelcastIndirectInput {
     public Map<String, HazelcastMap> getMaps() {
         return hazelcastDS.getMaps();
     }
-
 }

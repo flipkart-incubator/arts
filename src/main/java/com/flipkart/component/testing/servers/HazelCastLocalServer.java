@@ -11,9 +11,7 @@ import com.hazelcast.nio.serialization.Serializer;
 
 import java.util.Map;
 
-import static com.flipkart.component.testing.internal.Constants.HZ_INSTANCE_NAME;
-import static com.flipkart.component.testing.internal.Constants.HZ_LOGGING_PROPERTY;
-import static com.flipkart.component.testing.internal.Constants.ZOOKEEPER_PORT;
+import static com.flipkart.component.testing.internal.Constants.*;
 
 /**
  * @author siddharth.t
@@ -44,8 +42,8 @@ public class HazelCastLocalServer implements DependencyInitializer {
     @Override
     public void clean() {
         hazelcastInstance.getDistributedObjects().forEach(distributedObject -> {
-            if(distributedObject.getClass().getName().equals("com.hazelcast.core.IMap"))
-                hazelcastInstance.getMap(distributedObject.getName()).evictAll();
+            if(distributedObject.getClass().getName().equals(HZ_IMAP_CLASS))
+                hazelcastInstance.getMap(distributedObject.getName()).clear();
         });
     }
 }
