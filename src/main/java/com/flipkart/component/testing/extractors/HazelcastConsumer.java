@@ -3,6 +3,7 @@ package com.flipkart.component.testing.extractors;
 import com.flipkart.component.testing.model.hazelcast.HazelcastDataStructures;
 import com.flipkart.component.testing.model.hazelcast.HazelcastMap;
 import com.flipkart.component.testing.model.hazelcast.HazelcastObservation;
+import com.flipkart.component.testing.shared.ObjectFactory;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
@@ -26,7 +27,7 @@ public class HazelcastConsumer implements ObservationCollector<HazelcastObservat
     }
 
     private HazelcastDataStructures getHazelcastData(HazelcastObservation hazelcastObservation) {
-        HazelcastInstance hazelcast = Hazelcast.getAllHazelcastInstances().iterator().next();
+        HazelcastInstance hazelcast = ObjectFactory.getHazelcastInstance(hazelcastObservation);
         HazelcastDataStructures hazelcastDataStructures = new HazelcastDataStructures();
         Map<String, HazelcastMap> maps = new HashMap<>();
         hazelcastObservation.getDStoFetch().forEach((String dsType, List<String> dsNames) -> {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.internal.Constants;
 import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
 import com.flipkart.component.testing.model.hazelcast.HazelcastMap;
+import com.flipkart.component.testing.shared.ObjectFactory;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
@@ -24,12 +25,7 @@ public class HazelcastDataLoader implements TestDataLoader<HazelcastIndirectInpu
 
             this.objectMapper = new ObjectMapper();
             HazelcastInstance hazelcastInstance = null;
-            if(indirectInput.isServerMode())
-                hazelcastInstance = Hazelcast.getHazelcastInstanceByName(HZ_INSTANCE_NAME);
-            else {
-                if(indirectInput.isEmbeddedMode())
-                hazelcastInstance = Hazelcast.getAllHazelcastInstances().iterator().next();
-            }
+            hazelcastInstance = ObjectFactory.getHazelcastInstance(indirectInput);
             loadMaps(indirectInput.getMaps(), hazelcastInstance);
         } catch (Exception e) {
             throw new RuntimeException("Error loading data to Hazelcast", e);

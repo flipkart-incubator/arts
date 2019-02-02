@@ -62,16 +62,10 @@ public class ObjectFactory {
 
     public static HazelcastInstance getHazelcastInstance(HazelcastTestConfig hazelcastTestConfig){
         HazelcastInstance hazelcastInstance;
-        if (hazelcastTestConfig.isServerMode()) {
-            // if used in client server mode, we need to create new instance
+        if (hazelcastTestConfig.isServerMode() && Hazelcast.getAllHazelcastInstances().isEmpty())
             hazelcastInstance = new HazelcastInstanceInitializer(hazelcastTestConfig).getHazelcastInstance();
-        } else {
-            // or else will use the hazelcast instance initialized by client in its application code
-            if(hazelcastTestConfig.isEmbeddedMode())
-                hazelcastInstance = Hazelcast.getAllHazelcastInstances().iterator().next();
-            else
-                throw new IllegalArgumentException("Hazelcast initialized for incorrect mode !!");
-        }
+        else
+            hazelcastInstance = Hazelcast.getAllHazelcastInstances().iterator().next();
         return hazelcastInstance;
     }
 

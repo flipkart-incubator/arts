@@ -5,11 +5,9 @@ import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.model.Observation;
 import com.flipkart.component.testing.model.TestSpecification;
 import com.flipkart.component.testing.model.hazelcast.HazelcastObservation;
-import com.hazelcast.core.Hazelcast;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -17,7 +15,7 @@ import static org.mockito.Mockito.mock;
 /**
  * @author siddharth.t
  */
-public class HazelcastTest {
+public class HazelcastEmbeddedModeTest {
 
     @Test
     public void test() throws Exception {
