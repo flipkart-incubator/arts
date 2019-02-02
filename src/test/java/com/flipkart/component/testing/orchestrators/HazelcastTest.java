@@ -21,7 +21,6 @@ public class HazelcastTest {
 
     @Test
     public void test() throws Exception {
-        Hazelcast.shutdownAll();
         ObjectMapper objectMapper = new ObjectMapper();
         TestSpecification testSpecification = objectMapper
                 .readValue(this.getClass().getClassLoader()

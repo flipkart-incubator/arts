@@ -1,6 +1,5 @@
 package com.flipkart.component.testing.servers;
 
-import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
 import com.flipkart.component.testing.shared.HazelcastTestConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.SerializerConfig;
@@ -12,6 +11,7 @@ import com.hazelcast.nio.serialization.Serializer;
 import java.util.Map;
 
 import static com.flipkart.component.testing.internal.Constants.HZ_INSTANCE_NAME;
+import static com.flipkart.component.testing.internal.Constants.HZ_LOGGING_PROPERTY;
 import static com.flipkart.component.testing.internal.Constants.ZOOKEEPER_PORT;
 
 /**
@@ -21,26 +21,26 @@ public class HazelCastLocalServer implements DependencyInitializer {
 
     private HazelcastInstance hazelcastInstance;
     private ZookeeperLocalServer zookeeperLocalServer;
-    private final HazelcastIndirectInput hazelcastIndirectInput;
+    private final HazelcastTestConfig hazelcastTestConfig;
 
 
-    HazelCastLocalServer(HazelcastIndirectInput hazelcastIndirectInput){
-        this.hazelcastIndirectInput = hazelcastIndirectInput;
+    HazelCastLocalServer(HazelcastTestConfig hazelcastTestConfig){
+        this.hazelcastTestConfig = hazelcastTestConfig;
     }
 
     @Override
     public void initialize() {
         zookeeperLocalServer = new ZookeeperLocalServer();
         zookeeperLocalServer.initialize();
-        if (hazelcastIndirectInput.isServerMode()) {
+        if (hazelcastTestConfig.isServerMode()) {
             // if used in client server mode, we need create new instance
-            Config config = buildHazelcastInstanceConfig(hazelcastIndirectInput);
+            Config config = buildHazelcastInstanceConfig(hazelcastTestConfig);
             hazelcastInstance = Hazelcast.newHazelcastInstance(config);
         } else {
         // or else will use the hazelcast instance initialized by client in its application code
         // even if there are multiple hazelcast running in different jvms clustered together, we will use
         // any one of them as all of them will be in sync through peer to peer communication
-            if(hazelcastIndirectInput.isEmbeddedMode())
+            if(hazelcastTestConfig.isEmbeddedMode())
                 hazelcastInstance = Hazelcast.getAllHazelcastInstances().iterator().next();
         }
     }
@@ -52,46 +52,52 @@ public class HazelCastLocalServer implements DependencyInitializer {
 
     @Override
     public void clean() {
-        shutDown();
-        zookeeperLocalServer.shutDown();
-        initialize();
+        hazelcastInstance.getDistributedObjects().forEach(distributedObject -> {
+            if(distributedObject.getClass().getName().equals("com.hazelcast.core.IMap"))
+                hazelcastInstance.getMap(distributedObject.getName()).evictAll();
+        });
     }
 
     private Config buildHazelcastInstanceConfig(HazelcastTestConfig hazelcastTestConfig) {
 
-        try {
-            Config config = new Config();
-            config.setInstanceName(HZ_INSTANCE_NAME);
-            config.setProperty("hazelcast.logging.type", "slf4j");
-            config.getGroupConfig().setName(hazelcastTestConfig.getGroupName()).setPassword(
-                    hazelcastTestConfig.getPassword());
+        Config config = new Config();
+        config.setInstanceName(HZ_INSTANCE_NAME);
+        config.setProperty(HZ_LOGGING_PROPERTY, "slf4j");
+        config.getGroupConfig().setName(hazelcastTestConfig.getUser()).setPassword(
+                hazelcastTestConfig.getPassword());
 
-            InstanceDiscoveryConfig instanceDiscoveryConfig = new InstanceDiscoveryConfig();
-            instanceDiscoveryConfig.setClusterId(hazelcastTestConfig.getGroupName());
-            instanceDiscoveryConfig.setEnabled(true); // enable instance discovery config
-            instanceDiscoveryConfig.setZkConnectionString(String.format("localhost:%d", ZOOKEEPER_PORT));
+        InstanceDiscoveryConfig instanceDiscoveryConfig = new InstanceDiscoveryConfig();
+        instanceDiscoveryConfig.setClusterId(hazelcastTestConfig.getGroup());
+        instanceDiscoveryConfig.setEnabled(true); // enable instance discovery config
+        instanceDiscoveryConfig.setZkConnectionString(String.format("localhost:%d", ZOOKEEPER_PORT));
 
-            //setting serialization config provided by user
-            for (Map.Entry<String, String > serializerConfig : hazelcastTestConfig.getSerializerConfigMap().entrySet())
-            {
-                Class <?> serializerClazz = Class.forName(serializerConfig.getKey());
-                Class <? extends Serializer> serializerImplClass = (Class<? extends Serializer>)
+        //Set instanceDiscoveryConfig in hz instance Config to enable discovery via local zookeeper
+        config.getNetworkConfig().getJoin().setInstanceDiscoveryConfig(instanceDiscoveryConfig);
+        config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+        config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
+
+        //setting serialization config provided by user
+        addSerializerConfig(config);
+        return config;
+    }
+
+    private void addSerializerConfig(Config config) {
+
+        for (Map.Entry<String, String> serializerConfig : hazelcastTestConfig.getSerializerConfigMap().entrySet()) {
+            Class<?> serializerClazz;
+            try {
+                serializerClazz = Class.forName(serializerConfig.getKey());
+                Class<? extends Serializer> serializerImplClass = (Class<? extends Serializer>)
                         Class.forName(serializerConfig.getValue());
-                Serializer serializer = serializerImplClass.newInstance();
 
+                Serializer serializer;
+                serializer = serializerImplClass.newInstance();
                 config.getSerializationConfig().getSerializerConfigs()
                         .add(new SerializerConfig().setTypeClass(serializerClazz)
                                 .setImplementation(serializer));
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-            //Set instanceDiscoveryConfig in hz instance Config to enable discovery via local zookeeper
-            config.getNetworkConfig().getJoin().setInstanceDiscoveryConfig(instanceDiscoveryConfig);
-            config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
-            config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
-            config.getNetworkConfig().setPortAutoIncrement(true);
-            return config;
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 

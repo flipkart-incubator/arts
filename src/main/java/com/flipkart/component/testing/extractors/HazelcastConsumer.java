@@ -1,33 +1,28 @@
 package com.flipkart.component.testing.extractors;
 
-import com.flipkart.component.testing.internal.Constants;
 import com.flipkart.component.testing.model.hazelcast.HazelcastDataStructures;
-import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
 import com.flipkart.component.testing.model.hazelcast.HazelcastMap;
 import com.flipkart.component.testing.model.hazelcast.HazelcastObservation;
-import com.hazelcast.client.config.ClientConfig;
-import com.hazelcast.client.config.ClientNetworkConfig;
-import com.hazelcast.config.discovery.InstanceDiscoveryConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.flipkart.component.testing.internal.Constants.*;
+import static com.flipkart.component.testing.internal.Constants.HZ_MAPS_DS;
 
 /**
  * @author siddharth.t
  */
 public class HazelcastConsumer implements ObservationCollector<HazelcastObservation> {
     @Override
-    public HazelcastObservation actualObservations(HazelcastObservation expectedObservation) throws IOException {
+    public HazelcastObservation actualObservations(HazelcastObservation expectedObservation) {
         HazelcastDataStructures hazelcastDataStructures = getHazelcastData(expectedObservation);
-        return new HazelcastObservation(
-                expectedObservation.getDStoFetch(),
-                hazelcastDataStructures);
+        HazelcastObservation hazelcastObservation = new HazelcastObservation(
+                expectedObservation.getDStoFetch());
+        hazelcastObservation.setHazelcastDS(hazelcastDataStructures);
+        return hazelcastObservation;
     }
 
     private HazelcastDataStructures getHazelcastData(HazelcastObservation hazelcastObservation) {

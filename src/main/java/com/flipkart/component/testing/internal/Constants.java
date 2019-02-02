@@ -22,6 +22,7 @@ public class Constants {
     public static final String ES_CLUSTER_NAME = "elasticsearch";
     public static final String HZ_INSTANCE_NAME = "regression";
     public static final String HZ_MAPS_DS = "maps";
+    public static final String HZ_LOGGING_PROPERTY = "hazelcast.logging.type";
 
 
 

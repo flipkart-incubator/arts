@@ -10,9 +10,9 @@ import java.util.Map;
 @Data
 public class HazelcastMap {
 
-    Map<Object, Object> mapData;
+    private Map<Object, Object> mapData;
 
-    String keyClass;
+    private String keyClass;
 
-    String valueClass;
+    private String valueClass;
 }

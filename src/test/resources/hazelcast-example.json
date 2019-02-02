@@ -2,8 +2,9 @@
   "indirectInputs": [
     {
       "name": "serverhzIndirectInput",
-      "groupName": "test",
+      "group": "test",
       "password": "test",
+      "user": "test",
       "hazelcastDS": {
         "maps": {
           "testMap": {

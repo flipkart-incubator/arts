@@ -51,6 +51,8 @@ class DependencyRegistryImpl implements DependencyRegistry {
     @Override
     public void shutDown() {
         dependencyInitializers.forEach(DependencyInitializer::shutDown);
+        dependencyClasses.clear();
+        dependencyInitializers.clear();
     }
 
     @Override
@@ -116,7 +118,7 @@ class DependencyRegistryImpl implements DependencyRegistry {
             } else if (indirectInput.isRMQInput()) {
                 dependencyInitializers.add(new RabbitMqLocalServer());
             } else if (indirectInput.isHazelcastInput()) {
-                dependencyInitializers.add(new HazelCastLocalServer((HazelcastIndirectInput)indirectInput));
+                dependencyInitializers.add(new HazelCastLocalServer((HazelcastIndirectInput) indirectInput));
             }
 
         }

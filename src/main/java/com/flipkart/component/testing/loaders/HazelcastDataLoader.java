@@ -9,7 +9,7 @@ import com.hazelcast.core.HazelcastInstance;
 
 import java.util.Map;
 
-import static com.flipkart.component.testing.internal.Constants.*;
+import static com.flipkart.component.testing.internal.Constants.HZ_INSTANCE_NAME;
 
 /**
  * @author siddharth.t
@@ -32,7 +32,7 @@ public class HazelcastDataLoader implements TestDataLoader<HazelcastIndirectInpu
             }
             loadMaps(indirectInput.getMaps(), hazelcastInstance);
         } catch (Exception e) {
-            throw new RuntimeException("Hazelcast key map class not found", e);
+            throw new RuntimeException("Error loading data to Hazelcast", e);
         }
     }
 
@@ -42,6 +42,7 @@ public class HazelcastDataLoader implements TestDataLoader<HazelcastIndirectInpu
         for (Map.Entry<String, HazelcastMap> mapNameToHazelCastMap : map.entrySet()) {
 
             String mapName = mapNameToHazelCastMap.getKey();
+            hazelcastClient.getMap(mapName);
             HazelcastMap hazelcastMapDS = mapNameToHazelCastMap.getValue();
 
             for (Map.Entry<Object, Object> mapEntry : hazelcastMapDS.getMapData().entrySet()) {

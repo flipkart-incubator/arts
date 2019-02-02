@@ -17,7 +17,7 @@ public class EmbeddedHZIndirectInput implements HazelcastIndirectInput {
     private final HazelcastDataStructures hazelcastDS;
 
     @JsonCreator
-    public EmbeddedHZIndirectInput(@JsonProperty("hazelcastDS") HazelcastDataStructures hazelcastDataStructures) {
+    public EmbeddedHZIndirectInput(@JsonProperty("hazelcastDS") HazelcastDataStructures hazelcastDataStructures){
         this.hazelcastDS = hazelcastDataStructures;
     }
 
@@ -28,16 +28,21 @@ public class EmbeddedHZIndirectInput implements HazelcastIndirectInput {
 
     @Override
     public Map<String, String> getSerializerConfigMap() {
-        return null;
+        throw new UnsupportedOperationException("serializer config cannot be accessed in embedded mode");
     }
 
     @Override
-    public String getGroupName() {
-        return null;
+    public String getGroup() {
+        throw new UnsupportedOperationException("group name cannot be accessed in embedded mode");
     }
 
     @Override
     public String getPassword() {
-        return null;
+        throw new UnsupportedOperationException("password cannot be accessed in embedded mode");
+    }
+
+    @Override
+    public String getUser() {
+        throw new UnsupportedOperationException("user name cannot be accessed in embedded mode");
     }
 }
