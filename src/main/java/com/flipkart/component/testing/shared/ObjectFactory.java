@@ -3,6 +3,9 @@ package com.flipkart.component.testing.shared;
 import com.flipkart.component.testing.internal.Constants;
 import com.flipkart.component.testing.model.ConnectionType;
 import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
+import com.hazelcast.config.Config;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
 import com.rabbitmq.client.Address;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
@@ -57,7 +60,23 @@ public class ObjectFactory {
         }
     }
 
+    public static HazelcastInstance getHazelcastInstance(HazelcastTestConfig hazelcastTestConfig){
+        HazelcastInstance hazelcastInstance;
+        if (hazelcastTestConfig.isServerMode()) {
+            // if used in client server mode, we need to create new instance
+            hazelcastInstance = new HazelcastInstanceInitializer(hazelcastTestConfig).getHazelcastInstance();
+        } else {
+            // or else will use the hazelcast instance initialized by client in its application code
+            if(hazelcastTestConfig.isEmbeddedMode())
+                hazelcastInstance = Hazelcast.getAllHazelcastInstances().iterator().next();
+            else
+                throw new IllegalArgumentException("Hazelcast initialized for incorrect mode !!");
+        }
+        return hazelcastInstance;
+    }
+
     public static MockServerOperations getMockServerOperations(){
         return MockServerOperationsImpl.getInstance();
     }
 }
+
