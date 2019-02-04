@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.model.http;
 
-enum METHOD{
+public enum METHOD{
     GET,
     POST,
     PUT,

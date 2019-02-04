@@ -11,6 +11,7 @@ import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
 import com.flipkart.component.testing.model.mysql.MysqlIndirectInput;
 import com.flipkart.component.testing.model.redis.RedisIndirectInput;
 import com.flipkart.component.testing.model.rmq.RMQIndirectInput;
+import com.flipkart.component.testing.model.zookeeper.ZookeeperIndirectInput;
 
 /**
  * An implementation of test data loader which loads the IndirectInputs
@@ -34,7 +35,7 @@ class TestDataLoaderImpl implements TestDataLoader {
         } else if (indirectInput.isElasticSearchInput()) {
             new ElasticSearchDataLoader().load((ElasticSearchIndirectInput) indirectInput);
         } else if(indirectInput.isZkInput()){
-            //TODO: //not implemented
+            new ZookeeperDataLoader().load((ZookeeperIndirectInput) indirectInput);
         }else if (indirectInput.isAerospikeInput()) {
             new AerospikeDataLoader().load((AerospikeIndirectInput) indirectInput);
         } else if(indirectInput.isHazelcastInput()) {

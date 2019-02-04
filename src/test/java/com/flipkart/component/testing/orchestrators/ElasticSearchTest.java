@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static org.mockito.Mockito.mock;
 
 public class ElasticSearchTest {
@@ -19,9 +20,8 @@ public class ElasticSearchTest {
 	@Test
 	public void test() throws Exception {
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		TestSpecification testSpecification = objectMapper.readValue(this.getClass().getClassLoader().getResourceAsStream("es-test-data.json"), TestSpecification.class);
-		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
+		TestSpecification testSpecification = OBJECT_MAPPER.readValue(this.getClass().getClassLoader().getResourceAsStream("es-test-data.json"), TestSpecification.class);
+		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).runLite(testSpecification);
 		Assert.assertTrue(observations.size() == 1);
 		Assert.assertTrue(observations.get(0) instanceof ElasticSearchObservation);
 		ElasticSearchObservation actualObservation = (ElasticSearchObservation) observations.get(0);

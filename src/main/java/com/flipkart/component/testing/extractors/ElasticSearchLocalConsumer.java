@@ -16,12 +16,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
+
 /**
  * Reads from the local Elastic search Consumer
  */
 class ElasticSearchLocalConsumer implements ObservationCollector<ElasticSearchObservation> {
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * extracts the actual Observation using attributes from expected observation
@@ -38,7 +39,7 @@ class ElasticSearchLocalConsumer implements ObservationCollector<ElasticSearchOb
         List<ElasticSearchObservation.DocumentsToFetch> documents = new ArrayList<>();
         try {
             for (ElasticSearchObservation.DocumentsToFetch documentsToFetch : expectedObservation.getDocumentsToFetch()) {
-                Map map = objectMapper.readValue(this.getClass().getClassLoader().getResourceAsStream(documentsToFetch.getQueryFile()), Map.class);
+                Map map = OBJECT_MAPPER.readValue(this.getClass().getClassLoader().getResourceAsStream(documentsToFetch.getQueryFile()), Map.class);
                 SearchRequestBuilder searchRequestBuilder = client.prepareSearch(documentsToFetch.getIndexName()).setTypes(documentsToFetch.getTypeName()).setSource(map);
 
                 Optional.ofNullable(documentsToFetch.getRoutingKey()).ifPresent(searchRequestBuilder::setRouting);

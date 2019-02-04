@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "description": "Mysql Indirect Input schema",
+  "properties": {
+
+    "databaseName": {
+      "type": "string",
+      "description": "database name"
+    },
+    "ddlStatements": {
+      "type": "array",
+      "description": "list of ddlStatements to be executed ",
+      "items": {
+        "type": "string"
+      }
+    },
+    "connectionType": {
+      "type": "string",
+      "description": "type of connection",
+      "enum": [ "REMOTE","LOCALHOST"
+      ]
+    },
+    "tablesData": {
+      "type": "object",
+      "description": "table data",
+      "patternProperties": {
+        "tableName": {
+          "type": "array",
+          "description": "table name ",
+          "items": {
+            "type": "object",
+            "patternProperties": {
+              "keys": {
+                "type": "string",
+                "description": "column name as key"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

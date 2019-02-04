@@ -1,0 +1,38 @@
+{
+  "type": "array",
+  "description": "schema for observations",
+  "items": {
+    "type": "object",
+    "description": "observations ",
+    "required": [
+      "name"
+    ],
+    "anyOf": [
+      {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name of indirect input",
+            "enum": [
+              "elasticSearchObservation","redisObservation",
+              "kafkaObservation","mysqlObservation",
+              "httpObservation","hbaseObservation",
+              "rmqObservation","AerospikeObservation"
+            ]
+          }
+        },
+        "allOf": [
+          {"$ref": "file:src/main/resources/jsonSchema/elasticSearchObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/redisObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/kafkaObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/mysqlObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/httpObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/rmqObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/hbaseObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/aerospikeObservation.json#/"}
+
+        ]
+      }
+    ]
+  }
+}

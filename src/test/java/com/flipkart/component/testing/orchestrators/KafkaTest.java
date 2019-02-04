@@ -27,8 +27,7 @@ public class KafkaTest {
         KafkaObservation expectedObservation = new KafkaObservation(msgs, topic);
 
         TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(expectedObservation));
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
-
+        List<Observation> observations = DataStoreSuite.specificationRunner.runLite(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof KafkaObservation);

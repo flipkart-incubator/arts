@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "description": "Kafka Observation Schema",
+  "properties": {
+    "topic": {
+      "type": "string",
+      "description": "topic name"
+    },
+    "messages": {
+      "type": "array",
+      "description": "The array of messages ",
+      "items": {
+        "type": "string",
+        "description": "each message"
+      }
+    }
+  }
+}

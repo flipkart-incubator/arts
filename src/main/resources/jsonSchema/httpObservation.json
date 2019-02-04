@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "description": "http Observation Schema",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "statuscode": {
+      "type": "integer",
+      "description": "expected status code"
+    },
+    "headers": {
+      "type": "object",
+      "description": "the headers returned"
+    },
+    "response": {
+      "type": "object",
+      "description": "json response returned"
+    }
+  }
+}

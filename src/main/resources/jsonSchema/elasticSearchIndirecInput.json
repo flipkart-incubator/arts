@@ -1,0 +1,53 @@
+{
+  "description": "elastic search indirect input",
+  "properties":{
+    "documentsOfIndexAndType": {
+      "type": "array",
+      "description": "Array of documents with same index and type name",
+      "items": {
+        "type": "object",
+        "required": [
+          "suffixOfindex",
+          "type",
+          "routingKey",
+          "mappingFile",
+          "documents"
+        ],
+        "properties": {
+          "suffixOfindex": {
+            "type": "string",
+            "description": "provide suffix to be appended with index name 'regression_'"
+          },
+          "type": {
+            "description": " type name",
+            "type": "string"
+          },
+          "routingKey": {
+            "description": "routing key for the document ",
+            "type": "string"
+          },
+          "mappingFile": {
+            "description": "relative path of the file providing mapping details",
+            "type": "string"
+          },
+          "documents": {
+            "description": "list of documents with same index name and type but different document Id",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "_id"
+              ],
+              "properties": {
+                "_id": {
+                  "description": " document Id",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

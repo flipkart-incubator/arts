@@ -81,5 +81,10 @@ public interface IndirectInput {
     @JsonIgnore
     default boolean isHazelcastInput() {return this instanceof HazelcastIndirectInput; }
 
+    /**
+     * config for indirect input to whether load before or after SUT start
+     * @return
+     */
+    boolean isLoadAfterSUT();
 
 }

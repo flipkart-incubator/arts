@@ -20,7 +20,7 @@ public class AerospikeObservation implements Observation {
     }
 
     @JsonCreator
-    public AerospikeObservation(@JsonProperty("data") AerospikeData data){
+    public AerospikeObservation(@JsonProperty("aerospikeData") AerospikeData data){
         this.data = data;
     }
 }

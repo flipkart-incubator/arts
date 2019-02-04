@@ -1,6 +1,6 @@
 {
   "name": "AerospikeIndirectInput",
-  "data": {
+  "aerospikeData": {
     "namespace": "test",
     "host": "172.28.128.4",
     "port": 3000,

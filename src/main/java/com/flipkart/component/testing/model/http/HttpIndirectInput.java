@@ -11,6 +11,8 @@ import lombok.ToString;
 
 import java.util.Map;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
+
 /**
  * Representation for a Http Indirect Input.
  */
@@ -21,8 +23,6 @@ public class HttpIndirectInput implements IndirectInput {
 
     private final Map<String, Object> specification;
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
     @JsonCreator
     public HttpIndirectInput(@JsonProperty("specification") Map<String, Object> specification) {
         if (specification.get("response") == null) {
@@ -31,7 +31,7 @@ public class HttpIndirectInput implements IndirectInput {
         Map<String, Object> map = (Map<String, Object>) specification.get("response");
         try {
             //convert object to map
-            String body = objectMapper.writeValueAsString(map.get("body"));
+            String body = OBJECT_MAPPER.writeValueAsString(map.get("body"));
             map.put("body", body);
             this.specification = specification;
         } catch (JsonProcessingException e) {
@@ -39,4 +39,13 @@ public class HttpIndirectInput implements IndirectInput {
         }
     }
 
+    /**
+     * config for indirect input to whether load before or after SUT start
+     *
+     * @return
+     */
+    @Override
+    public boolean isLoadAfterSUT() {
+        return false;
+    }
 }

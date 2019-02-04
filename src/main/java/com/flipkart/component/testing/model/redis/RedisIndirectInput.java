@@ -68,4 +68,14 @@ public class RedisIndirectInput implements IndirectInput, RedisTestConfig {
     public Map<String, List<String>> getLists(int dbIndex){
         return Collections.unmodifiableMap(dbToDSMap.get(dbIndex).getLists());
     }
+
+    /**
+     * config for indirect input to whether load before or after SUT start
+     *
+     * @return
+     */
+    @Override
+    public boolean isLoadAfterSUT() {
+        return false;
+    }
 }

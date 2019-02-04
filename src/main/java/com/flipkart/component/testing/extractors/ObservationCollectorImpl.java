@@ -11,6 +11,7 @@ import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import com.flipkart.component.testing.model.mysql.MysqlObservation;
 import com.flipkart.component.testing.model.redis.RedisObservation;
 import com.flipkart.component.testing.model.rmq.RMQObservation;
+import com.flipkart.component.testing.model.zookeeper.ZookeeperObservation;
 
 import java.io.IOException;
 
@@ -47,6 +48,8 @@ class ObservationCollectorImpl implements ObservationCollector {
             return new HttpInteractionConsumer().actualObservations((HttpIndirectObservation) expectedObservation);
         }else if(expectedObservation.isHazelcast()){
             return new HazelcastConsumer().actualObservations((HazelcastObservation) expectedObservation);
+        }else if(expectedObservation.isZk()){
+            return new ZookeeperConsumer().actualObservations((ZookeeperObservation) expectedObservation);
         }
         throw new IllegalStateException("Consumer is not defined for observation" + expectedObservation);
     }

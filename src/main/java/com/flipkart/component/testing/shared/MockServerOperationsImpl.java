@@ -1,11 +1,14 @@
 package com.flipkart.component.testing.shared;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.internal.Utils;
 import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.model.http.HttpIndirectObservation;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
+import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ContentType;
 
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.flipkart.component.testing.internal.Constants.HTTP_MOCK_SERVER_PORT;
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 class MockServerOperationsImpl implements MockServerOperations {
@@ -39,13 +43,12 @@ class MockServerOperationsImpl implements MockServerOperations {
 
     @Override
     public void load(HttpIndirectInput httpIndirectInput) {
+        String mappingJson = null;
         try {
-            HttpResponse httpResponse = Utils.getPostResponse("http://localhost:7777/__admin/mappings", httpIndirectInput.getSpecification(), ContentType.APPLICATION_JSON);
-            if (httpResponse.getStatusLine().getStatusCode() != 201) {
-                throw new IllegalArgumentException("Mock is not registered correctly.Check the json part of indirect Input" + httpResponse.getEntity());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            mappingJson = OBJECT_MAPPER.writeValueAsString(httpIndirectInput.getSpecification());
+            wireMockServer.addStubMapping(StubMapping.buildFrom(mappingJson));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("unable to serialize", e);
         }
     }
 

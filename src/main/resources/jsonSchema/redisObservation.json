@@ -1,0 +1,27 @@
+{
+  "description": "redis observation",
+  "type": "object",
+  "properties": {
+    "clusterType": {
+      "type": "string",
+      "description": "name of the type of cluster",
+      "examples": [
+        "SENTINEL"
+      ]
+    },
+    "masterName": {
+      "type": "string",
+      "description": "master name"
+    },
+    "dbIndices": {
+      "type": "array",
+      "description": "indices of db as integer",
+      "items": {
+        "type": "integer",
+        "examples": [
+          7, 8
+        ]
+      }
+    }
+  }
+}

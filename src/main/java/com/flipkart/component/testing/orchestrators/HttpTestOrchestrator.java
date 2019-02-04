@@ -13,6 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
+
 /**
  * Single entry point for the test writer to orchestrate the test set up
  * and retrieving the observations for Api based test cases.
@@ -22,10 +24,8 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
     private final HttpTestRunner testRunner;
     private final SUT sut;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    public HttpTestOrchestrator(SUT sut) {
-        testRunner = new HttpTestRunner();
+    public HttpTestOrchestrator(SUT sut, HttpTestRunner httpTestRunner) {
+        this.testRunner = httpTestRunner;
         this.sut = sut;
     }
 
@@ -46,8 +46,9 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
 
         try {
             dependencyRegistry.registerAndInitialize(testSpecification);
+            this.testDataLoader.load(testSpecification.getIndirectInputs());
             sut.start();
-            return loadRunCollect(testSpecification, sut);
+            return runAndCollect(testSpecification, sut);
         } finally {
             try {
                 dependencyRegistry.shutDown();
@@ -71,7 +72,8 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
             dependencyRegistry.registerAndInitialize(testSpecifications);
             sut.start();
             for (TestSpecification testSpecification : testSpecifications) {
-                List<Observation> list = loadRunCollect(testSpecification, sut);
+                this.testDataLoader.load(testSpecification.getIndirectInputs());
+                List<Observation> list = runAndCollect(testSpecification, sut);
                 map.put(testSpecification, list);
             }
             return map;
@@ -97,7 +99,7 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
         try {
             for (TestSpecification testSpecification : testSpecifications) {
                 try {
-                    observations.put(testSpecification, runLite(testSpecification, sut));
+                    observations.put(testSpecification, runLite(testSpecification));
                 } catch (Exception e) {
                     //not to block other tests
                     observations.put(testSpecification, null);
@@ -121,15 +123,17 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
     /**
      * A lite weight run of a test case cleaning up the dependency after started.
      * @param testSpecification
-     * @param sut
      * @return
      * @throws Exception
      */
-    public List<Observation> runLite(TestSpecification testSpecification, SUT sut) throws Exception {
+    @SuppressWarnings("unchecked")
+    public List<Observation> runLite(TestSpecification testSpecification) throws Exception {
         try{
             dependencyRegistry.registerAndInitialize(testSpecification);
+            this.testDataLoader.load(testSpecification.getIndirectInputsToBePreLoaded());
             sut.start();
-            return loadRunCollect(testSpecification, sut);
+            this.testDataLoader.load(testSpecification.getIndirectInputsToBePostLoaded());
+            return runAndCollect(testSpecification, sut);
         } finally {
             dependencyRegistry.clean();
         }
@@ -137,8 +141,7 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
 
 
     @SuppressWarnings("unchecked")
-    private List<Observation> loadRunCollect(TestSpecification testSpecification, SUT sut) throws IOException {
-        this.testDataLoader.load(testSpecification.getIndirectInputs());
+    private List<Observation> runAndCollect(TestSpecification testSpecification, SUT sut) throws IOException {
         //http test runner => making a http request
         testRunner.run((HttpDirectInput) testSpecification.getDirectInput(), sut.getUrl());
         return this.observationCollector.actualObservations(testSpecification.getObservations());
@@ -164,7 +167,7 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
         }
 
         TestSpecification next() throws IOException {
-            TestSpecification testSpecification = objectMapper.readValue(line, TestSpecification.class);
+            TestSpecification testSpecification = OBJECT_MAPPER.readValue(line, TestSpecification.class);
             line = bufferedReader.readLine();
             return testSpecification;
         }

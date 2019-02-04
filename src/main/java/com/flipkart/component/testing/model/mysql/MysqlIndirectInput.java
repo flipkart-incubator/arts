@@ -59,12 +59,13 @@ public class MysqlIndirectInput implements IndirectInput, MysqlConnectionConfig 
         this.connectionType = connectionType;
     }
 
-    public MysqlIndirectInput(
-            String databaseName,
-            List<String> ddlStatements,
-            Map<String,List<Map<String, Object>>> tablesData
-    ) {
-        this(databaseName,ddlStatements,tablesData,MysqlConnectionType.IN_MEMORY);
+    /**
+     * config for indirect input to whether load before or after SUT start
+     *
+     * @return
+     */
+    @Override
+    public boolean isLoadAfterSUT() {
+        return false;
     }
-
 }

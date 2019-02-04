@@ -1,0 +1,50 @@
+{
+  "description": "Aerospike Indirect Input",
+  "properties": {
+    "aerospikeData": {
+      "description": "Data to be passed into AS db",
+      "type": "object",
+      "required": ["namespace","host","port","set","records"],
+      "properties": {
+        "namespace": {
+          "description": "name of the namespace",
+          "type": "string"
+        },
+        "host": {
+          "description": "hostname",
+          "type": "string"
+        },
+        "port": {
+          "description": "port number",
+          "type": "integer"
+        },
+        "set": {
+          "description": "test set name",
+          "type": "string"
+        },
+        "records": {
+          "description": "array of records containing keys",
+          "type": "array",
+          "items": [
+            {
+              "description": "Keys",
+              "type": "object",
+              "patternProperties": {
+                "keys": {
+                  "description": "Keys consisting of bins",
+                  "type": "object",
+                  "patternProperties": {
+                    "bins": {
+                      "description": "bins",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
