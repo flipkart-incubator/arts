@@ -1,16 +1,15 @@
 package com.flipkart.component.testing.model.hazelcast;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Map;
 
 /**
  * @author siddharth.t
  */
-
-@Data
+@Getter
+@AllArgsConstructor
 public class HazelcastDataStructures {
 
 

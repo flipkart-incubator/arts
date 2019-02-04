@@ -41,7 +41,7 @@ public class HazelcastDataLoader implements TestDataLoader<HazelcastIndirectInpu
             hazelcastClient.getMap(mapName);
             HazelcastMap hazelcastMapDS = mapNameToHazelCastMap.getValue();
 
-            for (Map.Entry<Object, Object> mapEntry : hazelcastMapDS.getMapData().entrySet()) {
+            for (Map.Entry<?, ?> mapEntry : hazelcastMapDS.getMapData().entrySet()) {
 
                 Object key = mapEntry.getKey();
                 Object value = mapEntry.getValue();

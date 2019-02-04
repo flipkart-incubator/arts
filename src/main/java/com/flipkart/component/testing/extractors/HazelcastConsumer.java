@@ -28,19 +28,17 @@ public class HazelcastConsumer implements ObservationCollector<HazelcastObservat
 
     private HazelcastDataStructures getHazelcastData(HazelcastObservation hazelcastObservation) {
         HazelcastInstance hazelcast = ObjectFactory.getHazelcastInstance(hazelcastObservation);
-        HazelcastDataStructures hazelcastDataStructures = new HazelcastDataStructures();
         Map<String, HazelcastMap> maps = new HashMap<>();
         hazelcastObservation.getDStoFetch().forEach((String dsType, List<String> dsNames) -> {
             if (dsType.equals(HZ_MAPS_DS)) {
                 dsNames.forEach((String dsName) -> {
-                    HazelcastMap hazelcastMap = new HazelcastMap();
                     Map<Object, Object> map = new HashMap<>(hazelcast.getMap(dsName));
-                    hazelcastMap.setMapData(map);
+                    HazelcastMap hazelcastMap = new HazelcastMap(map, null, null);
                     maps.put(dsName, hazelcastMap);
                 });
             }
         });
-        hazelcastDataStructures.setMaps(maps);
+        HazelcastDataStructures hazelcastDataStructures = new HazelcastDataStructures(maps);
         return hazelcastDataStructures;
     }
 }

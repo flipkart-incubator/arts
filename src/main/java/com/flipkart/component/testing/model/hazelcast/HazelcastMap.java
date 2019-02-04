@@ -1,18 +1,20 @@
 package com.flipkart.component.testing.model.hazelcast;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Map;
 
 /**
  * @author siddharth.t
  */
-@Data
+@Getter
+@AllArgsConstructor
 public class HazelcastMap {
 
-    private Map<Object, Object> mapData;
+    private final Map<?, ?> mapData;
 
-    private String keyClass;
+    private final String keyClass;
 
-    private String valueClass;
+    private final String valueClass;
 }
