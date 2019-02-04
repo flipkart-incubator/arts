@@ -4,6 +4,7 @@ import com.flipkart.component.testing.model.*;
 import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
+import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
 import com.flipkart.component.testing.model.hbase.HBaseIndirectInput;
 import com.flipkart.component.testing.model.hbase.HBaseObservation;
 import com.flipkart.component.testing.model.mysql.MysqlIndirectInput;
@@ -50,6 +51,8 @@ class DependencyRegistryImpl implements DependencyRegistry {
     @Override
     public void shutDown() {
         dependencyInitializers.forEach(DependencyInitializer::shutDown);
+        dependencyClasses.clear();
+        dependencyInitializers.clear();
     }
 
     @Override
@@ -116,6 +119,9 @@ class DependencyRegistryImpl implements DependencyRegistry {
                 dependencyInitializers.add(new AerospikeServer((AerospikeIndirectInput) indirectInput));
             } else if (indirectInput.isRMQInput()) {
                 dependencyInitializers.add(new RabbitMqLocalServer());
+            } else if (indirectInput.isHazelcastInput()) {
+                if(((HazelcastIndirectInput) indirectInput).isServerMode())
+                dependencyInitializers.add(new HazelCastLocalServer((HazelcastIndirectInput)indirectInput));
             }
 
         }

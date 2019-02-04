@@ -1,0 +1,32 @@
+{
+  "indirectInputs": [
+    {
+      "name": "serverhzIndirectInput",
+      "group": "test",
+      "password": "test",
+      "user": "test",
+      "hazelcastDS": {
+        "maps": {
+          "testMap": {
+            "mapData": {
+              "testKey": "testValue"
+            },
+            "keyClass": "java.lang.String",
+            "valueClass": "java.lang.String"
+          }
+        }
+      },
+      "serializerConfigMap": {}
+    }
+  ],
+  "observations": [
+    {
+      "name": "hazelcastObservation",
+      "dsToFetch": {
+        "maps": [
+          "testMap"
+        ]
+      }
+    }
+  ]
+}

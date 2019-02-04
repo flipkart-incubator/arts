@@ -3,6 +3,7 @@ package com.flipkart.component.testing.extractors;
 import com.flipkart.component.testing.model.*;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
+import com.flipkart.component.testing.model.hazelcast.HazelcastObservation;
 import com.flipkart.component.testing.model.hbase.HBaseObservation;
 import com.flipkart.component.testing.model.http.HttpIndirectObservation;
 import com.flipkart.component.testing.model.http.HttpObservation;
@@ -45,6 +46,8 @@ class ObservationCollectorImpl implements ObservationCollector {
             return new AerospikeLocalConsumer().actualObservations((AerospikeObservation) expectedObservation);
         }else if(expectedObservation.isHttpIndirect()){
             return new HttpInteractionConsumer().actualObservations((HttpIndirectObservation) expectedObservation);
+        }else if(expectedObservation.isHazelcast()){
+            return new HazelcastConsumer().actualObservations((HazelcastObservation) expectedObservation);
         }else if(expectedObservation.isZk()){
             return new ZookeeperConsumer().actualObservations((ZookeeperObservation) expectedObservation);
         }

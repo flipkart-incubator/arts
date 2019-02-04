@@ -20,8 +20,10 @@ public class Constants {
     public static final String ES_CLIENT_HOST = "127.0.0.1";
     public static final int ES_CLIENT_PORT =9300;
     public static final String ES_CLUSTER_NAME = "elasticsearch";
-
-
+    public static final String HZ_INSTANCE_NAME = "regression";
+    public static final String HZ_MAPS_DS = "maps";
+    public static final String HZ_LOGGING_PROPERTY = "hazelcast.logging.type";
+    public static final String HZ_IMAP_CLASS = "com.hazelcast.core.IMap";
 
 
 }

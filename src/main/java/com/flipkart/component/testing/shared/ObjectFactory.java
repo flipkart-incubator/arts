@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.internal.Constants;
 import com.flipkart.component.testing.model.ConnectionType;
 import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
+import com.hazelcast.config.Config;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
 import com.rabbitmq.client.Address;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
@@ -61,6 +64,15 @@ public class ObjectFactory {
         }
     }
 
+    public static HazelcastInstance getHazelcastInstance(HazelcastTestConfig hazelcastTestConfig){
+        HazelcastInstance hazelcastInstance;
+        if (hazelcastTestConfig.isServerMode() && Hazelcast.getAllHazelcastInstances().isEmpty())
+            hazelcastInstance = new HazelcastInstanceInitializer(hazelcastTestConfig).getHazelcastInstance();
+        else
+            hazelcastInstance = Hazelcast.getAllHazelcastInstances().iterator().next();
+        return hazelcastInstance;
+    }
+
     public static MockServerOperations getMockServerOperations(){
         return MockServerOperationsImpl.getInstance();
     }
@@ -68,3 +80,4 @@ public class ObjectFactory {
     public static ZookeeperOperations getZookeeperOperations() {return ZookeeperOperationsImpl.getInstance();}
 
 }
+

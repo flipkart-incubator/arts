@@ -4,6 +4,7 @@ package com.flipkart.component.testing.loaders;
 import com.flipkart.component.testing.model.*;
 import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
+import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
 import com.flipkart.component.testing.model.hbase.HBaseIndirectInput;
 import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
@@ -37,6 +38,8 @@ class TestDataLoaderImpl implements TestDataLoader {
             new ZookeeperDataLoader().load((ZookeeperIndirectInput) indirectInput);
         }else if (indirectInput.isAerospikeInput()) {
             new AerospikeDataLoader().load((AerospikeIndirectInput) indirectInput);
+        } else if(indirectInput.isHazelcastInput()) {
+            new HazelcastDataLoader().load((HazelcastIndirectInput) indirectInput);
         }
         else {
             throw new IllegalStateException("Unable to determine the loader for indirect Input" + indirectInput);
