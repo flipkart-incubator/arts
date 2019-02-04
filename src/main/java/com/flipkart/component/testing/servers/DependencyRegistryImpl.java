@@ -79,6 +79,8 @@ class DependencyRegistryImpl implements DependencyRegistry {
                 dependencyInitializers.add(new ElasticSearchLocalServer((ElasticSearchObservation) observation));
             } else if(observation.isKafka()){
                 dependencyInitializers.add(new KafkaLocalServer());
+            } else if(observation.isZk()){
+                dependencyInitializers.add(new ZookeeperLocalServer());
             }
 
             // TODO: atul aerospike

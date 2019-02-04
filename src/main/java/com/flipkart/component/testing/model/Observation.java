@@ -12,6 +12,7 @@ import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import com.flipkart.component.testing.model.mysql.MysqlObservation;
 import com.flipkart.component.testing.model.redis.RedisObservation;
 import com.flipkart.component.testing.model.rmq.RMQObservation;
+import com.flipkart.component.testing.model.zookeeper.ZookeeperObservation;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -25,7 +26,8 @@ import com.flipkart.component.testing.model.rmq.RMQObservation;
         @JsonSubTypes.Type(value = RedisObservation.class, name = "redisObservation"),
         @JsonSubTypes.Type(value = ElasticSearchObservation.class, name = "elasticSearchObservation"),
         @JsonSubTypes.Type(value = AerospikeObservation.class, name = "AerospikeObservation"),
-        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation")
+        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation"),
+        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "zookeeperObservation")
 
 })
 public interface Observation {
@@ -72,4 +74,10 @@ public interface Observation {
 
     @JsonIgnore
     default boolean isHttpIndirect() {return this instanceof HttpIndirectObservation;}
+
+    @JsonIgnore
+    default boolean isZk() {
+        return this instanceof ZookeeperObservation;
+    }
+
 }

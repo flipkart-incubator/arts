@@ -60,4 +60,7 @@ public class ObjectFactory {
     public static MockServerOperations getMockServerOperations(){
         return MockServerOperationsImpl.getInstance();
     }
+
+    public static ZookeeperOperations getZookeeperOperations() {return ZookeeperOperationsImpl.getInstance();}
+
 }
