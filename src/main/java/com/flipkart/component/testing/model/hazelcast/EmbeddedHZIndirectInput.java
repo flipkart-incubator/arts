@@ -45,4 +45,10 @@ public class EmbeddedHZIndirectInput implements HazelcastIndirectInput {
     public String getUser() {
         throw new UnsupportedOperationException("user name cannot be accessed in embedded mode");
     }
+
+    @Override
+    public boolean isLoadAfterSUT() {
+        return true;
+    }
+
 }

@@ -29,7 +29,7 @@ public class HazelCastLocalServer implements DependencyInitializer {
 
     @Override
     public void initialize() {
-        zookeeperLocalServer = new ZookeeperLocalServer();
+        zookeeperLocalServer = ZookeeperLocalServer.getInstance();
         zookeeperLocalServer.initialize();
         hazelcastInstance = ObjectFactory.getHazelcastInstance(this.hazelcastTestConfig);
     }
