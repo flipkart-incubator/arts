@@ -14,6 +14,8 @@ import org.junit.Assert;;
 import org.junit.Ignore;
 import org.junit.Test;
 import com.google.common.collect.Lists;
+
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static org.mockito.Mockito.mock;
 
 
@@ -27,12 +29,12 @@ public class AerospikeTest {
 
         File indirectInputJsonFile = new File("src/main/resources/AerospikeIndirectInput.json");
         String inidrectInputStr = FileUtils.readFileToString(indirectInputJsonFile, "UTF-8");
-        AerospikeIndirectInput aerospikeIndirectInput = new ObjectMapper().readValue(inidrectInputStr,
+        AerospikeIndirectInput aerospikeIndirectInput = OBJECT_MAPPER.readValue(inidrectInputStr,
                 AerospikeIndirectInput.class);
 
         File observationJsonFile = new File("src/main/resources/AerospikeObservation.json");
         String observationStr = FileUtils.readFileToString(observationJsonFile, "UTF-8");
-        AerospikeObservation expectedObservation = new ObjectMapper().readValue(observationStr, AerospikeObservation.class);
+        AerospikeObservation expectedObservation = OBJECT_MAPPER.readValue(observationStr, AerospikeObservation.class);
         TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(aerospikeIndirectInput),
                 Lists.newArrayList(expectedObservation));
 

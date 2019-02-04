@@ -80,7 +80,7 @@ class DependencyRegistryImpl implements DependencyRegistry {
             } else if(observation.isKafka()){
                 dependencyInitializers.add(new KafkaLocalServer());
             } else if(observation.isZk()){
-                dependencyInitializers.add(new ZookeeperLocalServer());
+                dependencyInitializers.add(ZookeeperLocalServer.getInstance());
             }
 
             // TODO: atul aerospike
@@ -109,7 +109,7 @@ class DependencyRegistryImpl implements DependencyRegistry {
             } else if (indirectInput.isRedisInput()) {
                 dependencyInitializers.add(new RedisLocalServer((RedisIndirectInput) indirectInput));
             } else if (indirectInput.isZkInput()) {
-                dependencyInitializers.add(new ZookeeperLocalServer());
+                dependencyInitializers.add(ZookeeperLocalServer.getInstance());
             } else if (indirectInput.isHBaseInput()) {
                 dependencyInitializers.add(new HbaseServer((HBaseIndirectInput) indirectInput));
             } else if (indirectInput.isAerospikeInput()) {

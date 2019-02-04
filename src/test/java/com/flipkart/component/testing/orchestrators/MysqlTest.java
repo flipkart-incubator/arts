@@ -29,8 +29,8 @@ public class MysqlTest {
         map.put("TestTable", rows);
         List<String> ddlStatements = newArrayList("CREATE TABLE testtable (name text NOT NULL)");
 
-        IndirectInput indirectInput = new MysqlIndirectInput("abc", ddlStatements, map,MysqlConnectionType.LOCALHOST);
-        MysqlObservation expectedObservation = new MysqlObservation(map, "abc", MysqlConnectionType.LOCALHOST);
+        IndirectInput indirectInput = new MysqlIndirectInput("abc", ddlStatements, map,MysqlConnectionType.IN_MEMORY);
+        MysqlObservation expectedObservation = new MysqlObservation(map, "abc", MysqlConnectionType.IN_MEMORY);
 
         TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(expectedObservation));
         List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);

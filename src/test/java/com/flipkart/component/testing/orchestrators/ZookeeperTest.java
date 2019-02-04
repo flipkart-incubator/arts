@@ -28,14 +28,12 @@ public class ZookeeperTest {
         IndirectInput indirectInput = new ZookeeperIndirectInput(paths, data);
 
         TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(new ZookeeperObservation(paths,data.keySet())));
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
-
+        List<Observation> observations = DataStoreSuite.specificationRunner.runLite(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof ZookeeperObservation);
         ZookeeperObservation zkObservation = (ZookeeperObservation) observations.get(0);
         Assert.assertTrue(zkObservation.exists("/abc"));
-
 
     }
 }

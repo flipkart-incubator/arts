@@ -25,4 +25,14 @@ public class ZookeeperIndirectInput implements IndirectInput {
         this.pathsToCreate = pathsToCreate;
         this.dataToLoad = dataToLoad;
     }
+
+    /**
+     * config for indirect input to whether load before or after SUT start
+     *
+     * @return
+     */
+    @Override
+    public boolean isLoadAfterSUT() {
+        return false;
+    }
 }

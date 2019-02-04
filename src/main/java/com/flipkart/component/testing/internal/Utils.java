@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
+
 public class Utils {
 
     private static final int TEMP_DIR_ATTEMPTS = 10000;
@@ -138,12 +140,11 @@ public class Utils {
     }
 
     public static HttpResponse getPostResponse(String url, Object body, Map<String, String> headers, ContentType contentType) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         httpClient = HttpClientBuilder.create().build(); //TODO:PAVAN
         HttpPost httpPost = new HttpPost(url);
         Optional.ofNullable(headers).orElse(new HashMap<>()).forEach(httpPost::addHeader);
         httpPost.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).build());
-        httpPost.setEntity(new StringEntity(objectMapper.writeValueAsString(body), contentType));
+        httpPost.setEntity(new StringEntity(OBJECT_MAPPER.writeValueAsString(body), contentType));
         return httpClient.execute(httpPost);
     }
 }

@@ -1,5 +1,7 @@
 package com.flipkart.component.testing.shared;
 
+import com.esotericsoftware.kryo.util.ObjectMap;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.internal.Constants;
 import com.flipkart.component.testing.model.ConnectionType;
 import com.flipkart.component.testing.model.mysql.MysqlConnectionType;
@@ -12,6 +14,8 @@ import java.io.IOException;
 
 //TODO:PAVAN see if all the operations can be moved out similar to Hbase and ES rather than exposing channel and connection for mysql and rmq
 public class ObjectFactory {
+
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static MysqlConnection getMysqlConnection(MysqlConnectionConfig mysqlConnectionConfig) {
 

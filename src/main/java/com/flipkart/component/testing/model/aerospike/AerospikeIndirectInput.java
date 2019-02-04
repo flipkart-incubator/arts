@@ -22,4 +22,14 @@ public class AerospikeIndirectInput implements IndirectInput {
     public AerospikeIndirectInput(@JsonProperty("aerospikeData") AerospikeData data){
         this.data = data;
     }
+
+    /**
+     * config for indirect input to whether load before or after SUT start
+     *
+     * @return
+     */
+    @Override
+    public boolean isLoadAfterSUT() {
+        return false;
+    }
 }

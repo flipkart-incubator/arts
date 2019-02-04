@@ -36,7 +36,7 @@ class KafkaLocalServer implements DependencyInitializer {
         KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
 
         //start local zookeeper
-        this.zookeeperLocalServer = new ZookeeperLocalServer();
+        this.zookeeperLocalServer = ZookeeperLocalServer.getInstance();
         this.zookeeperLocalServer.initialize();
 
         //start local kafka broker

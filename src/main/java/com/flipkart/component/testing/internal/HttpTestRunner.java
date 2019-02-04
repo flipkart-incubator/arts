@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
+
 public class HttpTestRunner {
 
     /**
@@ -40,7 +42,7 @@ public class HttpTestRunner {
         } else if (directInput.isPut()) {
             HttpPut httpPut = new HttpPut(url + directInput.getPath());
             Optional.ofNullable(directInput.getHeaders()).ifPresent(x -> x.forEach(httpPut::addHeader));
-            httpPut.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(directInput.getRequest()), ContentType.APPLICATION_JSON));
+            httpPut.setEntity(new StringEntity(OBJECT_MAPPER.writeValueAsString(directInput.getRequest()), ContentType.APPLICATION_JSON));
             httpResponse = httpClient.execute(httpPut);
         } else {
             HttpDelete httpDelete = new HttpDelete(url + directInput.getPath());

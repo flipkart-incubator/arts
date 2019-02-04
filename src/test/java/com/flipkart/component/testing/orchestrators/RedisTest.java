@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -19,12 +20,11 @@ public class RedisTest {
     @Test
     public void test() throws Exception {
 
-        ObjectMapper objectMapper = new ObjectMapper();
 
-        TestSpecification testSpecification = objectMapper.readValue(this.getClass().getClassLoader().getResourceAsStream("redis-example.json"),TestSpecification.class);
+        TestSpecification testSpecification = OBJECT_MAPPER.readValue(this.getClass().getClassLoader().getResourceAsStream("redis-example.json"),TestSpecification.class);
         RedisObservation expectedObservation = (RedisObservation) testSpecification.getObservations().get(0);
 
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).runLite(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof RedisObservation);

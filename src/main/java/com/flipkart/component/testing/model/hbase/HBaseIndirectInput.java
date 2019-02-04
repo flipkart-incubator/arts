@@ -74,6 +74,16 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
         return true;
     }
 
+    /**
+     * config for indirect input to whether load before or after SUT start
+     *
+     * @return
+     */
+    @Override
+    public boolean isLoadAfterSUT() {
+        return false;
+    }
+
     @Data
     public static class Row {
 

@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.Mockito.mock;
 
@@ -21,8 +22,8 @@ public class RMQTest {
     public void testRMQ() throws Exception {
 
 
-        TestSpecification testSpecification = new ObjectMapper().readValue(this.getClass().getClassLoader().getResourceAsStream("rmq-example.json"),TestSpecification.class);
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
+        TestSpecification testSpecification = OBJECT_MAPPER.readValue(this.getClass().getClassLoader().getResourceAsStream("rmq-example.json"),TestSpecification.class);
+        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).runLite(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof RMQObservation);

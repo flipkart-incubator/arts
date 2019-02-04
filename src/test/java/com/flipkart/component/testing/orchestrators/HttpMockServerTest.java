@@ -1,8 +1,13 @@
 package com.flipkart.component.testing.orchestrators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flipkart.component.testing.model.DirectInput;
 import com.flipkart.component.testing.model.TestSpecification;
+import com.flipkart.component.testing.model.http.HttpDirectInput;
+import com.flipkart.component.testing.model.http.HttpObservation;
+import com.flipkart.component.testing.model.http.METHOD;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -17,11 +22,11 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static org.mockito.Mockito.mock;
 
 //these tests fail after the introducing auto shutdown: however this test depends on mock server after the test run.
 //keeping the tests for debugging purpose.
-@Ignore
 public class HttpMockServerTest {
 
     @Test
@@ -42,21 +47,21 @@ public class HttpMockServerTest {
                 "  }\n" +
                 "}";
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map map = objectMapper.readValue(specificationStr, Map.class);
+        Map map = OBJECT_MAPPER.readValue(specificationStr, Map.class);
 
 
+        DirectInput directInput = new HttpDirectInput("/abc", METHOD.GET,null, Maps.newHashMap());
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
-        TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(indirectInput), Lists.newArrayList());
+        TestSpecification testSpecification = new TestSpecification(null, directInput, Lists.newArrayList(indirectInput), Lists.newArrayList(new HttpObservation()));
 
-        System.out.println(objectMapper.writeValueAsString(testSpecification));
-        List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
+        System.out.println(OBJECT_MAPPER.writeValueAsString(testSpecification));
+        List<Observation> observations = new HttpTestOrchestrator(() -> "http://localhost:7777", new HttpTestRunner() ).run(testSpecification);
 
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:7777/abc").asJson();
-
-        String val = (String) jsonResponse.getBody().getObject().get("a");
-        Assert.assertEquals("b", val);
+        Assert.assertTrue(observations.size() == 1);
+        HttpObservation httpObservation = (HttpObservation) observations.get(0);
+        Map responseAsMap = httpObservation.getResponseAsMap();
+        Assert.assertEquals("b", responseAsMap.get("a"));
 
 
     }
@@ -84,18 +89,18 @@ public class HttpMockServerTest {
                 "  }\n" +
                 "}";
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map map = objectMapper.readValue(specificationStr, Map.class);
+        Map map = OBJECT_MAPPER.readValue(specificationStr, Map.class);
 
+        DirectInput directInput = new HttpDirectInput("/abc", METHOD.GET,null, Maps.newHashMap());
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
-        TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(indirectInput), Lists.newArrayList());
+
+        TestSpecification testSpecification = new TestSpecification(null, directInput, Lists.newArrayList(indirectInput), Lists.newArrayList(new HttpObservation()));
         List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
-
-        HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:7777/abc").header("abc","custom").asJson();
-
-        String val = (String) jsonResponse.getBody().getObject().get("a");
-        Assert.assertEquals("b", val);
+        Assert.assertTrue(observations.size() == 1);
+        HttpObservation httpObservation = (HttpObservation) observations.get(0);
+        Map responseAsMap = httpObservation.getResponseAsMap();
+        Assert.assertEquals("b", responseAsMap.get("a"));
 
     }
 }

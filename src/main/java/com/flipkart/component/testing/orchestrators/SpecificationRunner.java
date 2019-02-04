@@ -3,6 +3,7 @@ package com.flipkart.component.testing.orchestrators;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.DropwizardServiceStarter;
 import com.flipkart.component.testing.SUT;
+import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.model.Observation;
 import com.flipkart.component.testing.model.TestSpecification;
 import com.flipkart.component.testing.servers.DependencyRegistry;
@@ -14,20 +15,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
+
 /**
  * Runs a single test specification : Need to extend for multiple
  */
 public class SpecificationRunner {
-    private static ObjectMapper objectMapper = new ObjectMapper();
-    private SUT sut;
+    private final HttpTestOrchestrator httpTestOrchestrator;
 
 
     public SpecificationRunner(String serviceConfigPath, String serviceUrl, Class<?> serviceClass) {
-        this.sut = new DropwizardServiceStarter(serviceConfigPath, serviceUrl, serviceClass);
+        SUT sut = new DropwizardServiceStarter(serviceConfigPath, serviceUrl, serviceClass);
+        httpTestOrchestrator = new HttpTestOrchestrator(sut, new HttpTestRunner());
     }
 
-    public SpecificationRunner(SUT sut) {
-        this.sut = sut;
+    public SpecificationRunner(SUT sut, HttpTestRunner httpTestRunner) {
+        httpTestOrchestrator = new HttpTestOrchestrator(sut, httpTestRunner);
     }
 
     /**
@@ -38,8 +41,8 @@ public class SpecificationRunner {
      * @throws Exception
      */
     public List<Observation> run(String specFilePath) throws Exception {
-        TestSpecification testSpecification = objectMapper.readValue(new File(specFilePath), TestSpecification.class);
-        return new HttpTestOrchestrator(sut).run(testSpecification);
+        TestSpecification testSpecification = OBJECT_MAPPER.readValue(new File(specFilePath), TestSpecification.class);
+        return httpTestOrchestrator.run(testSpecification);
     }
 
     /**
@@ -52,10 +55,10 @@ public class SpecificationRunner {
     public Map<TestSpecification, List<Observation>> chain(List<String> specFilePaths) throws Exception {
         List<TestSpecification> testSpecifications = new ArrayList<>();
         for (String filePath : specFilePaths) {
-            TestSpecification testSpecification = objectMapper.readValue(new File(filePath), TestSpecification.class);
+            TestSpecification testSpecification = OBJECT_MAPPER.readValue(new File(filePath), TestSpecification.class);
             testSpecifications.add(testSpecification);
         }
-        return new HttpTestOrchestrator(sut).chain(testSpecifications);
+        return httpTestOrchestrator.chain(testSpecifications);
     }
 
     /**
@@ -68,10 +71,10 @@ public class SpecificationRunner {
     public LinkedHashMap<TestSpecification, List<Observation>> runMultipleTests(List<String> specFilePaths) throws Exception {
         List<TestSpecification> testSpecifications = new ArrayList<>();
         for (String filePath : specFilePaths) {
-            TestSpecification testSpecification = objectMapper.readValue(new File(filePath), TestSpecification.class);
+            TestSpecification testSpecification = OBJECT_MAPPER.readValue(new File(filePath), TestSpecification.class);
             testSpecifications.add(testSpecification);
         }
-        return new HttpTestOrchestrator(sut).runMultiple(testSpecifications);
+        return httpTestOrchestrator.runMultiple(testSpecifications);
     }
 
 
@@ -82,8 +85,12 @@ public class SpecificationRunner {
      * @return
      */
     public List<Observation> runLite(String specFilePath) throws Exception {
-        TestSpecification testSpecification = objectMapper.readValue(new File(specFilePath), TestSpecification.class);
-        return new HttpTestOrchestrator(sut).runLite(testSpecification, sut);
+        TestSpecification testSpecification = OBJECT_MAPPER.readValue(new File(specFilePath), TestSpecification.class);
+        return runLite(testSpecification);
+    }
+
+    public List<Observation> runLite(TestSpecification testSpecification) throws Exception{
+        return httpTestOrchestrator.runLite(testSpecification);
     }
 
     /**
@@ -105,7 +112,7 @@ public class SpecificationRunner {
      * @param tuplesToBeEmitted
      */
     public List<Observation> runLite(TestableTopology testableTopology, String specFile, int tuplesToBeEmitted) throws Exception {
-        TestSpecification testSpecification = objectMapper.readValue(new File(specFile), TestSpecification.class);
+        TestSpecification testSpecification = OBJECT_MAPPER.readValue(new File(specFile), TestSpecification.class);
         List<Observation> observations = new StormTestOrchestrator(testableTopology).executeLite(testSpecification, tuplesToBeEmitted);
         return observations;
     }

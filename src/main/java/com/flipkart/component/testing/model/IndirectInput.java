@@ -74,5 +74,10 @@ public interface IndirectInput {
     @JsonIgnore
     default boolean isAerospikeInput() {return this instanceof AerospikeIndirectInput;}
 
+    /**
+     * config for indirect input to whether load before or after SUT start
+     * @return
+     */
+    boolean isLoadAfterSUT();
 
 }

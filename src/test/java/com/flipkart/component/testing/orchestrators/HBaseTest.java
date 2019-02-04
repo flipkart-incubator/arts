@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static org.mockito.Mockito.mock;
 
 public class HBaseTest {
@@ -22,16 +23,16 @@ public class HBaseTest {
 	public void test() throws Exception {
 
 		String inidrectInputStr = "{\"name\": \"hbaseIndirectInput\",\"tableName\": \"t1\",\"connectionType\":\"IN_MEMORY\",\"rows\": [{\"rowKey\": \"rk1\",\"data\": {\"cf1\": {\"k1\": \"v1\",\"k2\": \"v2\"}}},{\"rowKey\": \"rk2\",\"data\": {\"cf1\": {\"k1\": \"v1\"}}}]}";
-		HBaseIndirectInput hBaseIndirectInput = new ObjectMapper().readValue(inidrectInputStr,
+		HBaseIndirectInput hBaseIndirectInput = OBJECT_MAPPER.readValue(inidrectInputStr,
 				HBaseIndirectInput.class);
 
 		String observationStr = "{\"name\":\"hbaseObservation\",\"tableName\":\"t1\",\"connectionType\":\"IN_MEMORY\",\"rows\":[{\"rowKey\":\"rk1\",\"data\":{\"cf1\":{\"k1\":\"v1\",\"k2\":\"v2\"}}},{\"rowKey\":\"rk2\",\"data\":{\"cf1\":{\"k1\":\"v1\"}}}]}";
-		HBaseObservation expectedObservation = new ObjectMapper().readValue(observationStr, HBaseObservation.class);
+		HBaseObservation expectedObservation = OBJECT_MAPPER.readValue(observationStr, HBaseObservation.class);
 
 		TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(hBaseIndirectInput),
 				Lists.newArrayList(expectedObservation));
 
-		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
+		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).runLite(testSpecification);
 
 		Assert.assertTrue(observations.size() == 1);
 		Assert.assertTrue(observations.get(0) instanceof HBaseObservation);
