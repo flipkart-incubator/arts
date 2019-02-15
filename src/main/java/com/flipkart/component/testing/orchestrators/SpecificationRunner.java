@@ -21,9 +21,16 @@ import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
  * Runs a single test specification : Need to extend for multiple
  */
 public class SpecificationRunner {
-    private final HttpTestOrchestrator httpTestOrchestrator;
+    private HttpTestOrchestrator httpTestOrchestrator;
+    private StormTestOrchestrator stormTestOrchestrator;
 
 
+    /**
+     * For Dropwizard based services
+     * @param serviceConfigPath
+     * @param serviceUrl
+     * @param serviceClass
+     */
     public SpecificationRunner(String serviceConfigPath, String serviceUrl, Class<?> serviceClass) {
         SUT sut = new DropwizardServiceStarter(serviceConfigPath, serviceUrl, serviceClass);
         httpTestOrchestrator = new HttpTestOrchestrator(sut, new HttpTestRunner());
@@ -31,6 +38,14 @@ public class SpecificationRunner {
 
     public SpecificationRunner(SUT sut, HttpTestRunner httpTestRunner) {
         httpTestOrchestrator = new HttpTestOrchestrator(sut, httpTestRunner);
+    }
+
+    public SpecificationRunner(SUT sut){
+        httpTestOrchestrator = new HttpTestOrchestrator(sut, new HttpTestRunner());
+    }
+
+    public SpecificationRunner(TestableTopology testableTopology){
+        this.stormTestOrchestrator = new StormTestOrchestrator(testableTopology);
     }
 
     /**
@@ -107,14 +122,16 @@ public class SpecificationRunner {
 
     /**
      * runLite for a storm topology
-     * @param testableTopology
      * @param specFile
      * @param tuplesToBeEmitted
      */
-    public List<Observation> runLite(TestableTopology testableTopology, String specFile, int tuplesToBeEmitted) throws Exception {
+    public List<Observation> runLite(String specFile, int tuplesToBeEmitted) throws Exception {
         TestSpecification testSpecification = OBJECT_MAPPER.readValue(new File(specFile), TestSpecification.class);
-        List<Observation> observations = new StormTestOrchestrator(testableTopology).executeLite(testSpecification, tuplesToBeEmitted);
-        return observations;
+        return runLite(testSpecification, tuplesToBeEmitted);
+    }
+
+    public List<Observation> runLite(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
+        return this.stormTestOrchestrator.executeLite(testSpecification, tuplesToBeEmitted);
     }
 
 }
