@@ -54,7 +54,9 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
             return this.executeInner(testSpecification,tuplesToBeEmitted);
         } finally {
             dependencyRegistry.clean();
-            this.stormLocalCluster.tearDown();
+            if(stormLocalCluster != null){
+                stormLocalCluster.tearDown();
+            }
         }
     }
 
