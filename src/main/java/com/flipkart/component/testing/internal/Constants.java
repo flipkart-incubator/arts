@@ -23,7 +23,7 @@ public class Constants {
     public static final String HZ_INSTANCE_NAME = "regression";
     public static final String HZ_MAPS_DS = "maps";
     public static final String HZ_LOGGING_PROPERTY = "hazelcast.logging.type";
-    public static final String HZ_IMAP_CLASS = "com.hazelcast.core.IMap";
+    public static final String HZ_IMAP_CLASS = "com.hazelcast.map.impl.proxy.MapProxyImpl";
 
 
 }
