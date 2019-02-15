@@ -50,7 +50,7 @@ public class HazelcastDataLoader implements TestDataLoader<HazelcastIndirectInpu
 
                 key = this.objectMapper.convertValue(key, keyClass);
                 value = this.objectMapper.convertValue(value, valueClass);
-                hazelcastClient.getMap(mapName).putIfAbsent(key, value);
+                hazelcastClient.getMap(mapName).put(key, value);
 
             }
         }
