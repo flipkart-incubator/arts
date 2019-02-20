@@ -1,0 +1,57 @@
+{
+  "indirectInputs":[
+    {
+      "name":"solrIndirectInput",
+      "connectionType":"IN_MEMORY",
+      "solrData":
+        {
+          "coreName":"candidates",
+          "solrConfigFiles":"src/main/resources/solrConfFiles",
+          "uniqueKey":"id",
+          "documents":[
+            {
+              "id" : "003",
+              "name" : "abc",
+              "age" : 53,
+              "Designation" : "Manager",
+              "Location" : "Hyderabad"
+            },
+            {
+              "id" : "004",
+              "name" : "Robert haans",
+              "age" : 43,
+              "Designation" : "SR.Programmer",
+              "Location" : "Chennai"
+            }
+          ]
+        }
+    }
+  ],
+  "observations":[
+    {
+      "name":"solrObservation",
+      "connectionType":"IN_MEMORY",
+      "solrExpectedData":
+        {
+          "coreName":"candidates",
+          "queryFile":"src/test/resources/solrQuery.json",
+          "documents":[
+            {
+              "id" : "003",
+              "name" : "abc",
+              "age" : 53,
+              "Designation" : "Manager",
+              "Location" : "Hyderabad"
+            },
+            {
+              "id" : "004",
+              "name" : "Robert haans",
+              "age" : 43,
+              "Designation" : "SR.Programmer",
+              "Location" : "Chennai"
+            }
+          ]
+        }
+    }
+  ]
+}

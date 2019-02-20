@@ -55,6 +55,13 @@ public class ObjectFactory {
             return SingleHostBasedOperations.getInstance();
         }
     }
+    
+    public static SolrOperations getSolrOperations(SolrTestConfig solrTestConfig) {
+        if(solrTestConfig.getConnectionType()==ConnectionType.IN_MEMORY)
+            return EmbeddedSolrOperations.getEmbeddedSolrInstance(solrTestConfig);
+        else
+            return RemoteSolrOperations.getRemoteSolrInstance(solrTestConfig);
+    }
 
     public static ElasticSearchOperations getESOperations(ElasticSearchTestConfig elasticSearchTestConfig) {
         if (elasticSearchTestConfig.getConnectionType() == ConnectionType.IN_MEMORY) {

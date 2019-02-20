@@ -14,6 +14,7 @@ import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
 import com.flipkart.component.testing.model.mysql.MysqlIndirectInput;
 import com.flipkart.component.testing.model.redis.RedisIndirectInput;
 import com.flipkart.component.testing.model.rmq.RMQIndirectInput;
+import com.flipkart.component.testing.model.solr.SolrIndirectInput;
 import com.flipkart.component.testing.model.zookeeper.ZookeeperIndirectInput;
 
 /**
@@ -33,7 +34,9 @@ import com.flipkart.component.testing.model.zookeeper.ZookeeperIndirectInput;
         @JsonSubTypes.Type(value = ZookeeperIndirectInput.class, name = "zookeeperIndirectInput"),
         @JsonSubTypes.Type(value = AerospikeIndirectInput.class, name = "aerospikeIndirectInput"),
         @JsonSubTypes.Type(value = EmbeddedHZIndirectInput.class, name = "embeddedhzIndirectInput"),
-        @JsonSubTypes.Type(value = ServerHZIndirectInput.class, name = "serverhzIndirectInput")
+        @JsonSubTypes.Type(value = ServerHZIndirectInput.class, name = "serverhzIndirectInput"),
+        @JsonSubTypes.Type(value = SolrIndirectInput.class, name = "solrIndirectInput"),
+
 })
 public interface IndirectInput {
 
@@ -70,6 +73,11 @@ public interface IndirectInput {
     @JsonIgnore
     default boolean isElasticSearchInput() {
         return this instanceof ElasticSearchIndirectInput;
+    }
+
+    @JsonIgnore
+    default boolean isSolrInput() {
+        return this instanceof SolrIndirectInput;
     }
 
     @JsonIgnore

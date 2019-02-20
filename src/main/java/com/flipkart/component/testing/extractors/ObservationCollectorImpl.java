@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.extractors;
 
-import com.flipkart.component.testing.model.*;
+import com.flipkart.component.testing.model.Observation;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
 import com.flipkart.component.testing.model.hazelcast.HazelcastObservation;
@@ -11,6 +11,7 @@ import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import com.flipkart.component.testing.model.mysql.MysqlObservation;
 import com.flipkart.component.testing.model.redis.RedisObservation;
 import com.flipkart.component.testing.model.rmq.RMQObservation;
+import com.flipkart.component.testing.model.solr.SolrObservation;
 import com.flipkart.component.testing.model.zookeeper.ZookeeperObservation;
 
 import java.io.IOException;
@@ -50,6 +51,8 @@ class ObservationCollectorImpl implements ObservationCollector {
             return new HazelcastConsumer().actualObservations((HazelcastObservation) expectedObservation);
         }else if(expectedObservation.isZk()){
             return new ZookeeperConsumer().actualObservations((ZookeeperObservation) expectedObservation);
+        }else if (expectedObservation.isSolr()){
+            return new SolrLocalConsumer().actualObservations((SolrObservation) expectedObservation);
         }
         throw new IllegalStateException("Consumer is not defined for observation" + expectedObservation);
     }

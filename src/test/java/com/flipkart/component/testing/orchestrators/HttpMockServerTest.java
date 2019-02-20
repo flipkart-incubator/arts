@@ -25,7 +25,7 @@ import java.util.Map;
 import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
 import static org.mockito.Mockito.mock;
 
-//these tests fail after the introducing auto shutdown: however this test depends on mock server after the test run.
+//these tests fail after the introducing auto shutdown: however this SolrEmbededTest depends on mock server after the SolrEmbededTest run.
 //keeping the tests for debugging purpose.
 public class HttpMockServerTest {
 

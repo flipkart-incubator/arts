@@ -14,12 +14,12 @@ public class Constants {
     public static final String BROKER_HOST = "localhost:" + KAFKA_BROKER_PORT;
     public static final int HTTP_MOCK_SERVER_PORT = 7777;
     public static final int REDIS_SERVER_PORT = 6379;
-
     public static final String ES_CLUSTER_PORT = "9210";
     public static final String ES_CLUSTER_VERSION = "1.5.2";
     public static final String ES_CLIENT_HOST = "127.0.0.1";
     public static final int ES_CLIENT_PORT =9300;
     public static final String ES_CLUSTER_NAME = "elasticsearch";
+    public static final String SOLR_SERVER_PORT = "8983";
     public static final String HZ_INSTANCE_NAME = "regression";
     public static final String HZ_MAPS_DS = "maps";
     public static final String HZ_LOGGING_PROPERTY = "hazelcast.logging.type";

@@ -13,6 +13,7 @@ import com.flipkart.component.testing.model.kafka.KafkaObservation;
 import com.flipkart.component.testing.model.mysql.MysqlObservation;
 import com.flipkart.component.testing.model.redis.RedisObservation;
 import com.flipkart.component.testing.model.rmq.RMQObservation;
+import com.flipkart.component.testing.model.solr.SolrObservation;
 import com.flipkart.component.testing.model.zookeeper.ZookeeperObservation;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
@@ -29,7 +30,9 @@ import com.flipkart.component.testing.model.zookeeper.ZookeeperObservation;
         @JsonSubTypes.Type(value = AerospikeObservation.class, name = "AerospikeObservation"),
         @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation"),
         @JsonSubTypes.Type(value = HazelcastObservation.class, name = "hazelcastObservation"),
-        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "zookeeperObservation")
+        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "zookeeperObservation"),
+        @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation"),
+        @JsonSubTypes.Type(value = SolrObservation.class,name = "solrObservation")
 
 })
 public interface Observation {
@@ -67,6 +70,11 @@ public interface Observation {
     @JsonIgnore
     default boolean isElasticSearch(){
         return this instanceof ElasticSearchObservation;
+    }
+
+    @JsonIgnore
+    default boolean isSolr(){
+        return this instanceof SolrObservation;
     }
 
     @JsonIgnore
