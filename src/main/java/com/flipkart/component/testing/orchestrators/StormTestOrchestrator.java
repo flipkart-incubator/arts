@@ -5,9 +5,13 @@ import com.flipkart.component.testing.model.TestSpecification;
 import com.flipkart.component.testing.storm.functional.DelegateSpout;
 import com.flipkart.component.testing.storm.functional.TestableTopology;
 import org.apache.storm.topology.base.BaseRichSpout;
+import org.apache.storm.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * An orchestrator for Storm Topology
@@ -16,7 +20,8 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
 
     private TestableTopology testableTopology;
     private StormLocalCluster stormLocalCluster;
-    private DelegateSpout delegateSpout;
+    private List<DelegateSpout> delegateSpouts = new ArrayList<>();
+
 
     public StormTestOrchestrator(TestableTopology testableTopology) {
         this.testableTopology = testableTopology;
@@ -53,10 +58,10 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
         try {
             return this.executeInner(testSpecification,tuplesToBeEmitted);
         } finally {
+//            if(stormLocalCluster != null){
+////                stormLocalCluster.tearDown();
+//            }
             dependencyRegistry.clean();
-            if(stormLocalCluster != null){
-                stormLocalCluster.tearDown();
-            }
         }
     }
 
@@ -96,8 +101,9 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
      */
     private BaseRichSpout wrapSpout(Map<String, BaseRichSpout> spouts, String spoutId, int tuplesToBeEmitted) {
         BaseRichSpout spout = spouts.get(spoutId);
-        this.delegateSpout = new DelegateSpout(spout, tuplesToBeEmitted);
-        return this.delegateSpout;
+        DelegateSpout delegateSpout = new DelegateSpout(spout, tuplesToBeEmitted, testableTopology.getTopologyName() + '_' + UUID.randomUUID().toString());
+        this.delegateSpouts.add(delegateSpout);
+        return delegateSpout;
     }
 
 
@@ -108,7 +114,7 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
      */
     private void waitForCompletion(int ttl) throws Exception {
         int totalTimeWaited = 0;
-        while (!this.delegateSpout.isDone() && totalTimeWaited < ttl) {
+        while (!isCompleted() && totalTimeWaited < ttl) {
             System.out.println("waiting for completion : total Time Waited in seconds" + totalTimeWaited / 1000);
             Thread.sleep(1000);
             totalTimeWaited += 1000;
@@ -118,6 +124,16 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
             System.out.println("giving up: waited for" + totalTimeWaited / 1000);
             throw new Exception("ttl "+ ttl/1000 + "s expired");
         }
+    }
+
+
+    /**
+     * returns true if the topology has completed execution.
+     * @return
+     */
+    private boolean isCompleted(){
+        //ideally should be allMatch: but it is not straightforward for now
+        return this.delegateSpouts.stream().anyMatch(DelegateSpout::isDone);
     }
 
 }

@@ -5,6 +5,7 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichSpout;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,13 +15,20 @@ import java.util.Map;
  */
 public class DelegateSpout extends BaseRichSpout {
 
+    private static Map<String, Integer> tupleTrackerMap = new HashMap<>();
     private final BaseRichSpout originalSpout;
-    private static int tuplesToBeEmitted;
+    private final String trackerId;
 
 
-    public DelegateSpout(BaseRichSpout spout, int tuples) {
+    public DelegateSpout(BaseRichSpout spout, int tuples, String trackerId) {
         this.originalSpout = spout;
-        tuplesToBeEmitted = tuples;
+        this.trackerId = trackerId;
+        if(tupleTrackerMap.containsKey(trackerId)){
+            throw new IllegalArgumentException("trackerId already exists" + trackerId);
+        }
+
+        tupleTrackerMap.put(trackerId, tuples);
+
     }
 
     @Override
@@ -54,7 +62,9 @@ public class DelegateSpout extends BaseRichSpout {
     @Override
     public void ack(Object msgId) {
         this.originalSpout.ack(msgId);
+        int tuplesToBeEmitted = tupleTrackerMap.get(this.trackerId);
         tuplesToBeEmitted--;
+        tupleTrackerMap.put(trackerId, tuplesToBeEmitted);
     }
 
     @Override
@@ -68,7 +78,7 @@ public class DelegateSpout extends BaseRichSpout {
     }
 
     public boolean isDone(){
-        return tuplesToBeEmitted == 0;
+        return tupleTrackerMap.get(trackerId) <= 0;
     }
 
     @Override
