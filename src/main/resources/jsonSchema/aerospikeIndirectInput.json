@@ -1,50 +1,57 @@
 {
   "description": "Aerospike Indirect Input",
   "properties": {
-    "aerospikeData": {
-      "description": "Data to be passed into AS db",
-      "type": "object",
-      "required": ["namespace","host","port","set","records"],
-      "properties": {
-        "namespace": {
-          "description": "name of the namespace",
+    "connectionInfo":{
+      "description":"connection parameters",
+      "type":"object",
+      "required":["host","port"],
+      "properties":{
+        "host":{
+          "description": "host IP",
           "type": "string"
         },
-        "host": {
-          "description": "hostname",
-          "type": "string"
-        },
-        "port": {
-          "description": "port number",
+        "port":{
+          "description": "host port number",
           "type": "integer"
-        },
-        "set": {
-          "description": "test set name",
-          "type": "string"
-        },
-        "records": {
-          "description": "array of records containing keys",
-          "type": "array",
-          "items": [
-            {
-              "description": "Keys",
-              "type": "object",
-              "patternProperties": {
-                "keys": {
-                  "description": "Keys consisting of bins",
-                  "type": "object",
-                  "patternProperties": {
-                    "bins": {
-                      "description": "bins",
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          ]
         }
       }
+    },
+    "aerospikeData": {
+      "description": "Data to be passed into AS db",
+      "type": "array",
+     "items":{
+       "required": ["namespace", "set", "records"],
+       "properties": {
+         "namespace": {
+           "description": "name of the namespace",
+           "type": "string"
+         },
+         "set": {
+           "description": "test set name",
+           "type": "string"
+         },
+         "records": {
+           "description": "array of records",
+           "type": "array",
+           "required":["PK","binData"],
+           "items":
+             {
+               "type": "object",
+               "properties": {
+                 "PK": {
+                   "description": "Primary key",
+                   "type": "string"
+                 },
+                 "binData":{
+                   "description":" bin key-value pair",
+                   "type":"object"
+                 }
+               }
+             }
+
+         }
+       }
+     }
     }
   }
 }

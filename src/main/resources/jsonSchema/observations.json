@@ -17,7 +17,8 @@
               "elasticSearchObservation","redisObservation",
               "kafkaObservation","mysqlObservation",
               "httpObservation","hbaseObservation",
-              "rmqObservation","AerospikeObservation"
+              "rmqObservation","aerospikeObservation",
+              "solrObservation"
             ]
           }
         },
@@ -29,7 +30,8 @@
           {"$ref": "file:src/main/resources/jsonSchema/httpObservation.json#/"},
           {"$ref": "file:src/main/resources/jsonSchema/rmqObservation.json#/"},
           {"$ref": "file:src/main/resources/jsonSchema/hbaseObservation.json#/"},
-          {"$ref": "file:src/main/resources/jsonSchema/aerospikeObservation.json#/"}
+          {"$ref": "file:src/main/resources/jsonSchema/aerospikeObservation.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/solrObservation.json#/"}
 
         ]
       }

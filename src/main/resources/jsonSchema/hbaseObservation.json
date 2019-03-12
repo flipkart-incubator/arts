@@ -8,7 +8,7 @@
     "connectionType": {
       "type": "string",
       "description": "type of connection",
-      "enum": ["REMOTE","LOCALHOST"]
+      "enum": ["REMOTE","LOCALHOST","IN_MEMORY"]
     },
     "hbaseSiteConfig": {
       "type": "object",

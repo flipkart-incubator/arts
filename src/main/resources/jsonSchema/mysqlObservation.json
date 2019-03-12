@@ -10,7 +10,7 @@
       "type": "string",
       "description": "type of connection",
       "enum": [
-        "REMOTE","LOCALHOST"
+        "REMOTE","LOCALHOST","IN_MEMORY"
       ]
     },
     "data": {

@@ -1,0 +1,40 @@
+{
+  "description": "Solr observation schema",
+  "type": "object",
+  "properties": {
+    "connectionType": {
+      "type": "string",
+      "description": "type of connection",
+      "enum": [
+        "IN_MEMORY","REMOTE","LOCALHOST"
+      ]
+    },
+    "solrExpectedData": {
+      "type": "object",
+      "description": "The data to be retrived from the respective core",
+      "required": [
+        "coreName",
+        "queryFile",
+        "documents"
+      ],
+      "properties": {
+        "coreName": {
+          "type": "string",
+          "description": "core name"
+        },
+        "queryFile": {
+          "type": "string",
+          "description": "relative path of the json file having query"
+        },
+        "documents": {
+          "type": "array",
+          "description": "the array of document to be retrieved from solr",
+          "items": {
+            "type": "object",
+            "description": "each solr document"
+          }
+        }
+      }
+    }
+  }
+}

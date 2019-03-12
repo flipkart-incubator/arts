@@ -79,24 +79,53 @@
       }
     },
     {
-      "name": "AerospikeIndirectInput",
-      "aerospikeData": {
-        "namespace": "test",
-        "host": "172.28.128.4",
-        "port": 3000,
-        "set": "testSet",
-        "records": [{
-          "cghc": {
-            "bin1": "String1",
-            "bin2": "String2"
-          }
-        }, {
-          "keygc2": {
-            "bin1": "String3",
-            "bin2": "String4"
-          }
-        }]
-      }
+      "name": "aerospikeIndirectInput",
+      "connectionInfo":{
+        "host": "172.28.128.5",
+        "port": 3000
+      },
+      "aerospikeData": [
+        {
+          "namespace": "dsp-santa-uom",
+          "set": "uom",
+          "records": [
+            {
+              "PK": "key1",
+              "binData": {
+                "": "String1"
+              }
+            },
+            {
+              "PK": "key2",
+              "binData": {
+                "offers": {
+                  "nb:mp:06c9876f23": "{\"t\":\"COM\",\"x\":{\"11000107659762801\":{\"a\":1,\"b\":1,\"c\":-1,\"d\":1514745000000,\"e\":1,\"f\":\"359220077071489\",\"g\":1514745000000,\"h\":\"\",\"i\":\"11000107659762801\",\"j\":\"275a5ac-442a-48b4-a9c3-79879879\"}}}"
+                }
+              }
+            },
+            {
+              "PK": "key3",
+              "binData": {
+                "offers": {
+                  "nb:mp:06c9876f23": "{\"t\":\"OM\",\"a\":1,\"b\":1,\"c\":-1,\"d\":1514745000000,\"e\":1}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "namespace": "dsp-santa",
+          "set":"olm",
+          "records": [
+            {
+              "PK":"LSTMOBEN2YY9PHNXRNZV3S7LI",
+              "binData": {
+                "": "nb:mp:07dba58603,nb:mp:07dba58602"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "hbaseIndirectInput",
@@ -136,6 +165,32 @@
           "KeyTable2": 0
 
         }]
+      }
+    },
+    {
+      "name":"solrIndirectInput",
+      "connectionType":"IN_MEMORY",
+      "solrData":
+      {
+        "coreName":"candidates",
+        "solrConfigFiles":"src/main/resources/solrConfFiles",
+        "uniqueKey":"id",
+        "documents":[
+          {
+            "id" : "003",
+            "name" : "abc",
+            "age" : 53,
+            "Designation" : "Manager",
+            "Location" : "Hyderabad"
+          },
+          {
+            "id" : "004",
+            "name" : "Robert haans",
+            "age" : 43,
+            "Designation" : "SR.Programmer",
+            "Location" : "Chennai"
+          }
+        ]
       }
     }
   ],
@@ -207,23 +262,62 @@
       }]
     },
     {
-      "name": "AerospikeObservation",
-      "aerospikeData": {
-        "namespace": "test",
-        "host": "172.28.128.4",
-        "port": 3000,
-        "set": "testSet",
-        "records": [{
-          "key1": {
-            "bin1": "String1",
-            "bin2": "String2"
+      "name": "aerospikeObservation",
+      "connectionInfo":{
+        "host": "172.28.128.5",
+        "port": 3000
+      },
+      "aerospikeData": [
+        {
+          "namespace": "dsp-santa-uom",
+          "set": "uom",
+          "records": [
+            {
+              "PK": "key1",
+              "binData": {
+                "": "String1"
+              }
+            }
+          ]
+
+        },
+        {
+          "namespace": "dsp-santa",
+          "set": "olm",
+          "records": [
+            {
+              "PK":"LSTMOBEN2YY9PHNXRNZV3S7LI",
+              "binData": {
+                "": "nb:mp:07dba58603,nb:mp:07dba58602"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name":"solrObservation",
+      "connectionType":"IN_MEMORY",
+      "solrExpectedData":
+      {
+        "coreName":"candidates",
+        "queryFile":"src/test/resources/solrQuery.json",
+        "documents":[
+          {
+            "id" : "003",
+            "name" : "abc",
+            "age" : 53,
+            "Designation" : "Manager",
+            "Location" : "Hyderabad"
+          },
+          {
+            "id" : "004",
+            "name" : "Robert haans",
+            "age" : 43,
+            "Designation" : "SR.Programmer",
+            "Location" : "Chennai"
           }
-        }, {
-          "key2": {
-            "bin1": "String3",
-            "bin2": "String4"
-          }
-        }]
+        ]
       }
     }
 

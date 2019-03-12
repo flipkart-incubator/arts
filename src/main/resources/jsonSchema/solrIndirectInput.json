@@ -1,0 +1,44 @@
+{
+  "description": "Solr indirect input schema",
+  "type": "object",
+  "properties": {
+    "connectionType": {
+      "type": "string",
+      "description": "Type of connection",
+      "enum": [
+        "IN_MEMORY","REMOTE","LOCALHOST"
+      ]
+    },
+    "solrData": {
+      "type": "object",
+      "description": "Solr data",
+      "required": [
+        "coreName",
+        "solrConfigFiles",
+        "uniqueKey",
+        "documents"
+      ],
+      "properties": {
+        "coreName": {
+          "type": "string",
+          "description": "name of the core to be created"
+        },
+        "solrConfigFiles": {
+          "type": "string",
+          "description": "relative path of folder containing solr.xml,solrconfig.xml and managed-schema"
+        },
+        "uniqueKey": {
+          "type": "string",
+          "description": "The uniquekey present in all the documents in the respective core"
+        },
+        "documents": {
+          "type": "array",
+          "description": "array documents to be indexed into solr",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

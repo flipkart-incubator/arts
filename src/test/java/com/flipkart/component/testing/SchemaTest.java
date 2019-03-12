@@ -21,7 +21,7 @@ public class SchemaTest {
         JSONObject baseSchema= new JSONObject(new JSONTokener(
                 new FileInputStream(new File("src/main/resources/jsonSchema/baseTestSpecification.json"))));
         JSONObject testJson = new JSONObject(
-                new JSONTokener(new FileReader(new File("src/main/resources/JsonSchema/SolrEmbededTest.json"))));
+                new JSONTokener(new FileReader(new File("src/main/resources/JsonSchema/test.json"))));
         Schema schema = SchemaLoader.load(baseSchema);
         try {
             schema.validate(testJson);

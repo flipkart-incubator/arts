@@ -17,11 +17,12 @@
               "elasticSearchIndirectInput",
               "httpIndirectInput",
               "redisIndirectInput",
-              "AerospikeIndirectInput",
+              "aerospikeIndirectInput",
               "rmqIndirectInput",
               "hbaseIndirectInput",
               "kafkaIndirectInput",
-              "mysqlIndirectInput"
+              "mysqlIndirectInput",
+              "solrIndirectInput"
             ]
           }
         },
@@ -33,7 +34,8 @@
           {"$ref": "file:src/main/resources/jsonSchema/aerospikeIndirectInput.json#/"},
           {"$ref": "file:src/main/resources/jsonSchema/hbaseIndirectInput.json#/"},
           {"$ref": "file:src/main/resources/jsonSchema/kafkaIndirectInput.json#/"},
-          {"$ref": "file:src/main/resources/jsonSchema/mysqlIndirectInput.json#/"}
+          {"$ref": "file:src/main/resources/jsonSchema/mysqlIndirectInput.json#/"},
+          {"$ref": "file:src/main/resources/jsonSchema/solrIndirectInput.json#/"}
         ]
       }
     ]
