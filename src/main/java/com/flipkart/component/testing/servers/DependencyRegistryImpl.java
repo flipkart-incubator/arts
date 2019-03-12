@@ -2,6 +2,7 @@ package com.flipkart.component.testing.servers;
 
 import com.flipkart.component.testing.model.*;
 import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
+import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
 import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
@@ -84,9 +85,12 @@ class DependencyRegistryImpl implements DependencyRegistry {
                 dependencyInitializers.add(new KafkaLocalServer());
             } else if(observation.isZk()){
                 dependencyInitializers.add(ZookeeperLocalServer.getInstance());
+            }else if(observation.isAerospike()){
+                dependencyInitializers.add(new AerospikeServer((AerospikeObservation) observation));
             }
 
-            // TODO: atul aerospike
+
+
         }
         return dependencyInitializers;
     }

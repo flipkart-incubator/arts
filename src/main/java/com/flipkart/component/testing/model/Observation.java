@@ -27,7 +27,7 @@ import com.flipkart.component.testing.model.zookeeper.ZookeeperObservation;
         @JsonSubTypes.Type(value = HBaseObservation.class, name = "hbaseObservation"),
         @JsonSubTypes.Type(value = RedisObservation.class, name = "redisObservation"),
         @JsonSubTypes.Type(value = ElasticSearchObservation.class, name = "elasticSearchObservation"),
-        @JsonSubTypes.Type(value = AerospikeObservation.class, name = "AerospikeObservation"),
+        @JsonSubTypes.Type(value = AerospikeObservation.class, name = "aerospikeObservation"),
         @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation"),
         @JsonSubTypes.Type(value = HazelcastObservation.class, name = "hazelcastObservation"),
         @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "zookeeperObservation"),

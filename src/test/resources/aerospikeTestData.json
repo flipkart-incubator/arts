@@ -1,0 +1,72 @@
+{
+  "indirectInputs":[
+    {
+      "name": "aerospikeIndirectInput",
+      "connectionInfo":{
+        "host": "172.28.128.5",
+        "port": 3000
+      },
+      "aerospikeData": [
+        {
+          "namespace": "dsp-santa",
+          "set":"olm",
+          "records": [
+            {
+              "PK":"LSTMOBEN2YY9PHNXRNZV3S7L1",
+              "binData": {
+                "binKey1": "binValue1",
+                "binKey6": "binValue6"
+              }
+            },
+            {
+              "PK":"",
+              "binData": {
+                "binKey2": "binValue3",
+                "binKey3": "binValue4",
+                "binKey4": "binValue5"
+              }
+            },
+            {
+              "PK":"LSTMOBEN2YY9PHNXRNZV3S7L7",
+              "binData": {
+                "binKey7": "binValue7"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "observations":[
+    {
+      "name": "aerospikeObservation",
+      "connectionInfo":{
+        "host": "172.28.128.5",
+        "port": 3000
+      },
+      "aerospikeData": [
+        {
+          "namespace": "dsp-santa",
+          "set":"olm",
+          "records": [
+            {
+              "PK":"LSTMOBEN2YY9PHNXRNZV3S7L1",
+              "binData": {
+                "binKey1": "binValue1",
+                "binKey6": "binValue6"
+              }
+            },
+            {
+              "PK":"",
+              "binData": {
+                "binKey2": "binValue3",
+                "binKey3": "binValue4",
+                "binKey4": "binValue5"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

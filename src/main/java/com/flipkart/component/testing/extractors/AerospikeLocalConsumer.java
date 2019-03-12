@@ -1,74 +1,67 @@
 package com.flipkart.component.testing.extractors;
 
-import com.aerospike.client.*;
-import com.aerospike.client.policy.ClientPolicy;
-import com.aerospike.client.policy.Priority;
-import com.aerospike.client.policy.ScanPolicy;
-import com.flipkart.component.testing.model.aerospike.AerospikeData;
+import com.aerospike.client.query.RecordSet;
+import com.aerospike.client.query.Statement;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
+import com.flipkart.component.testing.shared.AerospikeOperations;
+import com.flipkart.component.testing.shared.ObjectFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class AerospikeLocalConsumer implements ObservationCollector<AerospikeObservation>, ScanCallback {
-
-    // list of records(map) that will contain "keyname"(primary key) as key and a map as value
-    // in which each key value pair will be fields and its value respectively.
-    private List<Map<String,Map<String,String>>> datalist = new ArrayList<>();
-
-
+class AerospikeLocalConsumer implements ObservationCollector<AerospikeObservation> {
+    AerospikeOperations aerospikeOperations;
     @Override
     public AerospikeObservation actualObservations(AerospikeObservation expectedObservation){
+        this.aerospikeOperations = ObjectFactory.getAerospikeOperations(expectedObservation);
 
-        this.scanData(expectedObservation);
+        List<AerospikeObservation.AerospikeObservationData> aerospikeDataList = new ArrayList<>();
+        int aerospikeDataCount=0;
 
-        return new AerospikeObservation(new AerospikeData(expectedObservation.getData().getNamespace()
-                ,expectedObservation.getData().getHost()
-                ,expectedObservation.getData().getPort()
-                ,expectedObservation.getData().getSet(),datalist));
+        for(AerospikeObservation.AerospikeObservationData aerospikeObservationData :expectedObservation.getData()){
+            aerospikeDataList.add(new AerospikeObservation.AerospikeObservationData(
+                    aerospikeObservationData.getNamespace(),aerospikeObservationData.getSet(),
+                    getListOfRecords(expectedObservation,aerospikeDataCount)));
+            aerospikeDataCount++;
+        }
+        return new AerospikeObservation(
+                new AerospikeObservation.AerospikeConnectionInfo(expectedObservation.getConnectionInfo().getHostIP(),expectedObservation.getConnectionInfo().getPort())
+                , aerospikeDataList);
     }
 
-    private void scanData(AerospikeObservation expectedObservation) throws AerospikeException{
-        AerospikeClient client = null;
-        try{
-            Host[] hosts = new Host[] {
-                    new Host(expectedObservation.getData().getHost(),expectedObservation.getData().getPort()),
-            };
-            ScanPolicy policy = new ScanPolicy();
-            policy.concurrentNodes = true;
-            policy.priority = Priority.LOW;
-            policy.includeBinData = true;
-            policy.sendKey = true;
-            client = new AerospikeClient(new ClientPolicy(),hosts);
-            client.scanAll(policy,expectedObservation.getData().getNamespace(),
-                    expectedObservation.getData().getSet(),this);
+    List<AerospikeObservation.AerospikeObservationData.AerospikeRecords> getListOfRecords(AerospikeObservation aerospikeObservation, int aerospikeDataCount){
+        Statement statement = null;
+        List<AerospikeObservation.AerospikeObservationData.AerospikeRecords> recordList = new ArrayList();
+        for(AerospikeObservation.AerospikeObservationData.AerospikeRecords aerospikeRecord: aerospikeObservation.getData().get(aerospikeDataCount).getRecords()) {
+            String primaryKey= null;
+            Map<String,Object> binDataMap= null;
+            statement = new Statement();
+            statement.setNamespace(aerospikeObservation.getData().get(aerospikeDataCount).getNamespace());
+            statement.setSetName(aerospikeObservation.getData().get(aerospikeDataCount).getSet());
+            RecordSet recordSet = aerospikeOperations.getClient().query(null, statement);
             try {
-                //TODO: to remove temporary
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                while (recordSet.next()) {
+                    if(recordSet.getKey().userKey!=null){
+                        if(!aerospikeRecord.getPrimaryKey().toString().equalsIgnoreCase(recordSet.getKey().userKey.toString()))
+                            continue;
+                        primaryKey= recordSet.getKey().userKey.toString();
+                    }
+                    else
+                        primaryKey="";
+                    binDataMap = new HashMap<>();
+                    for(String binkey : aerospikeRecord.getBinData().keySet()) {
+                        binDataMap.put(binkey, recordSet.getRecord().getValue(binkey));
+                    }
+                }
+            } finally {
+                recordSet.close();
             }
+            recordList.add(new AerospikeObservation.AerospikeObservationData.AerospikeRecords(primaryKey,binDataMap));
         }
-        finally {
-            if(client != null){
-                client.close();
-            }
-        }
+        return recordList;
     }
 
-    @Override
-    public void scanCallback(Key key, Record record) throws AerospikeException {
-
-        Map<String,String> binMap = new HashMap<>();
-        for(Map.Entry<String,Object> entry:record.bins.entrySet()){
-            binMap.put(entry.getKey(),entry.getValue().toString());
-        }
-
-        Map<String,Map<String, String>> recordMap = new HashMap<>();
-        recordMap.put(key.userKey.toString(),binMap);
-        datalist.add(recordMap);
-
-    }
 }
 

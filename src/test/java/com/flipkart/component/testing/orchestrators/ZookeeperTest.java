@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.mock;
 public class ZookeeperTest {
 
     @Test
+    @Ignore
     public void testZookeeper() throws Exception {
 
         Set<String> paths = Sets.newHashSet("/abc", "/abc/def", "/abc/ghi");

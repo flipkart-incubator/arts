@@ -18,6 +18,7 @@ public class ElasticSearchTest {
 
 
 	@Test
+	@Ignore
 	public void test() throws Exception {
 
 		TestSpecification testSpecification = OBJECT_MAPPER.readValue(this.getClass().getClassLoader().getResourceAsStream("es-test-data.json"), TestSpecification.class);

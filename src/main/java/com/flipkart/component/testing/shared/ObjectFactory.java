@@ -71,6 +71,10 @@ public class ObjectFactory {
         }
     }
 
+    public static AerospikeOperations getAerospikeOperations(AerospikeTestConfig aerospikeTestConfig) {
+            return RemoteAerospikeOperations.getInstance(aerospikeTestConfig);
+    }
+
     public static HazelcastInstance getHazelcastInstance(HazelcastTestConfig hazelcastTestConfig){
         HazelcastInstance hazelcastInstance;
         if (hazelcastTestConfig.isServerMode() && Hazelcast.getAllHazelcastInstances().isEmpty())

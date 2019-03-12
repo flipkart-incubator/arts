@@ -1,19 +1,14 @@
 package com.flipkart.component.testing.servers;
 
-import com.aerospike.client.*;
-import com.aerospike.client.policy.ScanPolicy;
-import com.aerospike.client.policy.WritePolicy;
-import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.flipkart.component.testing.shared.AerospikeTestConfig;
+import com.flipkart.component.testing.shared.ObjectFactory;
 
 class AerospikeServer implements DependencyInitializer{
-    AerospikeClient client = null;
-    AerospikeIndirectInput aerospikeIndirectInput;
+    private final AerospikeTestConfig aerospikeTestConfig;
 
-    public AerospikeServer(AerospikeIndirectInput aerospikeIndirectInput){
-        this.aerospikeIndirectInput = aerospikeIndirectInput;
+    public AerospikeServer(AerospikeTestConfig aerospikeTestConfig){
+        this.aerospikeTestConfig= aerospikeTestConfig;
     }
-
     @Override
     public void initialize(){
 
@@ -21,29 +16,13 @@ class AerospikeServer implements DependencyInitializer{
 
     @Override
     public void shutDown() {
-        deleteData();
-        client.close();
+        ObjectFactory.getAerospikeOperations(this.aerospikeTestConfig).clean();
+        ObjectFactory.getAerospikeOperations(this.aerospikeTestConfig).closeClient();
     }
 
     @Override
     public void clean() {
-        throw new NotImplementedException();
+
     }
 
-    private void deleteData(){
-
-
-        client = new AerospikeClient(aerospikeIndirectInput.getData().getHost(),
-                aerospikeIndirectInput.getData().getPort());
-
-        ScanPolicy scanPolicy = new ScanPolicy();
-
-        client.scanAll(scanPolicy, aerospikeIndirectInput.getData().getNamespace(),
-                aerospikeIndirectInput.getData().getSet(), new ScanCallback() {
-
-                    public void scanCallback(Key key, Record record) throws AerospikeException {
-                        client.delete(new WritePolicy(), key);
-                    }
-                });
-    }
 }
