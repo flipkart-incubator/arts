@@ -34,7 +34,7 @@ public class AerospikeTest {
         Assert.assertTrue(observations.size() == 1);
         Assert.assertTrue(observations.get(0) instanceof AerospikeObservation);
         AerospikeObservation actualObservation = (AerospikeObservation) observations.get(0);
-
+        Assert.assertEquals(testSpecification.getObservations().get(0),actualObservation);
     }
 
 }

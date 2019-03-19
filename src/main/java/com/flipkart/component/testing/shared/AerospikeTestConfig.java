@@ -8,6 +8,6 @@ import java.util.List;
 public interface AerospikeTestConfig {
     String getHost();
     int getPort();
-    List<AerospikeData> getInputData();
+    List<AerospikeData> getAerospikeData();
 
 }

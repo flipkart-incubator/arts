@@ -2,6 +2,7 @@ package com.flipkart.component.testing.extractors;
 
 import com.aerospike.client.query.RecordSet;
 import com.aerospike.client.query.Statement;
+import com.flipkart.component.testing.model.aerospike.AerospikeData;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.shared.AerospikeOperations;
 import com.flipkart.component.testing.shared.ObjectFactory;
@@ -17,11 +18,11 @@ class AerospikeLocalConsumer implements ObservationCollector<AerospikeObservatio
     public AerospikeObservation actualObservations(AerospikeObservation expectedObservation){
         this.aerospikeOperations = ObjectFactory.getAerospikeOperations(expectedObservation);
 
-        List<AerospikeObservation.AerospikeObservationData> aerospikeDataList = new ArrayList<>();
+        List<AerospikeData> aerospikeDataList = new ArrayList<>();
         int aerospikeDataCount=0;
 
-        for(AerospikeObservation.AerospikeObservationData aerospikeObservationData :expectedObservation.getData()){
-            aerospikeDataList.add(new AerospikeObservation.AerospikeObservationData(
+        for(AerospikeData aerospikeObservationData :expectedObservation.getAerospikeData()){
+            aerospikeDataList.add(new AerospikeData(
                     aerospikeObservationData.getNamespace(),aerospikeObservationData.getSet(),
                     getListOfRecords(expectedObservation,aerospikeDataCount)));
             aerospikeDataCount++;
@@ -31,15 +32,15 @@ class AerospikeLocalConsumer implements ObservationCollector<AerospikeObservatio
                 , aerospikeDataList);
     }
 
-    List<AerospikeObservation.AerospikeObservationData.AerospikeRecords> getListOfRecords(AerospikeObservation aerospikeObservation, int aerospikeDataCount){
+    List<AerospikeData.AerospikeRecords> getListOfRecords(AerospikeObservation aerospikeObservation, int aerospikeDataCount){
         Statement statement = null;
-        List<AerospikeObservation.AerospikeObservationData.AerospikeRecords> recordList = new ArrayList();
-        for(AerospikeObservation.AerospikeObservationData.AerospikeRecords aerospikeRecord: aerospikeObservation.getData().get(aerospikeDataCount).getRecords()) {
+        List<AerospikeData.AerospikeRecords> recordList = new ArrayList();
+        for(AerospikeData.AerospikeRecords aerospikeRecord: aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getRecords()) {
             String primaryKey= null;
             Map<String,Object> binDataMap= null;
             statement = new Statement();
-            statement.setNamespace(aerospikeObservation.getData().get(aerospikeDataCount).getNamespace());
-            statement.setSetName(aerospikeObservation.getData().get(aerospikeDataCount).getSet());
+            statement.setNamespace(aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getNamespace());
+            statement.setSetName(aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getSet());
             RecordSet recordSet = aerospikeOperations.getClient().query(null, statement);
             try {
                 while (recordSet.next()) {
@@ -58,7 +59,7 @@ class AerospikeLocalConsumer implements ObservationCollector<AerospikeObservatio
             } finally {
                 recordSet.close();
             }
-            recordList.add(new AerospikeObservation.AerospikeObservationData.AerospikeRecords(primaryKey,binDataMap));
+            recordList.add(new AerospikeData.AerospikeRecords(primaryKey,binDataMap));
         }
         return recordList;
     }

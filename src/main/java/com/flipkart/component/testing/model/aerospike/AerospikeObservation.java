@@ -18,7 +18,7 @@ import java.util.Map;
 @EqualsAndHashCode
 public class AerospikeObservation implements Observation,AerospikeTestConfig {
 
-    private final  List<AerospikeObservationData> data;
+    private final  List<AerospikeData> aerospikeData;
     private final AerospikeConnectionInfo connectionInfo;
 
 
@@ -26,8 +26,8 @@ public class AerospikeObservation implements Observation,AerospikeTestConfig {
     @JsonCreator
     public AerospikeObservation(
             @JsonProperty("aerospikeConnectionInfo") AerospikeConnectionInfo connectionInfo,
-            @JsonProperty("aerospikeData") List<AerospikeObservationData> data){
-        this.data = data;
+            @JsonProperty("aerospikeData") List<AerospikeData> aerospikeData){
+        this.aerospikeData = aerospikeData;
         this.connectionInfo= connectionInfo;
     }
 
@@ -39,11 +39,6 @@ public class AerospikeObservation implements Observation,AerospikeTestConfig {
     @Override
     public int getPort() {
         return connectionInfo.getPort();
-    }
-
-    @Override
-    public List<AerospikeData> getInputData() {
-        return null;
     }
 
     @Data
@@ -60,43 +55,4 @@ public class AerospikeObservation implements Observation,AerospikeTestConfig {
         }
 
     }
-
-    @Data
-    public static class AerospikeObservationData {
-
-        private String namespace;
-        private String set;
-        private List<AerospikeRecords> records;
-
-        @JsonCreator
-        public AerospikeObservationData(
-                @JsonProperty("namespace") String namespace,
-                @JsonProperty("set") String set,
-                @JsonProperty("records") List<AerospikeRecords> records)
-        {
-
-            this.namespace = namespace;
-            this.set = set;
-            this.records = records;
-        }
-
-
-
-
-        @Data
-        public static class AerospikeRecords {
-            @Getter
-            private String primaryKey;
-            private Map<String,Object> binData;
-
-            @JsonCreator
-            public AerospikeRecords(@JsonProperty("PK") String primaryKey,
-                                    @JsonProperty("binData") Map<String, Object> binData){
-                this.primaryKey= primaryKey;
-                this.binData= binData;
-            }
-
-        }
-    }
-
 }

@@ -8,8 +8,8 @@
       },
       "aerospikeData": [
         {
-          "namespace": "dsp-santa",
-          "set":"olm",
+          "namespace": "regression_pnp",
+          "set":"regression_rlm",
           "records": [
             {
               "PK":"LSTMOBEN2YY9PHNXRNZV3S7L1",
@@ -46,8 +46,8 @@
       },
       "aerospikeData": [
         {
-          "namespace": "dsp-santa",
-          "set":"olm",
+          "namespace": "regression_pnp",
+          "set":"regression_rlm",
           "records": [
             {
               "PK":"LSTMOBEN2YY9PHNXRNZV3S7L1",

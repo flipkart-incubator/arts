@@ -29,7 +29,13 @@ public class AerospikeData{
         this.records = records;
     }
 
+    public String getNamespace() {
+        if (!namespace.contains("regression_")){
+            throw new RuntimeException("The namespace name used is not in right format for testing. Try prefix regression_");
+        }
+        else return namespace;
 
+    }
 
 
     @Data

@@ -54,12 +54,6 @@ public class AerospikeIndirectInput implements IndirectInput,AerospikeTestConfig
         return getConnectionInfo().getPort();
     }
 
-    @Override
-    public List<AerospikeData> getInputData() {
-        return getAerospikeData();
-    }
-
-
     @Data
     public static class AerospikeConnectionInfo{
 

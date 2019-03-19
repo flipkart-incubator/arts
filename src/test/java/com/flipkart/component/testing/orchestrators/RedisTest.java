@@ -6,6 +6,7 @@ import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.model.Observation;
 import com.flipkart.component.testing.model.redis.RedisObservation;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.mock;
 public class RedisTest {
 
     @Test
+    @Ignore
     public void test() throws Exception {
 
 

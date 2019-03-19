@@ -22,7 +22,7 @@ class AerospikeServer implements DependencyInitializer{
 
     @Override
     public void clean() {
-
+        ObjectFactory.getAerospikeOperations(this.aerospikeTestConfig).clean();
     }
 
 }

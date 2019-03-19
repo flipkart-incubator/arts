@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 public class RMQTest {
 
     @Test
+    @Ignore
     public void testRMQ() throws Exception {
 
 

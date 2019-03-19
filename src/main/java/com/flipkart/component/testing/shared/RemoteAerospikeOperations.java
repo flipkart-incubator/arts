@@ -70,11 +70,12 @@ public class RemoteAerospikeOperations implements AerospikeOperations,ScanCallba
 
     @Override
     public void clean() {
+
        try {
-           for (int i = 0; i < aerospikeTestConfig.getInputData().size(); i++) {
+           for (int i = 0; i < aerospikeTestConfig.getAerospikeData().size(); i++) {
                getClient().scanAll(getScanPolicy(),
-                       aerospikeTestConfig.getInputData().get(i).getNamespace(),
-                       aerospikeTestConfig.getInputData().get(i).getSet(),this);
+                       aerospikeTestConfig.getAerospikeData().get(i).getNamespace(),
+                       aerospikeTestConfig.getAerospikeData().get(i).getSet(),this);
            }
        }catch (Exception e){
            throw new RuntimeException(e.getMessage());
