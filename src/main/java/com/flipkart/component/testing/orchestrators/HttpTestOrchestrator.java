@@ -135,7 +135,10 @@ public class HttpTestOrchestrator extends BaseTestOrchestrator {
             this.testDataLoader.load(testSpecification.getIndirectInputsToBePostLoaded());
             return runAndCollect(testSpecification, sut);
         } finally {
-            dependencyRegistry.clean();
+            if(testSpecification.getShouldClean()){
+                dependencyRegistry.clean();
+            }
+
         }
     }
 

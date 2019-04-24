@@ -21,6 +21,7 @@ import static com.flipkart.component.testing.shared.ObjectFactory.OBJECT_MAPPER;
  * Runs a single test specification : Need to extend for multiple
  */
 public class SpecificationRunner {
+    private static SpecificationRunner specificationRunner;
     private HttpTestOrchestrator httpTestOrchestrator;
     private StormTestOrchestrator stormTestOrchestrator;
 
@@ -31,12 +32,19 @@ public class SpecificationRunner {
      * @param serviceUrl
      * @param serviceClass
      */
-    public SpecificationRunner(String serviceConfigPath, String serviceUrl, Class<?> serviceClass) {
+    private SpecificationRunner(String serviceConfigPath, String serviceUrl, Class<?> serviceClass) {
         SUT sut = new DropwizardServiceStarter(serviceConfigPath, serviceUrl, serviceClass);
         httpTestOrchestrator = new HttpTestOrchestrator(sut, new HttpTestRunner());
     }
 
-    public SpecificationRunner(SUT sut, HttpTestRunner httpTestRunner) {
+    public static SpecificationRunner getInstance(String serviceConfigPath, String serviceUrl, Class<?> serviceClass){
+        if(specificationRunner == null){
+            specificationRunner = new SpecificationRunner(serviceConfigPath,serviceUrl,serviceClass);
+        }
+        return specificationRunner;
+    }
+
+    SpecificationRunner(SUT sut, HttpTestRunner httpTestRunner) {
         httpTestOrchestrator = new HttpTestOrchestrator(sut, httpTestRunner);
     }
 

@@ -29,7 +29,7 @@ public class ZookeeperTest {
         ImmutableMap<String, String> data = ImmutableMap.of("/abc/def", "val1");
         IndirectInput indirectInput = new ZookeeperIndirectInput(paths, data);
 
-        TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(new ZookeeperObservation(paths,data.keySet())));
+        TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(new ZookeeperObservation(paths,data.keySet())), null);
         List<Observation> observations = DataStoreSuite.specificationRunner.runLite(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);

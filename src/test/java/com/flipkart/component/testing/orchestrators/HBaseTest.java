@@ -30,7 +30,7 @@ public class HBaseTest {
 		HBaseObservation expectedObservation = OBJECT_MAPPER.readValue(observationStr, HBaseObservation.class);
 
 		TestSpecification testSpecification = new TestSpecification(null, null, Lists.newArrayList(hBaseIndirectInput),
-				Lists.newArrayList(expectedObservation));
+				Lists.newArrayList(expectedObservation), null);
 
 		List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).runLite(testSpecification);
 

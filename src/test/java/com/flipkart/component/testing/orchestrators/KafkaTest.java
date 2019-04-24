@@ -22,11 +22,11 @@ public class KafkaTest {
 
         String topic = "abc";
         List<Object> messages = newArrayList("msg1", "msg2", "msg3");
-        IndirectInput indirectInput = new KafkaIndirectInput(topic, null, messages);
+        IndirectInput indirectInput = new KafkaIndirectInput(topic,  messages);
         List<String> msgs = messages.stream().map(m -> (String) m).collect(Collectors.toList());
         KafkaObservation expectedObservation = new KafkaObservation(msgs, topic);
 
-        TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(expectedObservation));
+        TestSpecification testSpecification = new TestSpecification(null, null, newArrayList(indirectInput), newArrayList(expectedObservation), null);
         List<Observation> observations = DataStoreSuite.specificationRunner.runLite(testSpecification);
 
         Assert.assertTrue(observations.size() == 1);

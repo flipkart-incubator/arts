@@ -6,8 +6,8 @@ def takeHttpMethod():
 	assert len(method) != 0 and (method == 'GET' or method == 'POST' or method == "DELETE" or method == "PUT")
 	return method
 
-def takeJsonFromFile():
-	print "Enter the file contains json:",
+def takeJsonFromFile(message = "Enter the file contains json:"):
+	print message,
 	requestPayloadFile = raw_input()
 	return json.loads(open(requestPayloadFile).read())	
 

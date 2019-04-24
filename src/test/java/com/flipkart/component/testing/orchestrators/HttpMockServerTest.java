@@ -53,7 +53,7 @@ public class HttpMockServerTest {
         DirectInput directInput = new HttpDirectInput("/abc", METHOD.GET,null, Maps.newHashMap());
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
-        TestSpecification testSpecification = new TestSpecification(null, directInput, Lists.newArrayList(indirectInput), Lists.newArrayList(new HttpObservation()));
+        TestSpecification testSpecification = new TestSpecification(null, directInput, Lists.newArrayList(indirectInput), Lists.newArrayList(new HttpObservation()), null);
 
         System.out.println(OBJECT_MAPPER.writeValueAsString(testSpecification));
         List<Observation> observations = new HttpTestOrchestrator(() -> "http://localhost:7777", new HttpTestRunner() ).run(testSpecification);
@@ -95,7 +95,7 @@ public class HttpMockServerTest {
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
 
-        TestSpecification testSpecification = new TestSpecification(null, directInput, Lists.newArrayList(indirectInput), Lists.newArrayList(new HttpObservation()));
+        TestSpecification testSpecification = new TestSpecification(null, directInput, Lists.newArrayList(indirectInput), Lists.newArrayList(new HttpObservation()), null);
         List<Observation> observations = new HttpTestOrchestrator(mock(HttpTestRunner.class)).run(testSpecification);
         Assert.assertTrue(observations.size() == 1);
         HttpObservation httpObservation = (HttpObservation) observations.get(0);

@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * a base class for both http Direct Input and http Indirect Input
  */
+@Setter
 abstract class HttpInput{
 
     /**

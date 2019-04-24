@@ -19,7 +19,7 @@ class KafkaDataLoader implements TestDataLoader<KafkaIndirectInput> {
      */
     @Override
     public void load(KafkaIndirectInput kafkaIndirectInput) {
-        Producer<String, Object> producer = new Producer<>(buildProducerConfig(kafkaIndirectInput.getSerializerClass()));
+        Producer<String, Object> producer = new Producer<>(buildProducerConfig());
         kafkaIndirectInput.getMessages().forEach(message -> {
             KeyedMessage<String, Object> data = new KeyedMessage<>(kafkaIndirectInput.getTopic(), message);
             producer.send(data);
@@ -29,13 +29,12 @@ class KafkaDataLoader implements TestDataLoader<KafkaIndirectInput> {
 
     /**
      * prepares the default producer config
-     * @param serializerClass
      * @return
      */
-    private ProducerConfig buildProducerConfig(String serializerClass) {
+    private ProducerConfig buildProducerConfig() {
         Properties props = new Properties();
         props.put("metadata.broker.list", Constants.BROKER_HOST);
-        props.put("serializer.class", serializerClass);
+        props.put("serializer.class", "kafka.serializer.StringEncoder");
         ProducerConfig producerConfig = new ProducerConfig(props);
         return producerConfig;
     }

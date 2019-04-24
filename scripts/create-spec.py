@@ -18,11 +18,6 @@ def takeDirectInput():
 	directInput['method'] = takeHttpMethod()
 	directInput['path'] = takeUrlPath()
 	directInput['request'] = takeRequestBody(directInput['method']);
-
-	print 'Direct Input is:'
-	print '-------------------------------------------------'
-	print json.dumps(directInput, indent = 4)
-	print '-------------------------------------------------'
 	return directInput
 
 

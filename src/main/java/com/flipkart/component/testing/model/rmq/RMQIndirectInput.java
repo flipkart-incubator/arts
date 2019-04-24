@@ -16,15 +16,11 @@ public class RMQIndirectInput implements IndirectInput {
 
     private final String queue;
 
-    private final String routingKey;
-
     @JsonCreator
     public RMQIndirectInput(@JsonProperty("messages") List<String> messages,
-                            @JsonProperty("queue") String queue,
-                            @JsonProperty("routingKey") String routingKey) {
+                            @JsonProperty("queue") String queue) {
         this.queue = queue;
         this.messages = messages;
-        this.routingKey = routingKey;
     }
 
     /**
