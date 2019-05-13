@@ -11,7 +11,6 @@ import com.google.common.collect.Maps;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.flipkart.component.testing.internal.HttpTestRunner;
 import com.flipkart.component.testing.model.http.HttpIndirectInput;
 import com.flipkart.component.testing.model.IndirectInput;
 import com.flipkart.component.testing.model.Observation;
@@ -50,7 +49,7 @@ public class HttpMockServerTest {
         Map map = OBJECT_MAPPER.readValue(specificationStr, Map.class);
 
 
-        DirectInput directInput = new HttpDirectInput("/abc", METHOD.GET,null, Maps.newHashMap());
+        DirectInput directInput = new HttpDirectInput("/abc", METHOD.GET,null, Maps.newHashMap(), null);
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
         TestSpecification testSpecification = new TestSpecification(null, directInput, Lists.newArrayList(indirectInput), Lists.newArrayList(new HttpObservation()), null);
@@ -91,7 +90,7 @@ public class HttpMockServerTest {
 
         Map map = OBJECT_MAPPER.readValue(specificationStr, Map.class);
 
-        DirectInput directInput = new HttpDirectInput("/abc", METHOD.GET,null, Maps.newHashMap());
+        DirectInput directInput = new HttpDirectInput("/abc", METHOD.GET,null, Maps.newHashMap(), null);
         IndirectInput indirectInput = new HttpIndirectInput(map);
 
 

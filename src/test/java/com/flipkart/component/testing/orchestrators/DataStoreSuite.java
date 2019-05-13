@@ -1,6 +1,5 @@
 package com.flipkart.component.testing.orchestrators;
 
-import com.flipkart.component.testing.internal.HttpTestRunner;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;

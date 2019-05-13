@@ -1,0 +1,28 @@
+{
+  "indirectInputs": [
+    {
+      "name": "embeddedhzIndirectInput",
+      "hazelcastDS": {
+        "maps": {
+          "testMap": {
+            "mapData": {
+              "testKey": "testValue"
+            },
+            "keyClass": "java.lang.String",
+            "valueClass": "java.lang.String"
+          }
+        }
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "hazelcastObservation",
+      "dsToFetch": {
+        "maps": [
+          "testMap"
+        ]
+      }
+    }
+  ]
+}

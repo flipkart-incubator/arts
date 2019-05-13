@@ -1,0 +1,29 @@
+{
+  "observations": [
+    {
+      "name": "httpObservation"
+    }
+  ],
+  "directInput": {
+    "path": "/abc",
+    "request": null,
+    "name": "httpDirectInput",
+    "method": "GET"
+  },
+  "indirectInputs": [
+    {
+      "specification": {
+        "request": {
+          "url": "/abc",
+          "method": "GET"
+        },
+        "response": {
+          "body": {
+            "a": "b"
+          }
+        }
+      },
+      "name": "httpIndirectInput"
+    }
+  ]
+}

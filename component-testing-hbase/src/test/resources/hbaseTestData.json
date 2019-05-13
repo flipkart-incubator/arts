@@ -1,0 +1,53 @@
+{
+  "indirectInputs":[
+    {
+      "name": "hbaseIndirectInput",
+      "tableName": "regression_t1",
+      "connectionType": "REMOTE",
+      "hbaseSiteConfig": {
+      },
+      "rows": [{
+        "rowKey": "rk1",
+        "data": {
+          "cf1": {
+            "k1": "v1",
+            "k2": "v2"
+          }
+        }
+      }, {
+        "rowKey": "rk2",
+        "data": {
+          "cf1": {
+            "k1": "v1"
+          }
+        }
+      }]
+    }
+  ],
+
+  "observations":[
+    {
+      "name": "hbaseObservation",
+      "tableName": "regression_t1",
+      "connectionType": "REMOTE",
+      "hbaseSiteConfig":{
+      },
+      "rows": [{
+        "rowKey": "rk1",
+        "data": {
+          "cf1": {
+            "k1": "v1",
+            "k2": "v2"
+          }
+        }
+      }, {
+        "rowKey": "rk2",
+        "data": {
+          "cf1": {
+            "k1": "v1"
+          }
+        }
+      }]
+    }
+  ]
+}

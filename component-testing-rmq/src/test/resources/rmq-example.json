@@ -1,0 +1,19 @@
+{
+  "indirectInputs": [
+    {
+      "name": "rmqIndirectInput",
+      "messages": [
+        "msg1",
+        "msg2",
+        "msg3"
+      ],
+      "queue": "abc"
+    }
+  ],
+  "observations": [
+    {
+      "name": "rmqObservation",
+      "queue": "abc"
+    }
+  ]
+}

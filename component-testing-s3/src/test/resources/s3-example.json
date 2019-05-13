@@ -1,0 +1,13 @@
+{
+  "indirectInputs": [
+    {
+      "name": "s3IndirectInput",
+      "bucketName" : "b1234",
+      "filePath" : "src/test/resources/sample.json",
+      "fileKey" : "f1"
+
+    }
+  ],
+  "observations": [
+  ]
+}

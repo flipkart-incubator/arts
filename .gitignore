@@ -9,3 +9,4 @@ target/
 .settings/
 derby.log
 scripts/*.pyc
+dependency-reduced-pom.xml
