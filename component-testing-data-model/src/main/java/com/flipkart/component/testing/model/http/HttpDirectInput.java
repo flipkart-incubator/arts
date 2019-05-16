@@ -63,6 +63,10 @@ public class HttpDirectInput implements DirectInput {
     }
 
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @JsonCreator
     public HttpDirectInput(@JsonProperty("path") String path,
                            @JsonProperty("method") METHOD method,
