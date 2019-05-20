@@ -4,7 +4,7 @@
       "name": "elasticSearchIndirectInput",
       "documentsOfIndexAndType": [
         {
-          "suffixOfindex": "1",
+          "index": "index1",
           "type": "listing",
           "routingKey": "seller_id",
           "mappingFile": "src/test/resources/listing_index_mapping.json",
@@ -102,7 +102,7 @@
       "name": "elasticSearchObservation",
       "documentsToFetch": [
         {
-          "suffixOfindex": "1",
+          "index": "index1",
           "typeName": "listing",
           "routingKey": "pi2981ctftizwe12",
           "queryFile": "es-search-query.json"

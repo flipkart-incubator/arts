@@ -32,6 +32,13 @@ public class ElasticSearchObservation implements Observation, ElasticSearchTestC
 
 		this.documentsToFetch = documentsToFetch;
 		this.connectionInfo = connectionInfo;
+		if(connectionInfo!=null && (connectionInfo.getConnectionType()!=ConnectionType.IN_MEMORY)){
+			documentsToFetch.forEach(document-> {
+				if (!document.getIndex().contains("regression_"))
+					throw new IllegalArgumentException("Index name should have prefix 'regression_' for REMOTE connections");
+			});
+		}
+
 	}
 
 	public ElasticSearchObservation(List<DocumentsToFetch> documentsToFetch) {
@@ -55,7 +62,7 @@ public class ElasticSearchObservation implements Observation, ElasticSearchTestC
 
 	@Data
 	public static class DocumentsToFetch {
-		private final String suffixOfindex;
+		private String index;
 		private final String typeName;
 		private final String routingKey;
 		private final String queryFile;
@@ -64,12 +71,12 @@ public class ElasticSearchObservation implements Observation, ElasticSearchTestC
 
 
 		@JsonCreator
-		public DocumentsToFetch(@JsonProperty("suffixOfindex") String suffixOfindex,
+		public DocumentsToFetch(@JsonProperty("index") String index,
 								@JsonProperty("typeName") String typeName,
 								@JsonProperty("routingKey") String routingKey,
 								@JsonProperty("queryFile") String queryFile
-							){
-			this.suffixOfindex = suffixOfindex;
+		){
+			this.index = index;
 			this.typeName = typeName;
 			this.routingKey = routingKey;
 			this.queryFile = queryFile;
@@ -82,7 +89,7 @@ public class ElasticSearchObservation implements Observation, ElasticSearchTestC
 		}
 
 		public String getIndexName(){
-			return "regression_"+this.suffixOfindex;
+			return index;
 		}
 
 	}

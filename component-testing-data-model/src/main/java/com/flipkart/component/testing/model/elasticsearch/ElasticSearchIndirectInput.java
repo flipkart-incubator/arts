@@ -30,6 +30,12 @@ public class ElasticSearchIndirectInput implements IndirectInput, ElasticSearchT
     ) {
         this.connectionInfo = connectionInfo;
         this.documentsOfIndexAndType = documentsOfIndexAndType;
+        if(connectionInfo!=null && (connectionInfo.getConnectionType()!=ConnectionType.IN_MEMORY)) {
+            documentsOfIndexAndType.forEach(document-> {
+                if(!document.getIndex().contains("regression_"))
+                    throw new IllegalArgumentException("Index name should have prefix 'regression_' for REMOTE connections");
+            });
+        }
     }
 
     @Override
