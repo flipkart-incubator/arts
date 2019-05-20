@@ -1,4 +1,3 @@
-import json
 from commonFunctions import takeJsonFromFile
 
 
@@ -13,18 +12,22 @@ def takeMysqlObservation():
         2: 'IN_MEMORY'
     }
 
-    observation = {'name': 'mysqlObservation',
-                   'databaseName': raw_input('Enter DB name : '),
-                   "connectionType": connectionTypeMap[
-                       int(raw_input('Enter connectionType 1.LOCALHOST  2.IN_MEMORY:'))]
-                   }
-    if 'N' == raw_input('Do you want to observe the data inserted in mysql (Y/N) : '):
+    observation = {
+        'name': 'mysqlObservation',
+        'databaseName': raw_input('Enter DB name : '),
+        "connectionType": connectionTypeMap[int(raw_input('Enter connectionType 1.LOCALHOST  2.IN_MEMORY:'))]
+    }
+    if 'N' == raw_input('Do you want to observe the data inserted in mysql (Y/N) : ').upper():
         observation['data'] = {}
     else:
         tableNames = raw_input('Enter the table names separated by comma : ').split(',')
         data = {}
         for tableName in tableNames:
             data[tableName] = {}
+            for j in range(0,int(raw_input("Enter the number of columns you need to observe in table "+ tableName+' : '))):
+                data[tableName] = {
+                    raw_input("Enter column name : "): raw_input("Enter column value : ")
+                }
         observation['data'] = data
     return observation
 
@@ -42,7 +45,7 @@ def takeRedisObservation():
     }
     dbIndices = []
     for i in range(0, int(raw_input('Enter the number of DB indices to be observed : '))):
-        dbIndices.append(int(raw_input('Enter index ' + str(i + 1) + ' : ')))
+        dbIndices.append(int(raw_input('Enter DB number ' + str(i + 1) + ' : ')))
     observation['dbIndices'] = dbIndices
     return observation
 
@@ -65,8 +68,7 @@ def takeSolrObservation():
     }
     documents = []
     while True:
-        choice = raw_input('Do you want to observe a document (Y/N) : ')
-        if choice == 'Y':
+        if raw_input('Do you want to observe a document (Y/N) : ').upper() == 'Y':
             document = takeJsonFromFile()
             documents.append(document)
         else:
@@ -84,35 +86,30 @@ def takeHbaseObservation():
     }
     observation = {'name': 'hbaseObservation'}
 
-    tableName = raw_input('Enter table name with prefix regression_ :');
+    tableName = raw_input('Enter table name with prefix regression_ :')
     if 'regression_' not in tableName:
-        tableName = raw_input('Table name entered did not have prefix regression_ . Try again');
+        tableName = raw_input('Table name entered did not have prefix regression_ . Try again')
         assert 'regression' in tableName
     observation['tableName'] = tableName
 
     observation['connectionType'] = connectionTypeMap[
-        int(raw_input('Enter connectionType : \n1.REMOTE \n2.IN_MEMORY'))]
+        int(raw_input('Enter connectionType : \n1.REMOTE \n2.IN_MEMORY : '))]
 
     rows = []
     while True:
-        choice = raw_input('Do you want to observe  row (Y/N) : ')
-        if choice == 'Y':
+        if raw_input('Do you want to observe row (Y/N) : ').upper() == 'Y':
             row = {'rowKey': raw_input("Enter row key : ")}
             data = {}
             while True:
-                choice = raw_input('Do you want to observe column family (Y/N) : ')
-                if choice == 'Y':
+                if raw_input(
+                        'Do you want to observe column family in the table ' + tableName + ' (Y/N) : ').upper() == 'Y':
                     colFamName = raw_input('Enter column family name : ')
                     columns = {}
-                    while True:
-                        choice = raw_input(
-                            'Do you want to observe column under column family ' + colFamName + ' (Y/N) : ')
-                        if choice == 'Y':
-                            columnName = raw_input("Column name :  ")
-                            columnValue = raw_input("Column value :  ")
-                            columns[columnName] = columnValue
-                        else:
-                            break
+                    for i in range(0, int(
+                            raw_input("Enter the number of columns to be observed under family " + colFamName+' '))):
+                        columnName = raw_input("Column name :  ")
+                        columnValue = raw_input("Column value :  ")
+                        columns[columnName] = columnValue
                     data[colFamName] = columns
                 else:
                     break
@@ -126,13 +123,13 @@ def takeHbaseObservation():
 
 
 def takeAerospikeObservation():
-    observation = {'name': 'aerospikeObservation'}
-
-    connectionInfo = {'host': raw_input("Enter aerospike host IP : "),
-                      'port': int(raw_input('Enter port number : '))}
-
-    observation['connectionInfo'] = connectionInfo
-
+    observation = {
+        'name': 'aerospikeObservation',
+        'connectionInfo': {
+            'host': raw_input("Enter aerospike host IP : "),
+            'port': int(raw_input('Enter port number : '))
+        }
+    }
     aerospikeData = []
 
     for i in range(0, int(raw_input('Enter the number of namespaces you want to observe : '))):
@@ -144,18 +141,13 @@ def takeAerospikeObservation():
         namespace['set'] = raw_input('Enter set name : ')
         records = []
         while True:
-            choice = raw_input('Do you want to observe records (Y/N) : ')
-            if choice == 'Y':
+            if raw_input('Do you want to observe records (Y/N) : ').upper() == 'Y':
                 record = {'PK': raw_input('Enter primary key : ')}
                 binData = {}
-                while True:
-                    choice = raw_input('Do you want to observe bin data (Y/N) : ')
-                    if choice == 'Y':
-                        binKey = raw_input('Enter bin key : ')
-                        binValue = raw_input('Enter bin value : ')
-                        binData[binKey] = binValue
-                    else:
-                        break
+                for j in range(0, int(raw_input("Enter the number of bins to be observed : "))):
+                    binKey = raw_input('Enter bin key : ')
+                    binValue = raw_input('Enter bin value : ')
+                    binData[binKey] = binValue
                 record['binData'] = binData
                 records.append(record)
             else:
@@ -168,18 +160,29 @@ def takeAerospikeObservation():
 
 
 def takeElasticSearchObservation():
+    connectionTypeMap = {
+        1: 'REMOTE',
+        2: 'IN_MEMORY'
+    }
     observation = {'name': 'elasticSearchObservation'}
+
+    if connectionTypeMap[int(raw_input('Enter connectionType 1.REMOTE  2.IN_MEMORY: '))] =='REMOTE':
+        observation['connectionInfo'] = {
+            'clusterName': raw_input('Enter cluster name '),
+            'host':raw_input('Enter the host IP '),
+            'connectionType':'REMOTE'
+        }
+
     observation['documentsToFetch'] = documentsToFetch = []
     while True:
-        choice = raw_input('Do you want to observe a document (Y/N) : ')
-        if choice == 'Y':
+        if raw_input('Do you want to observe a document (Y/N) : ').upper() == 'Y':
             document = {
-                'suffixOfindex': raw_input(
-                    'Enter the suffix value to be added after \'regression_\' to make index name : '),
+                'index': raw_input(
+                    'Enter the index name (add prefix \'regression_\' if connection type is REMOTE) : '),
                 'typeName': raw_input('Enter type name : '),
                 'queryFile': raw_input('Enter the path to json file having query : ')
             }
-            if 'Y' == raw_input('Do you need to add routing key for the search (Y/N) : '):
+            if 'Y' == raw_input('Do you need to add routing key for the search (Y/N) : ').upper():
                 document['routingKey'] = raw_input('Enter routing key : ')
             documentsToFetch.append(document)
         else:
@@ -243,7 +246,7 @@ def takeObservations():
     while True:
         print message,
         message = "Observe more results? (Y/N)"
-        choice = raw_input()
+        choice = raw_input().upper()
         assert choice == 'Y' or choice == 'N'
         if choice == 'N':
             return observations
