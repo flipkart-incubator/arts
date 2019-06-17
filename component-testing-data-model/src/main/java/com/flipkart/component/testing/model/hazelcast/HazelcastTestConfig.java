@@ -25,4 +25,6 @@ public interface HazelcastTestConfig extends TestConfig{
         return this instanceof ServerHZIndirectInput;
     }
 
+    String getDiscoveryPath();
+
 }
