@@ -54,6 +54,10 @@
                                     <pattern>org.reflections</pattern>
                                     <shadedPattern>component.testing.org.reflections</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.google.common.collect</pattern>
+                                    <shadedPattern>component.testing.com.google.common.collect</shadedPattern>
+                                </relocation>
                             </relocations>
 
                         </configuration>
