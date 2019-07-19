@@ -14,7 +14,4 @@ public interface MysqlConnection {
     void runDDLStatements();
 
     void dropDatabase(String database);
-
-    void dropAllTables();
-
 }

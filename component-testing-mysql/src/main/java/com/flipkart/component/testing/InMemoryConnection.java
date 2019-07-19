@@ -24,7 +24,7 @@ class InMemoryConnection implements MysqlConnection {
         try {
             Class.forName("org.h2.Driver");
             if(mysqlConnection==null)
-                mysqlConnection = DriverManager.getConnection(url, "root", "");
+                mysqlConnection = DriverManager.getConnection(url, mysqlTestConfig.getConnectionInfo().getUser(), mysqlTestConfig.getConnectionInfo().getPassword());
             return mysqlConnection;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -37,7 +37,7 @@ class InMemoryConnection implements MysqlConnection {
         try {
             Class.forName("org.h2.Driver");
             if(dbConnection==null)
-                dbConnection= DriverManager.getConnection(url, "root", "");
+                dbConnection= DriverManager.getConnection(url, mysqlTestConfig.getConnectionInfo().getUser(), mysqlTestConfig.getConnectionInfo().getPassword());
             return dbConnection;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -47,20 +47,7 @@ class InMemoryConnection implements MysqlConnection {
 
     @Override
     public void createDatabase() {
-        if(mysqlTestConfig.getConnectionType() == MysqlConnectionType.IN_MEMORY) return;
-        try {
-            String createDatabase = "CREATE DATABASE IF NOT EXISTS " + mysqlTestConfig.getDatabaseName();
-            this.executeDatabaseStatement(createDatabase, get());
-
-        } catch(Exception e){
-            throw new RuntimeException("Could not connect to MySql", e);
-        } finally {
-            try {
-                get().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        //create DB is not required in in-memory
     }
 
     @Override
@@ -69,11 +56,11 @@ class InMemoryConnection implements MysqlConnection {
                 this.executeDatabaseStatement(sql, getConnectionForDatabase()));
     }
 
-
-    public void dropDatabase(String database){
-        String dropDatabase = "DROP DATABASE IF EXISTS " +database;
-        this.executeDatabaseStatement(dropDatabase, get());
+    @Override
+    public void dropDatabase(String database) {
+        //drop DB is not required in in-memory
     }
+
 
     private void executeDatabaseStatement(String sql, Connection connection) {
         try (Statement stmt = connection.createStatement()) {
@@ -83,15 +70,4 @@ class InMemoryConnection implements MysqlConnection {
         }
     }
 
-    @Override
-    public void dropAllTables(){
-        try {
-            ResultSet tables = getConnectionForDatabase().getMetaData().getTables(null, null, "%", null);
-            while (tables.next()){
-                executeDatabaseStatement("DROP TABLE IF EXISTS "+tables.getString(3),getConnectionForDatabase());
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Could not drop all the tables : "+e);
-        }
-    }
 }

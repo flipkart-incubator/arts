@@ -9,7 +9,7 @@ public interface MysqlTestConfig extends TestConfig {
 
     String getDatabaseName();
 
-    MysqlConnectionType getConnectionType();
+    ConnectionInfo getConnectionInfo();
 
     default List<String> getDdlStatements(){
         return new ArrayList<>();

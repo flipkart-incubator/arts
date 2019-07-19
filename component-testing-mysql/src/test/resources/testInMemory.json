@@ -7,7 +7,11 @@
         "CREATE TABLE IF NOT EXISTS table1 (id varchar(50) , name varchar(50));",
         "CREATE TABLE IF NOT EXISTS table2 (address varchar(500), pin varchar(50)) ;"
       ],
-      "connectionType": "LOCALHOST",
+      "connectionInfo": {
+        "connectionType": "IN_MEMORY",
+        "user": "root",
+        "password": ""
+      },
       "tablesData": {
         "table1": [{
           "id": "1",
@@ -23,7 +27,11 @@
   "observations": [{
     "name": "mysqlObservation",
     "databaseName": "regression_hugo",
-    "connectionType": "LOCALHOST",
+    "connectionInfo": {
+      "connectionType": "IN_MEMORY",
+      "user": "root",
+      "password": ""
+    },
     "data": {}
   }]
 }
