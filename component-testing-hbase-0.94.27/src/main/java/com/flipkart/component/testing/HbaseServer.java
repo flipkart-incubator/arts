@@ -11,10 +11,11 @@ class HbaseServer implements DependencyInitializer<HBaseIndirectInput, HBaseObse
 
 
     @Override
-    public void initialize(HbaseTestConfig testConfig) throws Exception {
-        this.hbaseTestConfig = testConfig;
+    public void initialize(HbaseTestConfig hbaseTestConfig) {
+        this.hbaseTestConfig = hbaseTestConfig;
         this.hBaseAdminOperations = HbaseFactory.getHBaseOperations(hbaseTestConfig);
         this.hBaseAdminOperations.startCluster();
+
     }
 
     /**
@@ -22,13 +23,13 @@ class HbaseServer implements DependencyInitializer<HBaseIndirectInput, HBaseObse
      */
     @Override
     public void shutDown() {
-        this.hBaseAdminOperations.deleteAllTables(this.hbaseTestConfig);
+        this.hBaseAdminOperations.deleteAllTables();
         this.hBaseAdminOperations.stopCluster();
     }
 
     @Override
     public void clean() {
-        this.hBaseAdminOperations.deleteAllTables(this.hbaseTestConfig);
+        this.hBaseAdminOperations.deleteAllTables();
     }
 
     @Override

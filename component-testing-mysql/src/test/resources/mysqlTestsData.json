@@ -1,30 +1,28 @@
 {
-  "clean": false,
-
-  "indirectInputs": [{
-    "name": "mysqlIndirectInput",
-    "databaseName": "hugo",
-    "ddlStatements": [
-      "DROP TABLE IF EXISTS label;",
-      "CREATE TABLE label (id int(11) unsigned NOT NULL AUTO_INCREMENT,name varchar(255) DEFAULT NULL,created_by varchar(255) DEFAULT NULL,created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (id),UNIQUE KEY name (name));",
-      "DROP TABLE IF EXISTS offer;",
-      "CREATE TABLE offer (id varchar(255) NOT NULL,data mediumtext,created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (id));",
-      "DROP TABLE IF EXISTS offer_query;",
-      "CREATE TABLE offer_query (id varchar(255) NOT NULL,status varchar(255) DEFAULT NULL,format varchar(255) NOT NULL,classification varchar(255) DEFAULT NULL,label varchar(255) DEFAULT NULL,start_time datetime DEFAULT NULL,end_time datetime DEFAULT NULL,owner varchar(255) DEFAULT NULL,created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,version int(255) DEFAULT 0,ea_status varchar(255) DEFAULT NULL,PRIMARY KEY (id),KEY status (status),KEY format (format),KEY classification (classification),KEY label (label),KEY start_time (start_time),KEY end_time (end_time),KEY owner (owner),KEY updated_at (updated_at));",
-      "DROP TABLE IF EXISTS outbound_message_groups;",
-      "CREATE TABLE outbound_message_groups (id bigint(20) unsigned NOT NULL AUTO_INCREMENT, group_id varchar(100) NOT NULL, expires_at datetime NOT NULL, sidelined tinyint(1) NOT NULL DEFAULT 0, created_at datetime DEFAULT NULL, updated_at datetime DEFAULT NULL, exchange_name varchar(100) DEFAULT NULL, PRIMARY KEY (id), KEY index_outbound_message_groups_on_expires_at_and_sidelined (expires_at, sidelined), KEY index_outbound_message_groups_on_exchange_name (exchange_name), KEY idx_outbound_messages_group (group_id, exchange_name))",
-      "DROP TABLE IF EXISTS outbound_messages;",
-      "CREATE TABLE outbound_messages (id bigint(20) unsigned NOT NULL AUTO_INCREMENT,message_id varchar(100) NOT NULL,relayed tinyint(1) DEFAULT NULL,relayed_at datetime DEFAULT NULL,exchange_name varchar(100) NOT NULL,message mediumtext,created_at datetime DEFAULT NULL,updated_at datetime DEFAULT NULL,inbound_message_id int(11) DEFAULT NULL,exchange_type varchar(255) DEFAULT NULL,app_id varchar(50) DEFAULT NULL,correlation_id varchar(100) DEFAULT NULL,group_id varchar(100) NOT NULL,http_method varchar(10) DEFAULT NULL,http_uri varchar(4096) DEFAULT NULL,reply_to varchar(50) DEFAULT NULL,reply_to_http_method varchar(10) DEFAULT NULL,reply_to_http_uri varchar(4096) DEFAULT NULL,txn_id varchar(100) DEFAULT NULL,routing_key varchar(100) DEFAULT NULL,context text,destination_response_status int(11) DEFAULT NULL,relay_error varchar(255) DEFAULT NULL,retries int(11) DEFAULT 0,custom_headers text,PRIMARY KEY (id),UNIQUE KEY index_outbound_messages_on_message_id (message_id),KEY index_outbound_messages_on_group_id (group_id),KEY index_outbound_messages_on_relayed (relayed),KEY index_outbound_message_on_relayed_at (relayed_at),KEY exchange_name (exchange_name),KEY idx_outbound_messages (group_id,exchange_name,relayed));",
-      "DROP TABLE IF EXISTS tnc;",
-      "CREATE TABLE tnc (id int(11) unsigned NOT NULL AUTO_INCREMENT,tnc_for varchar(255) DEFAULT NULL,offer_format varchar(255) DEFAULT NULL,tnc_data text,tnc_type varchar(255) DEFAULT NULL,created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,active tinyint(1) DEFAULT NULL,updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,tnc_meta varchar(255) DEFAULT NULL,tnc_data_type varchar(255) DEFAULT NULL,PRIMARY KEY (id),KEY tnc_meta (tnc_meta));"
-    ],
-    "connectionType": "LOCALHOST",
-    "tablesData": {
+  "indirectInputs": [
+    {
+      "name": "mysqlIndirectInput",
+      "databaseName": "regression_hugo",
+      "ddlStatements": [
+        "CREATE TABLE IF NOT EXISTS table1 (id varchar(50) , name varchar(50));",
+        "CREATE TABLE IF NOT EXISTS table2 (address varchar(500), pin varchar(50)) ;"
+      ],
+      "connectionType": "LOCALHOST",
+      "tablesData": {
+        "table1": [{
+          "id": "1",
+          "name": "TEST12"
+        }],
+        "table2": [{
+          "address": "bengaluru",
+          "pin": "560042"
+        }]
+      }
     }
-  }],
+  ],
   "observations": [{
     "name": "mysqlObservation",
-    "databaseName": "hugo",
+    "databaseName": "regression_hugo",
     "connectionType": "LOCALHOST",
     "data": {}
   }]

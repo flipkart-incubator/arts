@@ -1,0 +1,24 @@
+[
+  {
+    "request": {
+      "url": "/def",
+      "method": "GET"
+    },
+    "response": {
+      "body": {
+        "d": "e"
+      }
+    }
+  },
+  {
+    "request": {
+              "url": "/abc",
+              "method": "GET"
+            },
+          "response": {
+            "body": {
+                "a": "b"
+              }
+          }
+  }
+]

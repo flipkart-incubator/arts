@@ -16,7 +16,7 @@ public class CompositeTestDataLoaderTest {
         CompositeTestDataLoader compositeTestDataLoader = CompositeTestDataLoader.getInstance();
         HashMap<String, Object> specMap = new HashMap<>();
         specMap.put("response", new HashMap<>());
-        HttpIndirectInput httpIndirectInput = new HttpIndirectInput(specMap);
+        HttpIndirectInput httpIndirectInput = new HttpIndirectInput(specMap,null);
         compositeTestDataLoader.load(httpIndirectInput);
         Assert.assertTrue(valueToWatch);
 

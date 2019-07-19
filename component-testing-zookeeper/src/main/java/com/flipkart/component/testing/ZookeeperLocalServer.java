@@ -19,13 +19,12 @@ public class ZookeeperLocalServer implements DependencyInitializer<ZookeeperIndi
     private ZooKeeperServer server = null;
     private boolean initialized = false;
 
-//    static ZookeeperLocalServer getInstance(){
-//        if(instance == null){
-//            instance = new ZookeeperLocalServer();
-//        }
-//
-//        return instance;
-//    }
+    static ZookeeperLocalServer getInstance(){
+        if(instance == null){
+            instance = new ZookeeperLocalServer();
+        }
+        return instance;
+    }
 
     @Override
     public void initialize(TestConfig testConfig) {

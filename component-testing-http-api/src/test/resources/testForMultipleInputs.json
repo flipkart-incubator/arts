@@ -1,0 +1,20 @@
+{
+  "observations": [
+    {
+      "name": "httpObservation"
+    }
+  ],
+  "directInput": {
+    "path": "/def",
+    "request": null,
+    "name": "httpDirectInput",
+    "method": "GET"
+  },
+  "indirectInputs": [
+    {
+      "mockApiFile": "src/test/resources/httpApis.json",
+      "name": "httpIndirectInput"
+    }
+  ]
+
+}

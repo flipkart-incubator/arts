@@ -8,7 +8,9 @@ import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemp
 import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -18,7 +20,6 @@ class MockServerOperationsImpl implements MockServerOperations {
     private final WireMockServer wireMockServer;
     private static final int HTTP_MOCK_SERVER_PORT = 7777;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
 
     private MockServerOperationsImpl() {
         wireMockServer = new WireMockServer(options().extensions(new ResponseTemplateTransformer(false)).port(HTTP_MOCK_SERVER_PORT));

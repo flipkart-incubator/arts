@@ -58,6 +58,12 @@ public class MysqlIndirectInput implements IndirectInput, MysqlTestConfig {
         this.connectionType = connectionType;
     }
 
+    public String getDatabaseName() {
+        if(!databaseName.contains("regression_"))
+            throw new IllegalArgumentException("For testing database name must have prefix 'regression_' ");
+        else return databaseName;
+    }
+
     /**
      * config for indirect input to whether load before or after SUT start
      *

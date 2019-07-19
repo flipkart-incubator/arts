@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.flipkart.component.testing.model.DirectInput;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Map;
@@ -33,6 +34,8 @@ public class HttpDirectInput implements DirectInput {
      */
     private MultiPartInput multiPartInput;
 
+    @Setter
+    @Getter
     private Object request;
 
     private final Map<String, String> headers;

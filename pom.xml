@@ -24,6 +24,7 @@
         <module>component-testing-zookeeper</module>
         <module>component-testing-solr</module>
         <module>component-testing-s3</module>
+        <module>component-testing-hbase-0.94.27</module>
     </modules>
     <groupId>com.flipkart</groupId>
     <version>1.1-SNAPSHOT</version>

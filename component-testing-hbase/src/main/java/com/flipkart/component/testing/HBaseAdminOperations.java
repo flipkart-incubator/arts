@@ -2,7 +2,7 @@ package com.flipkart.component.testing;
 
 
 import com.flipkart.component.testing.model.hbase.HbaseTestConfig;
-import org.apache.hadoop.hbase.client.HTableInterface;
+import org.apache.hadoop.hbase.client.Table;
 
 public interface HBaseAdminOperations {
 
@@ -12,7 +12,9 @@ public interface HBaseAdminOperations {
 
     void createTable(HbaseTestConfig hbaseTestConfig);
 
-    HTableInterface getTable(HbaseTestConfig hbaseTestConfig);
+    Table getTable(HbaseTestConfig hbaseTestConfig);
 
     void deleteTable(HbaseTestConfig hbaseTestConfig);
+
+    void deleteAllTables(HbaseTestConfig hbaseTestConfig);
 }
