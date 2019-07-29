@@ -4,14 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.component.testing.model.ConnectionType;
 import com.flipkart.component.testing.model.IndirectInput;
 import lombok.Data;
 import lombok.Getter;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +55,12 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
         this.connectionType = connectionType;
         this.hbaseSiteConfig = hbaseSiteConfig;
         this.inputFile = inputFile;
+    }
+
+    public String getTableName() {
+        if(tableName!=null && !tableName.contains("regression_"))
+            throw new RuntimeException("The table name used is not in correct format for testing. Try prefix 'regression_' ");
+        else return tableName;
     }
 
     @Override

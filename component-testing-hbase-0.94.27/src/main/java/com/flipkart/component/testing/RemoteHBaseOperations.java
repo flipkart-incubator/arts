@@ -9,6 +9,8 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTable;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -48,7 +50,8 @@ class RemoteHBaseOperations implements HBaseAdminOperations {
                         .map(HColumnDescriptor::new)
                         .forEach(descriptor::addFamily);
                 hBaseAdmin.createTable(descriptor);
-            }
+            } else if (hBaseAdmin.isTableDisabled(hbaseTestConfig.getTableName().getBytes()))
+                hBaseAdmin.enableTable(hbaseTestConfig.getTableName());
         } catch (Exception e) {
             throw new RuntimeException("Failed to create new hbase table "+hbaseTestConfig.getTableName()+" ", e);
         }
@@ -93,10 +96,20 @@ class RemoteHBaseOperations implements HBaseAdminOperations {
     @Override
     public void deleteAllTables(){
         try{
-            hBaseAdmin.disableTables(Pattern.compile("regression_.*"));
-            hBaseAdmin.deleteTables(Pattern.compile("regression_.*"));
+            Arrays.asList(hBaseAdmin.listTables(Pattern.compile("regression_.*"))).forEach(table->{
+                if(table.getNameAsString().contains("regression_")){
+                    try {
+                        if(hBaseAdmin.isTableEnabled(table.getName()))
+                            hBaseAdmin.disableTable(table.getName());
+                        hBaseAdmin.deleteTable(table.getName());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
+
 }
