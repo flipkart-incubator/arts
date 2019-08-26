@@ -2,6 +2,7 @@ package com.flipkart.component.testing;
 
 import com.flipkart.component.testing.model.hazelcast.*;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 
 /**
  * @author siddharth.t
@@ -27,8 +28,10 @@ public class HazelCastLocalServer implements DependencyInitializer<ServerHZIndir
     @Override
     public void clean() {
         hazelcastInstance.getDistributedObjects().forEach(distributedObject -> {
-            if(distributedObject.getClass().getName().equals(HazelCastFactory.HZ_IMAP_CLASS))
-                hazelcastInstance.getMap(distributedObject.getName()).clear();
+            if(distributedObject.getClass().getName().equals(HazelCastFactory.HZ_IMAP_CLASS)) {
+                IMap iMap = this.hazelcastInstance.getMap(distributedObject.getName());
+                iMap.keySet().forEach(iMap::remove);
+            }
         });
     }
 
