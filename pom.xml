@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +25,7 @@
         <module>component-testing-hbase-0.94.27</module>
     </modules>
     <groupId>com.flipkart</groupId>
-    <version>1.2.5-SNAPSHOT</version>
+    <version>1.2.5</version>
 
     <properties>
         <storm.version>1.2.1</storm.version>
@@ -50,7 +48,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:Flipkart/component-blackbox-testing.git</developerConnection>
         <url>scm:git:git@github.com:Flipkart/component-blackbox-testing.git</url>
-        <tag>HEAD</tag>
+        <tag>component-testing-1.2.5</tag>
     </scm>
 
 
@@ -95,7 +93,7 @@
                 </executions>
                 <configuration>
                     <rules>
-                        <DependencyConvergence/>
+                        <DependencyConvergence />
                     </rules>
                     <fail>false</fail>
                 </configuration>
