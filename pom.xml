@@ -27,7 +27,7 @@
         <module>component-testing-hbase-0.94.27</module>
     </modules>
     <groupId>com.flipkart</groupId>
-    <version>1.2.3</version>
+    <version>1.2.5-SNAPSHOT</version>
 
     <properties>
         <storm.version>1.2.1</storm.version>
@@ -46,6 +46,12 @@
         <s3.version>0.2.4</s3.version>
         <runSuite>**/DataStoreSuite.class</runSuite>
     </properties>
+
+    <scm>
+        <developerConnection>scm:git:git@github.com:Flipkart/component-blackbox-testing.git</developerConnection>
+        <url>scm:git:git@github.com:Flipkart/component-blackbox-testing.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
 
     <build>
