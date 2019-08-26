@@ -17,7 +17,7 @@
         <dependency>
             <artifactId>component-testing-data-model</artifactId>
             <groupId>com.flipkart</groupId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
