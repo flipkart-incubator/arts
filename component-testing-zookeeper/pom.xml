@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-core</artifactId>
-            <version>1.2.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>

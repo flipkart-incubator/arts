@@ -10,12 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>component-testing-rmq</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.3</version>
     <dependencies>
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-core</artifactId>
-            <version>1.2.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.rabbitmq</groupId>

@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-api</artifactId>
-            <version>1.2.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
