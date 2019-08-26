@@ -5,12 +5,12 @@
     <parent>
         <artifactId>component-testing</artifactId>
         <groupId>com.flipkart</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>component-testing-hbase-0.94.27</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2.3</version>
 
 
     <properties>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-core</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

@@ -28,11 +28,18 @@ public class HttpIndirectInput implements IndirectInput, TestConfig {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
+    public HttpIndirectInput(Map<String, Object> specification){
+        this(specification,null);
+    }
+
     @JsonCreator
     public HttpIndirectInput(@JsonProperty("specification") Map<String, Object> specification,
                              @JsonProperty("mockApiFile")String inputFile) {
-
         this.inputFile=inputFile;
+        this.specification = addSpecification(specification,inputFile);
+    }
+
+    private Map<String, Object> addSpecification(Map<String, Object> specification,String inputFile) {
         if (specification == null && inputFile ==null) {
             throw new IllegalArgumentException("Provide at least one specification. Either from spec file or from mockApiFile.");
         } else if (specification!=null){
@@ -41,12 +48,12 @@ public class HttpIndirectInput implements IndirectInput, TestConfig {
                 String body = objectMapper.writeValueAsString(map.get("body"));
                 map.put("body", body);
                 requestList.add((Map<String,Object>)specification.get("request"));
-                this.specification = specification;
             } catch (JsonProcessingException e) {
                 log.error("unable to serialize  : {} ", specification, e);
                 throw new RuntimeException("unable to serialize" + specification);
             }
         }
+        return specification;
     }
 
     /**

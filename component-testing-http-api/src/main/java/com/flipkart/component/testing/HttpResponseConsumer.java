@@ -86,7 +86,7 @@ class HttpResponseConsumer implements ObservationCollector<HttpObservation> {
 
             String response = null;
             if (httpResponse.getEntity() != null) {
-                response = EntityUtils.toString(httpResponse.getEntity());
+                response = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
             }
 
             return new HttpObservation(httpResponse.getStatusLine().getStatusCode(), response, httpResponse.getAllHeaders());

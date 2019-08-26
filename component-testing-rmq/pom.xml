@@ -5,16 +5,17 @@
     <parent>
         <artifactId>component-testing</artifactId>
         <groupId>com.flipkart</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>component-testing-rmq</artifactId>
+    <version>1.2.4</version>
     <dependencies>
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-core</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.rabbitmq</groupId>
@@ -24,7 +25,7 @@
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-broker</artifactId>
-            <version>0.30</version>
+            <version>0.26</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jetty-server</artifactId>

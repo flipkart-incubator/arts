@@ -31,6 +31,14 @@ public class TestSpecification {
     @Setter
     private String description;
 
+    public TestSpecification (DirectInput directInput,List<IndirectInput> indirectInputs,List<Observation>observations){
+        this(100000,directInput,new Fanout().fanOutIndirectInputs(indirectInputs),observations,true);
+    }
+
+    public TestSpecification (Integer ttlInMs,DirectInput directInput,List<IndirectInput> indirectInputs,List<Observation>observations){
+        this(ttlInMs,directInput,new Fanout().fanOutIndirectInputs(indirectInputs),observations,true);
+    }
+
     public TestSpecification(@JsonProperty("ttlInMs") Integer ttlInMs,
                              @JsonProperty("directInput") DirectInput directInput,
                              @JsonProperty("indirectInputs") List<IndirectInput> indirectInputs,

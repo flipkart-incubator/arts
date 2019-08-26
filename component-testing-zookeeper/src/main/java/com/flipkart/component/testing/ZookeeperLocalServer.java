@@ -17,7 +17,7 @@ public class ZookeeperLocalServer implements DependencyInitializer<ZookeeperIndi
     private ServerCnxnFactory standaloneServerFactory = null;
     static final String ZOOKEEPER_HOST = String.format("localhost:%d", ZookeeperFactory.ZOOKEEPER_PORT);
     private ZooKeeperServer server = null;
-    private boolean initialized = false;
+    private static boolean initialized = false;
 
     static ZookeeperLocalServer getInstance(){
         if(instance == null){
