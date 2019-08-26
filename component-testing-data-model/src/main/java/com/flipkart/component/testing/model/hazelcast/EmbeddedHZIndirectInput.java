@@ -47,6 +47,11 @@ public class EmbeddedHZIndirectInput implements HazelcastIndirectInput {
     }
 
     @Override
+    public String getDiscoveryPath() {
+        throw new UnsupportedOperationException("discovery path cannot be accessed in embedded mode");
+    }
+
+    @Override
     public boolean isLoadAfterSUT() {
         return true;
     }

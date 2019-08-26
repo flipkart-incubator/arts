@@ -27,17 +27,21 @@ public class ServerHZIndirectInput implements HazelcastIndirectInput {
 
     private final Map<String ,String> serializerConfigMap;
 
+    private final String discoveryPath;
+
     @JsonCreator
     public ServerHZIndirectInput(@JsonProperty("group") String group,
                                  @JsonProperty("password") String password,
                                  @JsonProperty("user") String user,
                                  @JsonProperty("hazelcastDS") HazelcastDataStructures hazelcastDataStructures,
-                                 @JsonProperty("serializerConfigMap") Map<String, String> serializerConfigs) {
+                                 @JsonProperty("serializerConfigMap") Map<String, String> serializerConfigs,
+                                 @JsonProperty("discoveryPath") String discoveryPath) {
         this.group = group;
         this.password = password;
         this.user = user;
         this.hazelcastDS = hazelcastDataStructures;
         this.serializerConfigMap = serializerConfigs;
+        this.discoveryPath = discoveryPath;
     }
 
     @Override

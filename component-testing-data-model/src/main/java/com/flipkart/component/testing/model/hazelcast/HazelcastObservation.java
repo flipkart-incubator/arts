@@ -35,16 +35,21 @@ public class HazelcastObservation implements Observation, HazelcastTestConfig {
 
     @Override
     public String getGroup() {
-        throw new UnsupportedOperationException("serializer for observation should not be required");
+        throw new UnsupportedOperationException("group for observation should not be required");
     }
 
     @Override
     public String getPassword() {
-        throw new UnsupportedOperationException("serializer for observation should not be required");
+        throw new UnsupportedOperationException("password for observation should not be required");
     }
 
     @Override
     public String getUser() {
-        throw new UnsupportedOperationException("serializer for observation should not be required");
+        throw new UnsupportedOperationException("user for observation should not be required");
+    }
+
+    @Override
+    public String getDiscoveryPath() {
+        throw new UnsupportedOperationException("discovery path for observation should not be required");
     }
 }
