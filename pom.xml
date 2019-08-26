@@ -27,7 +27,7 @@
         <module>component-testing-hbase-0.94.27</module>
     </modules>
     <groupId>com.flipkart</groupId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2.3</version>
 
     <properties>
         <storm.version>1.2.1</storm.version>
