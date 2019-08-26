@@ -1,6 +1,6 @@
 package com.flipkart.component.testing.model.mysql;
 
 public enum MysqlConnectionType {
-    LOCALHOST,
+    REMOTE,
     IN_MEMORY
 }

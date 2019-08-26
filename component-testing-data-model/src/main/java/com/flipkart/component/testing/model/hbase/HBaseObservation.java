@@ -62,11 +62,6 @@ public class HBaseObservation implements Observation, HbaseTestConfig {
         return new String[0];
     }
 
-    @Override
-    @JsonIgnore
-    public boolean shouldCreateTable() {
-        return false;
-    }
 
     @Data
     public static class Row {

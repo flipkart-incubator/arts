@@ -1,8 +1,8 @@
 package com.flipkart.component.testing;
 
 import com.flipkart.component.testing.model.hbase.HBaseIndirectInput;
-import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.util.Arrays;
@@ -19,12 +19,17 @@ public class HBaseDataLoader implements TestDataLoader<HBaseIndirectInput> {
 	@Override
 	public void load(HBaseIndirectInput hBaseIndirectInput) {
 		HBaseAdminOperations hBaseOperations = HbaseFactory.getHBaseOperations(hBaseIndirectInput);
-		HTableInterface table = hBaseOperations.getTable(hBaseIndirectInput);
+		hBaseOperations.createTable(hBaseIndirectInput);
+		Table table = hBaseOperations.getTable(hBaseIndirectInput);
 
 		Put p;
 		for (int row = 0; row < hBaseIndirectInput.getRows().size(); row++) {
+			if(hBaseIndirectInput.getRows().get(row).getRowKey().isEmpty())
+				continue;
 			p = new Put(Bytes.toBytes(hBaseIndirectInput.getRows().get(row).getRowKey()));
 			for (String colFamily : hBaseIndirectInput.getRows().get(row).getData().keySet()) {
+				if (hBaseIndirectInput.getRows().get(row).getData().get(colFamily)==null)
+					continue;
 				Map<String, String> qualifierMap = hBaseIndirectInput.getRows().get(row).getData().get(colFamily);
 				if(qualifierMap.isEmpty()) return;
 				for (String qualifier : qualifierMap.keySet()) {

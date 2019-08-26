@@ -12,6 +12,7 @@
   },
   "indirectInputs": [
     {
+      "mockApiFile": "src/test/resources/httpApis.json",
       "specification": {
         "request": {
           "url": "/abc",
@@ -24,6 +25,21 @@
         }
       },
       "name": "httpIndirectInput"
+    },
+    {
+      "name": "httpIndirectInput",
+      "specification":  {
+        "request": {
+          "url": "/def",
+          "method": "GET"
+        },
+        "response": {
+          "body": {
+            "p": "q"
+          }
+        }
+      }
     }
   ]
+
 }

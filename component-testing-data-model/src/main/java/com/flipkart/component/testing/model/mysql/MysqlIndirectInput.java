@@ -17,7 +17,7 @@ public class MysqlIndirectInput implements IndirectInput, MysqlTestConfig {
      * type of connection to establish : Hsql(in memory) or mysql(localhost)
      * values : memory, localhost
      */
-    private MysqlConnectionType connectionType;
+    private ConnectionInfo connectionInfo;
 
     /**
      * databaseName
@@ -49,13 +49,19 @@ public class MysqlIndirectInput implements IndirectInput, MysqlTestConfig {
             @JsonProperty("databaseName") String databaseName,
             @JsonProperty("ddlStatements") List<String> ddlStatements,
             @JsonProperty("tablesData") Map<String,List<Map<String, Object>>> tablesData,
-            @JsonProperty("connectionType") MysqlConnectionType connectionType
+            @JsonProperty("connectionInfo") ConnectionInfo connectionInfo
 
     ) {
         this.databaseName = databaseName;
         this.ddlStatements = ddlStatements;
         this.tablesData = tablesData;
-        this.connectionType = connectionType;
+        this.connectionInfo = connectionInfo;
+    }
+
+    public String getDatabaseName() {
+        if(!databaseName.contains("regression_"))
+            throw new IllegalArgumentException("For testing database name must have prefix 'regression_' ");
+        else return databaseName;
     }
 
     /**

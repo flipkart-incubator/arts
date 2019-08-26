@@ -8,7 +8,6 @@ import com.flipkart.component.testing.model.ConnectionType;
 import com.flipkart.component.testing.model.IndirectInput;
 import lombok.Data;
 import lombok.Getter;
-
 import java.util.List;
 import java.util.Map;
 
@@ -42,17 +41,26 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
      * file path of hbaseSiteXMl
      */
     private Map<String,String> hbaseSiteConfig;
+    private String inputFile;
 
     @JsonCreator
     public HBaseIndirectInput(@JsonProperty("tableName") String tableName,
-                              @JsonProperty("rows") List<Row> rows,
-                              @JsonProperty("connectionType") ConnectionType connectionType,
-                              @JsonProperty("hbaseSiteConfig") Map<String,String> hbaseSiteConfig) {
+                               @JsonProperty("rows") List<Row> rows,
+                               @JsonProperty("connectionType") ConnectionType connectionType,
+                               @JsonProperty("hbaseSiteConfig") Map<String, String> hbaseSiteConfig,
+                               @JsonProperty("hbaseIndirectInputFile") String inputFile) {
 
         this.tableName = tableName;
         this.rows = rows;
         this.connectionType = connectionType;
         this.hbaseSiteConfig = hbaseSiteConfig;
+        this.inputFile = inputFile;
+    }
+
+    public String getTableName() {
+        if(tableName!=null && !tableName.contains("regression_"))
+            throw new RuntimeException("The table name used is not in correct format for testing. Try prefix 'regression_' ");
+        else return tableName;
     }
 
     @Override
@@ -60,18 +68,12 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
     public String[] columnFamilies() {
         if (this.getRows() != null && !this.getRows().isEmpty()) {
             int numberOfColFamilies = this.getRows().get(0).getData().keySet().size();
-            String[] colFamilies = this.getRows().get(0).getData().keySet()
+            return this.getRows().get(0).getData().keySet()
                     .toArray(new String[numberOfColFamilies]);
-            return colFamilies;
         }
         return new String[0];
     }
 
-    @Override
-    @JsonIgnore
-    public boolean shouldCreateTable() {
-        return true;
-    }
 
     /**
      * config for indirect input to whether load before or after SUT start
@@ -88,8 +90,8 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
 
 
         @JsonCreator
-        public Row(@JsonProperty("rowKey") String rowKey,
-                   @JsonProperty("data") Map<String, Map<String, String>> data) {
+        Row(@JsonProperty("rowKey") String rowKey,
+            @JsonProperty("data") Map<String, Map<String, String>> data) {
             this.rowKey = rowKey;
             this.data = data;
         }

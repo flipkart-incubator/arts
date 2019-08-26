@@ -1,5 +1,8 @@
 package com.flipkart.component.testing;
 
+import com.aerospike.client.Key;
+import com.aerospike.client.Record;
+import com.aerospike.client.policy.Policy;
 import com.aerospike.client.query.RecordSet;
 import com.aerospike.client.query.Statement;
 import com.flipkart.component.testing.model.aerospike.AerospikeData;
@@ -40,30 +43,18 @@ class AerospikeLocalConsumer implements ObservationCollector<AerospikeObservatio
         return AerospikeObservation.class;
     }
 
-    private List<AerospikeData.AerospikeRecords> getListOfRecords(AerospikeObservation aerospikeObservation, int aerospikeDataCount){
-        Statement statement = null;
+    private List<AerospikeData.AerospikeRecords> getListOfRecords(AerospikeObservation aerospikeObservation, int aerospikeDataCount) {
         List<AerospikeData.AerospikeRecords> recordList = new ArrayList<>();
         for(AerospikeData.AerospikeRecords aerospikeRecord: aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getRecords()) {
-            String primaryKey= null;
-            Map<String,Object> binDataMap= null;
-            statement = new Statement();
-            statement.setNamespace(aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getNamespace());
-            statement.setSetName(aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getSet());
-            try (RecordSet recordSet = aerospikeOperations.getClient().query(null, statement)) {
-                while (recordSet.next()) {
-                    if (recordSet.getKey().userKey != null) {
-                        if (!aerospikeRecord.getPrimaryKey().equalsIgnoreCase(recordSet.getKey().userKey.toString()))
-                            continue;
-                        primaryKey = recordSet.getKey().userKey.toString();
-                    } else
-                        primaryKey = "";
-                    binDataMap = new HashMap<>();
-                    for (String binkey : aerospikeRecord.getBinData().keySet()) {
-                        binDataMap.put(binkey, recordSet.getRecord().getValue(binkey));
-                    }
-                }
+            Key key = new Key(aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getNamespace(),
+                    aerospikeObservation.getAerospikeData().get(aerospikeDataCount).getSet(),
+                    aerospikeRecord.getPrimaryKey());
+            Record record = aerospikeOperations.getClient().get(null , key);
+            Map<String,Object> binDataMap = new HashMap<>();
+            for (String binKey  : aerospikeRecord.getBinData().keySet()) {
+                binDataMap.put(binKey, record.getValue(binKey));
             }
-            recordList.add(new AerospikeData.AerospikeRecords(primaryKey,binDataMap));
+            recordList.add(new AerospikeData.AerospikeRecords(aerospikeRecord.getPrimaryKey(), binDataMap));
         }
         return recordList;
     }

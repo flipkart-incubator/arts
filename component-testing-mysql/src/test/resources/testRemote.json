@@ -1,0 +1,39 @@
+{
+  "indirectInputs": [
+    {
+      "name": "mysqlIndirectInput",
+      "databaseName": "regression_hugo",
+      "ddlStatements": [
+        "CREATE TABLE IF NOT EXISTS table1 (id varchar(50) , name varchar(50));",
+        "CREATE TABLE IF NOT EXISTS table2 (address varchar(500), pin varchar(50)) ;"
+      ],
+      "connectionInfo": {
+        "connectionType": "REMOTE",
+        "host": "127.0.0.1",
+        "user": "root",
+        "password": ""
+      },
+      "tablesData": {
+        "table1": [{
+          "id": "1",
+          "name": "TEST12"
+        }],
+        "table2": [{
+          "address": "bengaluru",
+          "pin": "560042"
+        }]
+      }
+    }
+  ],
+  "observations": [{
+    "name": "mysqlObservation",
+    "databaseName": "regression_hugo",
+    "connectionInfo": {
+      "connectionType": "REMOTE",
+      "host": "127.0.0.1",
+      "user": "root",
+      "password": ""
+    },
+    "data": {}
+  }]
+}

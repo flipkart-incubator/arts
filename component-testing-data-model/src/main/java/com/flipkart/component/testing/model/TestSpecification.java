@@ -3,16 +3,11 @@ package com.flipkart.component.testing.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flipkart.component.testing.model.http.HttpObservation;
-import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
-import com.flipkart.component.testing.model.zookeeper.ZookeeperIndirectInput;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,7 +20,7 @@ public class TestSpecification {
 
     private final Integer ttlInMs;
     private final DirectInput directInput;
-    private final List<IndirectInput> indirectInputs;
+    private final List<IndirectInput> indirectInputs ;
     private final List<Observation> observations;
 
     /**
@@ -42,13 +37,13 @@ public class TestSpecification {
                              @JsonProperty("observations") List<Observation> observations,
                              @JsonProperty("clean") Boolean clean){
         this.directInput = directInput;
-        this.indirectInputs = indirectInputs;
+        this.indirectInputs = new Fanout().fanOutIndirectInputs(indirectInputs);
         this.observations = observations;
         this.shouldClean = clean == null ? true : clean;
         //ttl should lie bwn 10 - 100s, otherwise default to 100s
         this.ttlInMs = (ttlInMs!= null && ttlInMs >= 10000 && ttlInMs <= 100000) ? ttlInMs : 100000;
-    }
 
+    }
 
     @JsonIgnore
     public List<IndirectInput> getIndirectInputsToBePreLoaded(){

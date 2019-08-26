@@ -37,7 +37,7 @@ public class MysqlObservation implements Observation, MysqlTestConfig {
     private String databaseName;
 
 
-    private MysqlConnectionType connectionType;
+    private ConnectionInfo connectionInfo;
 
     /**
      * Used to define the observation from mysql
@@ -50,13 +50,13 @@ public class MysqlObservation implements Observation, MysqlTestConfig {
     @JsonCreator
     public MysqlObservation(@JsonProperty("data") Map<String, List<Map<String, Object>>> expectedObservation,
                             @JsonProperty("databaseName") String databaseName,
-                            @JsonProperty("connectionType")MysqlConnectionType connectionType) throws DataSetException {
+                            @JsonProperty("connectionInfo")ConnectionInfo connectionInfo) throws DataSetException {
         IDataSet dataSet = new JSONDataSet(expectedObservation);
         for (String tableName : dataSet.getTableNames()) {
             data.put(tableName.toUpperCase(), dataSet.getTable(tableName));
         }
         this.databaseName = databaseName;
-        this.connectionType = connectionType;
+        this.connectionInfo = connectionInfo;
     }
 
     private MysqlObservation(){}

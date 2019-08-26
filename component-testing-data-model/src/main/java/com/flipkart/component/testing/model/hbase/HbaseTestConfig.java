@@ -15,6 +15,4 @@ public interface HbaseTestConfig extends TestConfig{
 
     Map<String,String> getHbaseSiteConfig();
 
-    boolean shouldCreateTable();
-
 }

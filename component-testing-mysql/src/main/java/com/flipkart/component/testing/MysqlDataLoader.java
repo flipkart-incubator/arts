@@ -13,8 +13,8 @@ import java.util.List;
 
 public class MysqlDataLoader implements TestDataLoader<MysqlIndirectInput> {
 
-    private MysqlIndirectInput indirectInput;
-    private Connection myDbSqlconn;
+   private MysqlIndirectInput indirectInput;
+   private Connection myDbSqlconn;
 
     /**
      * loads the mysql data into the tables
@@ -24,7 +24,10 @@ public class MysqlDataLoader implements TestDataLoader<MysqlIndirectInput> {
     @Override
     public void load(MysqlIndirectInput indirectInput) {
         this.indirectInput = indirectInput;
-        this.myDbSqlconn = MysqlFactory.getMysqlConnection(indirectInput).getConnectionForDatabase();
+        MysqlConnection mysqlConnection = MysqlFactory.getMysqlConnection(indirectInput);
+        mysqlConnection.createDatabase();
+        mysqlConnection.runDDLStatements();
+        this.myDbSqlconn = mysqlConnection.getConnectionForDatabase();
         insert();
     }
 

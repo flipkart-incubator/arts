@@ -9,7 +9,7 @@ import com.hazelcast.core.HazelcastInstance;
 public class HazelCastLocalServer implements DependencyInitializer<ServerHZIndirectInput, HazelcastObservation, HazelcastTestConfig> {
 
     private HazelcastInstance hazelcastInstance;
-    private ZookeeperLocalServer zookeeperLocalServer = new ZookeeperLocalServer();
+    private ZookeeperLocalServer zookeeperLocalServer =  ZookeeperLocalServer.getInstance();
     private HazelcastTestConfig hazelcastTestConfig;
 
     @Override

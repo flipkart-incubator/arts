@@ -3,9 +3,9 @@ package com.flipkart.component.testing;
 import com.flipkart.component.testing.model.hbase.HBaseObservation;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.KeyValue;
-import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ class HBaseLocalConsumer implements ObservationCollector<HBaseObservation> {
 
     private List<HBaseObservation.Row> getRows(String tableName, HBaseObservation expectedObservation) {
         List<HBaseObservation.Row> rows = new ArrayList<>();
-        HTableInterface table = HbaseFactory.getHBaseOperations(expectedObservation).getTable(expectedObservation);
+        Table table = HbaseFactory.getHBaseOperations(expectedObservation).getTable(expectedObservation);
         try {
             HColumnDescriptor[] columnDescriptors = table.getTableDescriptor().getColumnFamilies();
             for (Result rowResult : table.getScanner(new Scan())) {
