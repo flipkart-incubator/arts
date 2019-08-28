@@ -53,7 +53,7 @@ public class MysqlObservation implements Observation, MysqlTestConfig {
                             @JsonProperty("connectionInfo")ConnectionInfo connectionInfo) throws DataSetException {
         IDataSet dataSet = new JSONDataSet(expectedObservation);
         for (String tableName : dataSet.getTableNames()) {
-            data.put(tableName.toUpperCase(), dataSet.getTable(tableName));
+            data.put(tableName, dataSet.getTable(tableName));
         }
         this.databaseName = databaseName;
         this.connectionInfo = connectionInfo;
@@ -62,7 +62,7 @@ public class MysqlObservation implements Observation, MysqlTestConfig {
     private MysqlObservation(){}
 
     public static MysqlObservation with(Map<String, ITable> data, String databaseName) {
-        Map<String, ITable> upperCaseTableNameMap = data.keySet().stream().collect(Collectors.toMap(String::toUpperCase, data::get));
+        Map<String, ITable> upperCaseTableNameMap = data.keySet().stream().collect(Collectors.toMap(t->t, data::get));
         MysqlObservation mysqlObservation = new MysqlObservation();
         mysqlObservation.databaseName = databaseName;
         mysqlObservation.data = upperCaseTableNameMap;
@@ -76,7 +76,6 @@ public class MysqlObservation implements Observation, MysqlTestConfig {
      */
     @JsonIgnore
     public ITable getTable(String tableName) {
-        tableName = tableName.toUpperCase();
         return this.data.get(tableName);
     }
 
