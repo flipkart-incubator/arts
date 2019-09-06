@@ -40,6 +40,8 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
             }
         }
         BulkResponse bulkItemResponses = bulkRequestBuilder.execute().actionGet();
+        if(bulkItemResponses.hasFailures())
+            throw new RuntimeException("Failed to execute bulk request " +bulkItemResponses.buildFailureMessage());
 
         String[] indices = elasticSearchIndirectInput.getDocumentsOfIndexAndType().stream().map(DocumentsOfIndexAndType::getIndex).toArray(String[]::new);
         esOperations.refresh(indices);
@@ -68,13 +70,10 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
             String mappingFileContent = Utils.getFileString(documentsOfIndexAndType.getMappingFile());
             String index = documentsOfIndexAndType.getIndex();
             String type = documentsOfIndexAndType.getType();
-
             if (esOperations.isIndexPresent(index)) {
                 throw new IllegalStateException("index is already present before loading the data, this should not be the case");
             }
-
             esOperations.createIndex(index, type, mappingFileContent);
-
         }
 
     }

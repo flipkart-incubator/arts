@@ -8,12 +8,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>component-testing-elasticsearch</artifactId>
+    <version>1.2.7</version>
 
     <dependencies>
         <dependency>
             <artifactId>component-testing-core</artifactId>
             <groupId>com.flipkart</groupId>
-            <version>${project.version}</version>
+            <version>1.2.6</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
