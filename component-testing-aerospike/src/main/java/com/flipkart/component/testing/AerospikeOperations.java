@@ -9,7 +9,6 @@ import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.client.policy.ScanPolicy;
 import com.aerospike.client.policy.WritePolicy;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
-//import com.sun.security.ntlm.Client;
 
 import java.util.List;
 
