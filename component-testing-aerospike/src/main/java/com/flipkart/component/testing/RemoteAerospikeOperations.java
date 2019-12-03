@@ -24,8 +24,17 @@ class RemoteAerospikeOperations implements AerospikeOperations,ScanCallback {
 
     @Override
     public AerospikeClient getClient() {
-        this.aerospikeClient = new AerospikeClient(new ClientPolicy(),getClientHost());
+        this.aerospikeClient = new AerospikeClient(getClientPolicy(),getClientHost());
         return aerospikeClient;
+    }
+
+    @Override
+    public ClientPolicy getClientPolicy() {
+        ClientPolicy clientPolicy = new ClientPolicy();
+        clientPolicy.user = aerospikeTestConfig.getUser();
+        clientPolicy.password = aerospikeTestConfig.getPassword();
+
+        return clientPolicy;
     }
 
 

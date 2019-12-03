@@ -46,17 +46,29 @@ public class AerospikeIndirectInput implements IndirectInput,AerospikeTestConfig
         return getConnectionInfo().getPort();
     }
 
+    @Override
+    public String getUser() {return getConnectionInfo().getUser(); }
+
+    @Override
+    public String getPassword() {return getConnectionInfo().getPassword(); }
+
     @Data
     public static class AerospikeConnectionInfo{
 
         private String hostIP;
         private int port;
+        private String user;
+        private String password;
         @JsonCreator
         public AerospikeConnectionInfo (
                 @JsonProperty("host") String hostIP,
-                @JsonProperty("port") int port){
+                @JsonProperty("port") int port,
+                @JsonProperty("user") String user,
+                @JsonProperty("password") String password){
             this.hostIP= hostIP;
             this.port= port;
+            this.user= user;
+            this.password= password;
         }
 
     }

@@ -3,12 +3,12 @@
     <parent>
         <artifactId>component-testing</artifactId>
         <groupId>com.flipkart</groupId>
-        <version>1.2.6</version>
+        <version>1.2.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>component-testing-hbase-0.94.27</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.6-SNAPSHOT</version>
 
 
     <properties>
