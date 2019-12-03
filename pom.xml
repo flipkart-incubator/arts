@@ -48,7 +48,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:Flipkart/component-blackbox-testing.git</developerConnection>
         <url>scm:git:git@github.com:Flipkart/component-blackbox-testing.git</url>
-        <tag>component-testing-1.2.6</tag>
+        <tag>component-testing-1.2.7</tag>
     </scm>
 
 
