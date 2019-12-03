@@ -13,6 +13,14 @@
         "port":{
           "description": "host port number",
           "type": "integer"
+        },
+        "user":{
+          "description": "aerospike user",
+          "type": "string"
+        },
+        "password":{
+          "description": "aerospike password",
+          "type": "string"
         }
       }
     },

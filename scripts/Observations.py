@@ -127,7 +127,9 @@ def takeAerospikeObservation():
         'name': 'aerospikeObservation',
         'connectionInfo': {
             'host': raw_input("Enter aerospike host IP : "),
-            'port': int(raw_input('Enter port number : '))
+            'port': int(raw_input('Enter port number : ')),
+            'user': raw_input("Enter aerospike user : "),
+            'password': raw_input("Enter aerospike password : ")
         }
     }
     aerospikeData = []

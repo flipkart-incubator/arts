@@ -5,6 +5,7 @@ import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Host;
 import com.aerospike.client.Key;
+import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.client.policy.ScanPolicy;
 import com.aerospike.client.policy.WritePolicy;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
@@ -19,5 +20,6 @@ public interface AerospikeOperations {
     Host getClientHost();
     WritePolicy getWritePolicy();
     ScanPolicy getScanPolicy();
+    ClientPolicy getClientPolicy();
     void clean();
 }

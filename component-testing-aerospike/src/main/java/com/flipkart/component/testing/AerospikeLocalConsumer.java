@@ -34,7 +34,7 @@ class AerospikeLocalConsumer implements ObservationCollector<AerospikeObservatio
             aerospikeDataCount++;
         }
         return new AerospikeObservation(
-                new AerospikeObservation.AerospikeConnectionInfo(expectedObservation.getConnectionInfo().getHostIP(),expectedObservation.getConnectionInfo().getPort())
+                new AerospikeObservation.AerospikeConnectionInfo(expectedObservation.getConnectionInfo().getHostIP(),expectedObservation.getConnectionInfo().getPort(),expectedObservation.getConnectionInfo().getUser(),expectedObservation.getConnectionInfo().getPassword())
                 , aerospikeDataList);
     }
 
