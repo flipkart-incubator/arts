@@ -39,17 +39,17 @@ class SingleHostBasedOperations implements RedisOperations {
     public void start() {
         //process is not getting killed hence
         this.stop();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         this.redisServer.start();
     }
 
     @Override
     public void stop() {
-        this.redisServer.stop();
+        try {
+            Runtime.getRuntime().exec("pkill redis");
+            Thread.sleep(3000);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
