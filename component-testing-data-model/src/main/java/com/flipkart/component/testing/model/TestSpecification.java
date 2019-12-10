@@ -103,12 +103,13 @@ public class TestSpecification {
     @JsonIgnore
     public List<Observation> sanitizeObservations(String url) {
         List<Observation> observations = new ArrayList<>();
+        //HttpObservation should be the first observation if used in the spec json file
+        this.observations.stream().filter(observation->observation instanceof HttpObservation).findFirst()
+                .ifPresent(observation->observations.add(new HttpObservation(directInput, url)));
+
         for (Observation observation : this.observations) {
-            if (observation instanceof HttpObservation) {
-                observations.add(new HttpObservation(directInput, url));
-            } else {
+            if (!(observation instanceof HttpObservation))
                 observations.add(observation);
-            }
         }
         return observations;
     }
