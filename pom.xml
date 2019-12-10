@@ -24,8 +24,10 @@
         <module>component-testing-s3</module>
         <module>component-testing-hbase-0.94.27</module>
     </modules>
+
     <groupId>com.flipkart</groupId>
-    <version>1.2.8</version>
+    <version>1.2.9</version>
+
 
     <properties>
         <storm.version>1.2.1</storm.version>

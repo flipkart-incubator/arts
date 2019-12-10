@@ -1,0 +1,4 @@
+"directInput.json.t3","directInput.path","indirectInputs[0].specification.response.body.k2.test1","indirectInputs[1].connectionType","indirectInputs[1].rows[0].rowKey","indirectInputs[1].rows[1]","indirectInputs[1].hbaseSiteConfig.['hbase.zookeeper.clientPort']","observations[1].queue","observations[1].messages[0]","observations[1].messages[1]","indirectInputs[1].rows"
+"v2_changed_test1","/path_changed","v2_changed","IN_MEMORY","changeKey1","{""rowKey"": ""rk2_changed"",""data"": {""colFam2"": {""k3"": ""v3"",""k4"": ""v4_changed""}}}","2182","q1","msg1","message1",
+"v2_changed_test2","/path_changed","v2_changed",,"changeKey2","{""rowKey"": ""rk2_changed"",""data"": {""colFam2"": {""k3"": ""v3"",""k4"": ""v4_changed""}}}","2182","q2","msg2","message2",
+"v2_changed_test3","/path_changed","v2_changed","IN_MEMORY",,"","2182","q3","msg3","message3","[{""rowKey"": ""replaced_rowKey"",""data"": {""colFam1"": {""k1"": ""replaced_v1"",""k2"": ""replaced_v2""}}}]"

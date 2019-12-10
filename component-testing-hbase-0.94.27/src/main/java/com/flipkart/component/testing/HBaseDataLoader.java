@@ -30,10 +30,10 @@ public class HBaseDataLoader implements TestDataLoader<HBaseIndirectInput> {
 				for (String colFamily : hBaseIndirectInput.getRows().get(row).getData().keySet()) {
 					if (hBaseIndirectInput.getRows().get(row).getData().get(colFamily) == null)
 						continue;
-					Map<String, String> qualifierMap = hBaseIndirectInput.getRows().get(row).getData().get(colFamily);
+					Map<String, Object> qualifierMap = hBaseIndirectInput.getRows().get(row).getData().get(colFamily);
 					if (qualifierMap.isEmpty()) return;
 					for (String qualifier : qualifierMap.keySet()) {
-						String qualValue = qualifierMap.get(qualifier);
+						String qualValue = String.valueOf(qualifierMap.get(qualifier));
 						p.add(Bytes.toBytes(colFamily), Bytes.toBytes(qualifier), Bytes.toBytes(qualValue));
 					}
 				}

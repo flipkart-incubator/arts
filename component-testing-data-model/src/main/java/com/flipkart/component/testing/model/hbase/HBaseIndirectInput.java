@@ -8,8 +8,11 @@ import com.flipkart.component.testing.model.ConnectionType;
 import com.flipkart.component.testing.model.IndirectInput;
 import lombok.Data;
 import lombok.Getter;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Hbase Indirect Input
@@ -65,13 +68,13 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
 
     @Override
     @JsonIgnore
-    public String[] columnFamilies() {
+    public Set<String> columnFamilies() {
         if (this.getRows() != null && !this.getRows().isEmpty()) {
-            int numberOfColFamilies = this.getRows().get(0).getData().keySet().size();
-            return this.getRows().get(0).getData().keySet()
-                    .toArray(new String[numberOfColFamilies]);
+            Set<String> cfNames = new HashSet<>();
+            this.getRows().forEach(row -> cfNames.addAll(row.getData().keySet()));
+            return cfNames;
         }
-        return new String[0];
+        return new HashSet<>();
     }
 
 
@@ -91,7 +94,7 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
 
         @JsonCreator
         Row(@JsonProperty("rowKey") String rowKey,
-            @JsonProperty("data") Map<String, Map<String, String>> data) {
+            @JsonProperty("data") Map<String, Map<String, Object>> data) {
             this.rowKey = rowKey;
             this.data = data;
         }
@@ -104,6 +107,6 @@ public class HBaseIndirectInput implements IndirectInput, HbaseTestConfig {
         /**
          * columnFamily => (columnName => columnValue)
          */
-        private Map<String, Map<String, String>> data;
+        private Map<String, Map<String, Object>> data;
     }
 }

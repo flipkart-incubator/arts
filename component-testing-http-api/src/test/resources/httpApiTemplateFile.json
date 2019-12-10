@@ -1,0 +1,40 @@
+{
+  "directInput": {
+    "path": "/abc",
+    "request": null,
+    "name": "httpDirectInput",
+    "method": "GET"
+  },
+  "indirectInputs": [
+    {
+      "name": "httpIndirectInput",
+      "specification": {
+        "request": {
+          "url": "/http1",
+          "method": "GET"
+        },
+        "response": {
+          "headers": {
+            "Content-Type": "text/json"
+          },
+          "body": {
+            "k1": "v1",
+            "k2": {
+              "test1": "v2"
+            },
+            "k3": [
+              {
+                "k31": "v31",
+                "k32": "v32"
+              }
+            ],
+            "k4": ["k41","k42"]
+          }
+        }
+      }
+    }
+  ],
+  "observations": [
+    {"name": "httpObservation"}
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "indirectInputs":[
+    {
+      "name": "hbaseIndirectInput",
+      "tableName": "regression_t1",
+      "connectionType": "REMOTE",
+      "hbaseSiteConfig": {
+        "hbase.rootdir": "./dataDir/hbase/root",
+        "hbase.zookeeper.property.dataDir": "./dataDir/hbase/zkr",
+        "hbase.zookeeper.property.clientPort": 2182,
+        "hbase.zookeeper.quorum": "localhost"
+      },
+      "rows": [{
+        "rowKey": "rk1",
+        "data": {
+          "cf1": {
+            "k1": "v1",
+            "k2": "v2"
+          }
+        }
+      }, {
+        "rowKey": "rk2",
+        "data": {
+          "cf1": {
+            "k3": "v3"
+          },
+          "cf2": {
+            "k4": "v4"
+          }
+        }
+      }]
+    }
+  ],
+
+  "observations":[
+    {
+      "name": "hbaseObservation",
+      "tableName": "regression_renamed",
+      "connectionType": "REMOTE",
+      "hbaseSiteConfig":{
+        "hbase.rootdir": "./dataDir/hbase/root",
+        "hbase.zookeeper.property.dataDir": "./dataDir/hbase/zkr",
+        "hbase.zookeeper.property.clientPort": 2181,
+        "hbase.zookeeper.quorum": "127.0.0.1"
+      },
+      "rows": []
+    }
+  ]
+}

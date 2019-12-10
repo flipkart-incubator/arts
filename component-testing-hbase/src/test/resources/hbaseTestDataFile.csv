@@ -1,0 +1,2 @@
+indirectInputs[0].tableName,indirectInputs[0].hbaseSiteConfig.['hbase.zookeeper.property.clientPort'],indirectInputs[0].hbaseSiteConfig.['hbase.zookeeper.quorum'],indirectInputs[0].rows[0].rowKey,indirectInputs[0].rows[1].data.cf2.k4,indirectInputs[0].rows[2]
+regression_renamed,2181,127.0.0.1,RK1_Changed,CHANGED,"{""rowKey"": ""ROW_3"",""data"": {""cf1"": {""k5"": ""v5"",""k6"": ""v6""}}}"

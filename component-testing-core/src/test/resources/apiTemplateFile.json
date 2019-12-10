@@ -1,0 +1,69 @@
+{
+  "directInput": {
+    "name": "httpDirectInput",
+    "path": "/temp/path",
+    "method": "POST",
+    "json": {
+      "t3":"v3",
+      "k5":"v5"
+    }
+  },
+  "indirectInputs": [
+    {
+      "name": "httpIndirectInput",
+      "specification": {
+        "request": {
+          "url": "/http1",
+          "method": "GET"
+        },
+        "response": {
+          "body": {
+            "k1": "v1",
+            "k2": {
+              "test1": "v2"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "hbaseIndirectInput",
+      "tableName": "regression_test1",
+      "connectionType": "REMOTE",
+      "hbaseSiteConfig": {
+        "hbase.rootdir": "file:///var/lib/mysql/hbase",
+        "hbase.zookeeper.property.dataDir": "/var/lib/mysql/hbase",
+        "hbase.zookeeper.property.clientPort": 2181,
+        "hbase.zookeeper.quorum": "10.11.12.13"
+      },
+      "rows": [
+        {
+          "rowKey": "rk1",
+          "data": {
+            "colFam1": {
+              "k1": "v1",
+              "k2": "v2"
+            }
+          }
+        },
+        {
+          "rowKey": "rk2",
+          "data": {
+            "colFam1": {
+              "k3": "v3",
+              "k4": "v4"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {"name": "httpObservation"},
+    {
+      "name": "rmqObservation",
+      "queue": "Q1",
+      "messages": ["m1","m2","m3"]
+    }
+  ]
+}

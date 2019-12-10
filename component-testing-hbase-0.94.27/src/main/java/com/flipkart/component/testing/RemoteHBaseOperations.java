@@ -46,9 +46,8 @@ class RemoteHBaseOperations implements HBaseAdminOperations {
         try {
             if(!hBaseAdmin.tableExists(hbaseTestConfig.getTableName().getBytes())) {
                 HTableDescriptor descriptor = new HTableDescriptor(hbaseTestConfig.getTableName());
-                Arrays.stream(hbaseTestConfig.columnFamilies())
-                        .map(HColumnDescriptor::new)
-                        .forEach(descriptor::addFamily);
+                for (String colFamily : hbaseTestConfig.columnFamilies())
+                    descriptor.addFamily(new HColumnDescriptor(colFamily));
                 hBaseAdmin.createTable(descriptor);
             } else if (hBaseAdmin.isTableDisabled(hbaseTestConfig.getTableName().getBytes()))
                 hBaseAdmin.enableTable(hbaseTestConfig.getTableName());
