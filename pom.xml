@@ -23,11 +23,11 @@
         <module>component-testing-solr</module>
         <module>component-testing-s3</module>
         <module>component-testing-hbase-0.94.27</module>
+        <module>component-testing-storm</module>
     </modules>
 
     <groupId>com.flipkart</groupId>
-    <version>1.2.9</version>
-
+    <version>1.3.0</version>
 
     <properties>
         <storm.version>1.2.1</storm.version>

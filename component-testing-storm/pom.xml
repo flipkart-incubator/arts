@@ -8,32 +8,25 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>component-testing-kafka</artifactId>
+    <artifactId>component-testing-storm</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.flipkart</groupId>
             <artifactId>component-testing-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.11</artifactId>
-            <version>${kafka.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.flipkart</groupId>
-            <artifactId>component-testing-zookeeper</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
+            <groupId>org.apache.storm</groupId>
+            <artifactId>storm-core</artifactId>
+            <version>1.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
     </dependencies>
-
 
 </project>

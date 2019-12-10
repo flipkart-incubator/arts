@@ -2,8 +2,10 @@ package com.flipkart.component.testing;
 
 
 import com.flipkart.component.testing.model.http.HttpIndirectObservation;
-//import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
+import com.flipkart.component.testing.model.http.HttpServeEvents;
+import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class HttpInteractionConsumer implements ObservationCollector<HttpIndirectObservation> {
@@ -16,9 +18,18 @@ class HttpInteractionConsumer implements ObservationCollector<HttpIndirectObserv
      */
     @Override
     public HttpIndirectObservation actualObservations(HttpIndirectObservation expectedObservation) {
-//        List<ServeEvent> allInteractions = MockServerOperations.INSTANCE.getAllInteractions();
-//        return new HttpIndirectObservation(allInteractions);
-        return null;
+
+       List<ServeEvent> allInteractions = MockServerOperations.INSTANCE.getAllInteractions();
+       List<HttpServeEvents> httpServeEvents = new ArrayList<>();
+       for (ServeEvent serveEvent : allInteractions){
+           httpServeEvents.add(new HttpServeEvents(serveEvent.getId(),
+                   serveEvent.getRequest(),
+                   serveEvent.getStubMapping(),
+                   serveEvent.getResponseDefinition(),
+                   serveEvent.getResponse(),
+                   serveEvent.getTiming()));
+       }
+        return new HttpIndirectObservation(httpServeEvents);
     }
 
     @Override
