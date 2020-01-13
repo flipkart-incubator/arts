@@ -44,7 +44,7 @@ public class DropwizardServiceStarter implements SUT {
             serviceStarted = true;
             String[] args = new String[]{"server", this.serviceConfigPath};
             Object serviceClassInstance = serviceclass.newInstance();
-            Method run = serviceClassInstance.getClass().getMethod("run", String[].class);
+            Method run = serviceClassInstance.getClass().getMethod("main", String[].class);
             run.invoke(serviceClassInstance, new Object[]{args});
         } catch (Exception var3) {
             throw new RuntimeException(var3);
