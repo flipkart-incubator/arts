@@ -16,7 +16,12 @@ public interface ElasticSearchOperations {
 
     boolean isIndexPresent(String index);
 
-    void createIndex(String index, String type, String mappingFileContent);
+    boolean isTypePresent(String index , String type);
+
+    void createIndex(String index, String type);
 
     void deleteIndices();
+
+    void executePutMapping(String index, String type, String mapping);
+
 }

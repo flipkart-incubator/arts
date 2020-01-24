@@ -1,6 +1,7 @@
 package com.flipkart.component.testing;
 
 
+import com.flipkart.component.testing.model.elasticsearch.Document;
 import com.flipkart.component.testing.model.elasticsearch.DocumentsOfIndexAndType;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -24,15 +25,26 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
     public void load(ElasticSearchIndirectInput elasticSearchIndirectInput) {
         ElasticSearchOperations esOperations = ESFactory.getESOperations(elasticSearchIndirectInput);
         Client client = esOperations.getClient();
-
         BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
-        createMapping(elasticSearchIndirectInput.getDocumentsOfIndexAndType(), client, esOperations);
 
         for (DocumentsOfIndexAndType documentsOfIndexAndType : elasticSearchIndirectInput.getDocumentsOfIndexAndType()) {
-            for (Map<String, Object> data : documentsOfIndexAndType.getDocuments()) {
+            String mappingFileContent = Utils.getFileString(documentsOfIndexAndType.getMappingFile());
+            for (Document document: documentsOfIndexAndType.getDocuments()) {
+                if(document.getDocumentId()==null) throw new IllegalArgumentException("_id(document Id) must be present for each document");
+                Map<String,Object> data = document.getData();
 
-                if(!data.containsKey("_id")) throw new IllegalArgumentException("_id must be present for each document");
-                IndexRequestBuilder indexRequestBuilder = client.prepareIndex(documentsOfIndexAndType.getIndex(), documentsOfIndexAndType.getType(), String.valueOf(data.get("_id"))).setSource(data);
+                if(!esOperations.isIndexPresent(documentsOfIndexAndType.getIndex()))
+                    esOperations.createIndex(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType());
+                else if(esOperations.isIndexPresent(documentsOfIndexAndType.getIndex()) && esOperations.isTypePresent(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType()))
+                    throw new RuntimeException("Type "+documentsOfIndexAndType.getType()+" is already present under the index "+documentsOfIndexAndType.getIndex());
+
+                esOperations.executePutMapping(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType(),mappingFileContent);
+
+                IndexRequestBuilder indexRequestBuilder ;
+                if(document.getParentId()!=null)
+                    indexRequestBuilder = client.prepareIndex(documentsOfIndexAndType.getIndex(), documentsOfIndexAndType.getType(), document.getDocumentId()).setParent(document.getParentId()).setSource(data);
+                else
+                    indexRequestBuilder = client.prepareIndex(documentsOfIndexAndType.getIndex(), documentsOfIndexAndType.getType(), document.getDocumentId()).setSource(data);
 
                 //add routingKey If Present
                 Optional.ofNullable(documentsOfIndexAndType.getRoutingKey()).ifPresent(rk -> indexRequestBuilder.setRouting(data.get(rk).toString()));
@@ -57,25 +69,6 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
     @Override
     public List<Class<ElasticSearchIndirectInput>> getIndirectInputClasses() {
         return Arrays.asList(ElasticSearchIndirectInput.class);
-    }
-
-    /**
-     * create mapping for types that belong to index
-     *
-     * @param documentsOfIndexAndTypeList
-     * @param client
-     */
-    private void createMapping(List<DocumentsOfIndexAndType> documentsOfIndexAndTypeList, Client client, ElasticSearchOperations esOperations) {
-        for (DocumentsOfIndexAndType documentsOfIndexAndType : documentsOfIndexAndTypeList) {
-            String mappingFileContent = Utils.getFileString(documentsOfIndexAndType.getMappingFile());
-            String index = documentsOfIndexAndType.getIndex();
-            String type = documentsOfIndexAndType.getType();
-            if (esOperations.isIndexPresent(index)) {
-                throw new IllegalStateException("index is already present before loading the data, this should not be the case");
-            }
-            esOperations.createIndex(index, type, mappingFileContent);
-        }
-
     }
 
 }

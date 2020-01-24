@@ -13,14 +13,14 @@ public class DocumentsOfIndexAndType {
     private String type;
     private String routingKey;
     private String mappingFile;
-    private List<Map<String,Object>> documents;
+    private List<Document> documents;
 
     @JsonCreator
     public DocumentsOfIndexAndType(@JsonProperty("index") String index,
                                    @JsonProperty("type") String type,
                                    @JsonProperty("routingKey")String routingKey,
                                    @JsonProperty("mappingFile") String mappingFile,
-                                   @JsonProperty("documents") List<Map<String, Object>> documents) {
+                                   @JsonProperty("documents") List<Document> documents) {
         this.index = index;
         this.type = type;
         this.routingKey = routingKey;

@@ -1,0 +1,374 @@
+{
+      "type1": {
+        "properties": {
+          "victor_refs": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "vertical": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "service_profile": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "category_node_id": {
+            "type": "string"
+          },
+          "offer_ids": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "_source": {
+            "properties": {
+              "victor_refs": {
+                "type": "string"
+              },
+              "service_profile": {
+                "type": "string"
+              },
+              "vertical": {
+                "type": "string"
+              },
+              "category_node_id": {
+                "type": "string"
+              },
+              "offer_ids": {
+                "type": "string"
+              },
+              "_source": {
+                "properties": {
+                  "victor_refs": {
+                    "type": "string"
+                  },
+                  "internal_state_valid": {
+                    "type": "string"
+                  },
+                  "vertical": {
+                    "type": "string"
+                  },
+                  "service_profile": {
+                    "type": "string"
+                  },
+                  "category_node_id": {
+                    "type": "string"
+                  },
+                  "marketplace_id_valid": {
+                    "type": "string"
+                  },
+                  "offer_ids": {
+                    "type": "string"
+                  },
+                  "product_id": {
+                    "type": "string"
+                  },
+                  "mrp": {
+                    "type": "long"
+                  },
+                  "listing_status": {
+                    "type": "string"
+                  },
+                  "discount_percent": {
+                    "type": "long"
+                  },
+                  "is_valid": {
+                    "type": "boolean"
+                  },
+                  "fsp": {
+                    "type": "long"
+                  },
+                  "pricing_fetch_timestamp": {
+                    "type": "long"
+                  },
+                  "listing_id": {
+                    "type": "string"
+                  },
+                  "zulu_fetch_timestamp": {
+                    "type": "long"
+                  },
+                  "brand": {
+                    "type": "string"
+                  },
+                  "seller_id": {
+                    "type": "string"
+                  },
+                  "sku_id": {
+                    "type": "string"
+                  },
+                  "mrp_equals_fsp": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "product_id": {
+                "type": "string"
+              },
+              "mrp": {
+                "type": "long"
+              },
+              "is_valid": {
+                "type": "boolean"
+              },
+              "_type": {
+                "type": "string"
+              },
+              "fsp": {
+                "type": "long"
+              },
+              "_id": {
+                "type": "string"
+              },
+              "listing_id": {
+                "type": "string"
+              },
+              "mrp_equals_fsp": {
+                "type": "boolean"
+              },
+              "sku_id": {
+                "type": "string"
+              },
+              "internal_state_valid": {
+                "type": "string"
+              },
+              "marketplace_id_valid": {
+                "type": "string"
+              },
+              "_index": {
+                "type": "string"
+              },
+              "listing_status": {
+                "type": "string"
+              },
+              "discount_percent": {
+                "type": "long"
+              },
+              "_version": {
+                "type": "long"
+              },
+              "pricing_fetch_timestamp": {
+                "type": "long"
+              },
+              "zulu_fetch_timestamp": {
+                "type": "long"
+              },
+              "brand": {
+                "type": "string"
+              },
+              "seller_id": {
+                "type": "string"
+              },
+              "found": {
+                "type": "boolean"
+              }
+            }
+          },
+          "product_id": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "query": {
+            "properties": {
+              "match_all": {
+                "type": "object"
+              },
+              "filtered": {
+                "properties": {
+                  "filter": {
+                    "properties": {
+                      "bool": {
+                        "properties": {
+                          "must": {
+                            "properties": {
+                              "terms": {
+                                "properties": {
+                                  "listing_id": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "wildcard": {
+                "properties": {
+                  "listing_id": {
+                    "type": "string"
+                  }
+                }
+              },
+              "term": {
+                "properties": {
+                  "listing.listing_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "mrp": {
+            "type": "long"
+          },
+          "is_valid": {
+            "type": "boolean"
+          },
+          "_type": {
+            "type": "string"
+          },
+          "fsp": {
+            "type": "integer"
+          },
+          "listing_id": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "sku_id": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "mrp_equals_fsp": {
+            "type": "boolean"
+          },
+          "internal_state_valid": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "marketplace_id_valid": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "_index": {
+            "type": "string"
+          },
+          "listing_status": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "aggregations": {
+            "properties": {
+              "internal_state_valid": {
+                "properties": {
+                  "terms": {
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "seller_id": {
+                "properties": {
+                  "terms": {
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "size": {
+            "type": "long"
+          },
+          "discount_percent": {
+            "type": "integer"
+          },
+          "_version": {
+            "type": "long"
+          },
+          "pricing_fetch_timestamp": {
+            "type": "long"
+          },
+          "zulu_fetch_timestamp": {
+            "type": "long"
+          },
+          "doc": {
+            "properties": {
+              "victor_refs": {
+                "type": "string"
+              },
+              "internal_state_valid": {
+                "type": "string"
+              },
+              "vertical": {
+                "type": "string"
+              },
+              "service_profile": {
+                "type": "string"
+              },
+              "category_node_id": {
+                "type": "string"
+              },
+              "marketplace_id_valid": {
+                "type": "string"
+              },
+              "offer_ids": {
+                "type": "string"
+              },
+              "product_id": {
+                "type": "string"
+              },
+              "mrp": {
+                "type": "long"
+              },
+              "listing_status": {
+                "type": "string"
+              },
+              "discount_percent": {
+                "type": "long"
+              },
+              "is_valid": {
+                "type": "boolean"
+              },
+              "fsp": {
+                "type": "long"
+              },
+              "pricing_fetch_timestamp": {
+                "type": "long"
+              },
+              "listing_id": {
+                "type": "string"
+              },
+              "zulu_fetch_timestamp": {
+                "type": "long"
+              },
+              "brand": {
+                "type": "string"
+              },
+              "seller_id": {
+                "type": "string"
+              },
+              "sku_id": {
+                "type": "string"
+              },
+              "mrp_equals_fsp": {
+                "type": "boolean"
+              }
+            }
+          },
+          "brand": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "seller_id": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "business_zone": {
+            "index": "not_analyzed",
+            "type": "string"
+          },
+          "found": {
+            "type": "boolean"
+          }
+        }
+      }
+}

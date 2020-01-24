@@ -4,6 +4,7 @@ import com.flipkart.component.testing.model.elasticsearch.ElasticSearchTestConfi
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -57,13 +58,26 @@ class RemoteElasticSearchOperations implements ElasticSearchOperations {
     }
 
     @Override
-    public void createIndex(String index, String type, String mappingFileContent) {
-        this.transportClient.admin().indices().create(new CreateIndexRequest(index).mapping(type, mappingFileContent)).actionGet();
+    public boolean isTypePresent(String index, String type) {
+        return this.transportClient.admin().indices()
+                .typesExists(new TypesExistsRequest(new String[]{index} , new String[]{type}))
+                .actionGet()
+                .isExists();
+    }
+
+    @Override
+    public void createIndex(String index, String type) {
+        this.transportClient.admin().indices().create(new CreateIndexRequest(index)).actionGet();
     }
 
     @Override
     public void deleteIndices() {
         throw new UnsupportedOperationException("safe side not deleting remote indices");
+    }
+
+    @Override
+    public void executePutMapping(String index, String type, String mapping){
+        this.transportClient.admin().indices().preparePutMapping(index).setType(type).setSource(mapping).execute().actionGet();
     }
 
     public static ElasticSearchOperations getInstance(ElasticSearchTestConfig elasticSearchTestConfig) {

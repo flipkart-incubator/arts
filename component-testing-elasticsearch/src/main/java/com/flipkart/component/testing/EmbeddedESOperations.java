@@ -4,7 +4,7 @@ import com.flipkart.component.testing.model.elasticsearch.ElasticSearchTestConfi
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
-import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -73,18 +73,34 @@ class EmbeddedESOperations implements ElasticSearchOperations {
 
     @Override
     public boolean isIndexPresent(String index) {
-        IndicesExistsResponse indicesExistsResponse = this.transportClient.admin().indices().exists(new IndicesExistsRequest().indices(new String[]{index})).actionGet();
-        return indicesExistsResponse.isExists();
+        return this.transportClient.admin().indices()
+                .exists(new IndicesExistsRequest().indices(new String[]{index}))
+                .actionGet()
+                .isExists();
+
     }
 
     @Override
-    public void createIndex(String index, String type, String mappingFileContent) {
-        this.transportClient.admin().indices().create(new CreateIndexRequest(index).mapping(type, mappingFileContent)).actionGet();
+    public boolean isTypePresent(String index , String type) {
+        return this.transportClient.admin().indices()
+                .typesExists(new TypesExistsRequest(new String[]{index} , new String[]{type}))
+                .actionGet()
+                .isExists();
+    }
+
+    @Override
+    public void createIndex(String index, String type) {
+        this.transportClient.admin().indices().create(new CreateIndexRequest(index)).actionGet();
     }
 
     @Override
     public void deleteIndices() {
         this.transportClient.admin().indices().prepareDelete("_all").get();
+    }
+
+    @Override
+    public void executePutMapping(String index, String type, String mapping){
+        this.transportClient.admin().indices().preparePutMapping(index).setType(type).setSource(mapping).execute().actionGet();
     }
 
 }
