@@ -26,6 +26,7 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
 
     /**
      * executes a storm test as per specification
+     *
      * @param testSpecification
      * @param tuplesToBeEmitted : Number of tuples that are expected to be emitted
      * @return
@@ -38,21 +39,33 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
         } finally {
             this.shutDown();
         }
-
         return observations;
     }
 
     private List<Observation> executeInner(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
-        this.dependencyRegistry.registerDependencies(testSpecification);
-        this.testDataLoader.load(testSpecification.getIndirectInputs());
-        Map<String, BaseRichSpout> spouts = this.testableTopology.getSpouts();
-        spouts.keySet().forEach((spoutId) -> {
-            BaseRichSpout baseRichSpout = spouts.put(spoutId, this.wrapSpout(spouts, spoutId, tuplesToBeEmitted));
-        });
-        this.stormLocalCluster = new StormLocalCluster(this.testableTopology);
-        this.stormLocalCluster.start();
-        this.waitForCompletion(testSpecification.getTtlInMs());
-        return this.observationCollector.actualObservations(testSpecification.getObservations());
+        try {
+            this.dependencyRegistry.registerDependencies(testSpecification);
+            this.testDataLoader.load(testSpecification.getIndirectInputs());
+            Map<String, BaseRichSpout> spouts = this.testableTopology.getSpouts();
+            spouts.keySet().forEach((spoutId) -> {
+                BaseRichSpout baseRichSpout = spouts.put(spoutId, this.wrapSpout(spouts, spoutId, tuplesToBeEmitted));
+            });
+            this.stormLocalCluster = new StormLocalCluster(this.testableTopology);
+            this.stormLocalCluster.start();
+            this.waitForCompletion(testSpecification.getTtlInMs());
+            return this.observationCollector.actualObservations(testSpecification.getObservations());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (testSpecification.getShouldClean()) {
+                try {
+                    dependencyRegistry.clean();
+                } catch (Exception e) {
+                    System.out.println("Exception while cleaning " + e);
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
@@ -63,19 +76,19 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
 
     /**
      * executes a storm test as per specification
+     *
      * @param testSpecification
      * @param tuplesToBeEmitted : Number of tuples that are expected to be emitted
      * @return
      * @throws Exception
      */
     public List<Observation> executeLite(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
-        List <Observation> observations;
+        List<Observation> observations;
         try {
             observations = this.executeInner(testSpecification, tuplesToBeEmitted);
         } finally {
-            this.dependencyRegistry.clean();
+            this.dependencyRegistry.shutDown();
         }
-
         return observations;
     }
 
@@ -89,19 +102,19 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
      * @return
      */
     private BaseRichSpout wrapSpout(Map<String, BaseRichSpout> spouts, String spoutId, int tuplesToBeEmitted) {
-        BaseRichSpout spout = (BaseRichSpout)spouts.get(spoutId);
+        BaseRichSpout spout = (BaseRichSpout) spouts.get(spoutId);
         DelegateSpout delegateSpout = new DelegateSpout(spout, tuplesToBeEmitted, this.testableTopology.getTopologyName() + '_' + UUID.randomUUID().toString());
         this.delegateSpouts.add(delegateSpout);
         return delegateSpout;
     }
 
     /*
-    * tracks tuples to emit and waits for 1000 seconds before giving up
-    * @throws InterruptedException
-    */
+     * tracks tuples to emit and waits for 1000 seconds before giving up
+     * @throws InterruptedException
+     */
     private void waitForCompletion(int ttl) throws Exception {
         int totalTimeWaited;
-        for(totalTimeWaited = 0; !this.isCompleted() && totalTimeWaited < ttl; totalTimeWaited += 1000) {
+        for (totalTimeWaited = 0; !this.isCompleted() && totalTimeWaited < ttl; totalTimeWaited += 1000) {
             System.out.println("waiting for completion : total Time Waited in seconds" + totalTimeWaited / 1000);
             Thread.sleep(1000L);
         }
@@ -115,5 +128,4 @@ public class StormTestOrchestrator extends BaseTestOrchestrator {
     private boolean isCompleted() {
         return this.delegateSpouts.stream().anyMatch(DelegateSpout::isDone);
     }
-
 }

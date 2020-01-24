@@ -10,7 +10,10 @@ class SingleHostBasedOperations implements RedisOperations {
     private static SingleHostBasedOperations instance;
     private RedisServer redisServer;
     private Jedis jedis;
-    public static final int REDIS_SERVER_PORT = 6379;
+    private static final int REDIS_SERVER_PORT = 6379;
+    private static final String REDIS_SERVER_HOST = "127.0.0.1";
+    private static final int JEDIS_CONNECTION_TIMEOUT = 100000;
+    private static boolean serverRunning = false;
 
     private SingleHostBasedOperations() {
         try {
@@ -30,7 +33,7 @@ class SingleHostBasedOperations implements RedisOperations {
     @Override
     public Jedis getJedis() {
         if(jedis == null){
-            jedis = new Jedis();
+            jedis = new Jedis(REDIS_SERVER_HOST,REDIS_SERVER_PORT,JEDIS_CONNECTION_TIMEOUT);
         }
         return jedis;
     }
@@ -38,18 +41,29 @@ class SingleHostBasedOperations implements RedisOperations {
     @Override
     public void start() {
         //process is not getting killed hence
-        this.stop();
+        if(!serverRunning){
+        this.stopServerBeforeStart();
         this.redisServer.start();
+        serverRunning = true;
+        }
     }
 
-    @Override
-    public void stop() {
+    private void stopServerBeforeStart(){
+        try {
+            this.redisServer.stop();
+        }catch (Exception e){
+            throw new RuntimeException("Error stopping redis server : "+e);
+        }
         try {
             Runtime.getRuntime().exec("pkill redis");
             Thread.sleep(3000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop() {
     }
 
     @Override

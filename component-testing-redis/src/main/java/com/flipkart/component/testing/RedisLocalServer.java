@@ -17,13 +17,12 @@ public class RedisLocalServer implements DependencyInitializer<RedisIndirectInpu
     public void initialize(RedisTestConfig redisTestConfig) throws Exception {
         this.redisTestConfig = redisTestConfig;
         RedisOperations redisOperations = RedisFactory.getRedisOperations(this.redisTestConfig);
-        redisOperations.stop();
         redisOperations.start();
     }
 
     @Override
     public void shutDown() {
-        RedisFactory.getRedisOperations(this.redisTestConfig).stop();
+       RedisFactory.getRedisOperations(this.redisTestConfig).stop();
     }
 
     @Override
