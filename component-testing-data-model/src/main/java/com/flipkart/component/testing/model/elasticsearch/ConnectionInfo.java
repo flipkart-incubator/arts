@@ -10,11 +10,13 @@ class ConnectionInfo {
     private final String clusterName;
     private final String host;
     private final ConnectionType connectionType;
+    private final String downloadURL;
 
     @JsonCreator
-    public ConnectionInfo(@JsonProperty("clusterName") String clusterName, @JsonProperty("host") String host, @JsonProperty("connectionType") ConnectionType connectionType) {
+    public ConnectionInfo(@JsonProperty("clusterName") String clusterName, @JsonProperty("host") String host, @JsonProperty("connectionType") ConnectionType connectionType, @JsonProperty("downloadURL")String downloadURL) {
         this.clusterName = clusterName;
         this.host = host;
         this.connectionType = connectionType;
+        this.downloadURL = downloadURL;
     }
 }

@@ -2,6 +2,9 @@
   "indirectInputs": [
     {
       "name": "elasticSearchIndirectInput",
+      "connectionInfo": {
+        "downloadURL": "file:///Users/dipika.g/Documents/GitRepo/component-blackbox-testing/component-testing-elasticsearch/dataDir/es/elasticsearch-1.5.2.zip"
+      },
       "documentsOfIndexAndType": [
         {
           "index": "index1",

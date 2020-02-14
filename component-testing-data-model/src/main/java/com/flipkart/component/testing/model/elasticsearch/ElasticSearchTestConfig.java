@@ -10,4 +10,6 @@ public interface ElasticSearchTestConfig extends TestConfig{
     String getHost();
 
     ConnectionType getConnectionType();
+
+    String getClusterDownloadURL();
 }

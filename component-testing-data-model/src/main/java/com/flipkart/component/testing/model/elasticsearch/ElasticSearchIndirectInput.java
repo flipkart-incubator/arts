@@ -30,7 +30,7 @@ public class ElasticSearchIndirectInput implements IndirectInput, ElasticSearchT
     ) {
         this.connectionInfo = connectionInfo;
         this.documentsOfIndexAndType = documentsOfIndexAndType;
-        if(connectionInfo!=null && (connectionInfo.getConnectionType()!=ConnectionType.IN_MEMORY)) {
+        if(connectionInfo!=null && (this.getConnectionType()!=ConnectionType.IN_MEMORY)) {
             documentsOfIndexAndType.forEach(document-> {
                 if(!document.getIndex().contains("regression_"))
                     throw new IllegalArgumentException("Index name should have prefix 'regression_' for REMOTE connections");
@@ -50,7 +50,12 @@ public class ElasticSearchIndirectInput implements IndirectInput, ElasticSearchT
 
     @Override
     public ConnectionType getConnectionType() {
-        return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getConnectionType).orElse(ConnectionType.IN_MEMORY);
+       return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getConnectionType).orElse(ConnectionType.IN_MEMORY);
+    }
+
+    @Override
+    public String getClusterDownloadURL() {
+        return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getDownloadURL).orElse(null);
     }
 
     /**

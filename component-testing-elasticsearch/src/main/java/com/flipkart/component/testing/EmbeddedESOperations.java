@@ -13,15 +13,23 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
 import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
 
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 class EmbeddedESOperations implements ElasticSearchOperations {
 
     private TransportClient transportClient;
 
     private static EmbeddedESOperations instance;
     private EmbeddedElastic cluster;
+    ElasticSearchTestConfig elasticSearchTestConfig;
 
     private EmbeddedESOperations(ElasticSearchTestConfig elasticSearchTestConfig) {
         try {
+            this.elasticSearchTestConfig = elasticSearchTestConfig;
             Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", elasticSearchTestConfig.getClusterName()).build();
             this.transportClient = new TransportClient(settings)
                     .addTransportAddress(new InetSocketTransportAddress(elasticSearchTestConfig.getHost(), ESFactory.ES_CLIENT_PORT));
@@ -43,13 +51,32 @@ class EmbeddedESOperations implements ElasticSearchOperations {
     @Override
     public void startCluster() {
         try {
-            this.cluster = EmbeddedElastic.builder()
-                    .withSetting(PopularProperties.HTTP_PORT, ESFactory.ES_CLUSTER_PORT)
-                    .withElasticVersion(ESFactory.ES_CLUSTER_VERSION)
-                    .build();
+            String downloadURL = elasticSearchTestConfig.getClusterDownloadURL();
+            if(downloadURL!= null) {
+                String urlProtocol = new URL(downloadURL).getProtocol();
+                // the zip file must be named in the format name-version.zip
+                if (!Pattern.compile("-([^/]*).zip").matcher(downloadURL).find())
+                    throw new IllegalArgumentException("Zip file must be named in the format: \"name-version.zip\". For eg : elasticsearch-2.3.0.zip ");
+
+                else if (new File(new URL(downloadURL).getPath()).isFile() || urlProtocol.equals("https") || urlProtocol.equals("http") )
+                    this.cluster = EmbeddedElastic.builder()
+                            .withSetting(PopularProperties.HTTP_PORT, ESFactory.ES_CLUSTER_PORT)
+                            .withDownloadUrl(new URL(downloadURL))
+                            .build();
+                else
+                    this.cluster = EmbeddedElastic.builder()
+                            .withSetting(PopularProperties.HTTP_PORT, ESFactory.ES_CLUSTER_PORT)
+                            .withElasticVersion(ESFactory.ES_CLUSTER_VERSION)
+                            .build();
+            }
+            else
+                this.cluster = EmbeddedElastic.builder()
+                        .withSetting(PopularProperties.HTTP_PORT, ESFactory.ES_CLUSTER_PORT)
+                        .withElasticVersion(ESFactory.ES_CLUSTER_VERSION)
+                        .build();
             this.cluster.start();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to start the IN_MEMORY ES cluster "+e);
         }
     }
 

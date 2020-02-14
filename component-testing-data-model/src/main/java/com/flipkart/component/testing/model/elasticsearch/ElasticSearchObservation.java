@@ -60,6 +60,11 @@ public class ElasticSearchObservation implements Observation, ElasticSearchTestC
 		return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getConnectionType).orElse(ConnectionType.IN_MEMORY);
 	}
 
+	@Override
+	public String getClusterDownloadURL() {
+		return Optional.ofNullable(connectionInfo).map(ConnectionInfo::getDownloadURL).orElse(null);
+	}
+
 	@Data
 	public static class DocumentsToFetch {
 		private String index;
