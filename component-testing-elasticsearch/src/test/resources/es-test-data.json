@@ -13,7 +13,37 @@
           "mappingFile": "src/test/resources/type1_mapping.json",
           "documents": [
             {
-              "_id" : "LSTMIXDGUQ4YBNGMNPBVBWK91",
+              "_id" : "1",
+              "data": {
+                "routingKey": "pi2981ctftizwe12",
+                "listing_id": "LSTMIXDGUQ4YBNGMNPBVBWK91",
+                "product_id": "MIXDGUQ4YBNGMNPB",
+                "seller_id": "pi2981ctftizwe12",
+                "vertical": "electric_kettle",
+                "brand": "Kenstar",
+                "business_zone": null,
+                "service_profile": "NON_FBF",
+                "marketplace_id_valid": "FLIPKART",
+                "listing_status": "ACTIVE",
+                "internal_state_valid": "ACTIVE",
+                "zulu_fetch_timestamp": 1537954393429,
+                "category_node_id": "[20268, 20103, 20001, 20098, 20007]",
+                "sku_id": "KSTALLIONDX",
+                "fsp": 495,
+                "mrp": 4890,
+                "discount_percent": 26,
+                "mrp_equals_fsp": false,
+                "pricing_fetch_timestamp": 1537954393448,
+                "offer_ids": [],
+                "victor_refs": [
+                  "EC001523659231636640",
+                  "EC001524160594134353"
+                ],
+                "is_valid": true
+              }
+            },
+            {
+              "_id" : "2",
               "data": {
                 "routingKey": "pi2981ctftizwe12",
                 "listing_id": "LSTMIXDGUQ4YBNGMNPBVBWK91",
@@ -52,7 +82,7 @@
           "documents": [
             {
               "_parentId": "LSTMIXDGUQ4YBNGMNPBVBWK91",
-              "_id" : "LSTMIXDGUQ4YBNGMNPBVBWK91",
+              "_id" : "3",
               "data" : {
                 "routingKey": "pi2981ctftizwe12",
                 "listing_id": "LSTMIXDGUQ4YBNGMNPBVBWK91",

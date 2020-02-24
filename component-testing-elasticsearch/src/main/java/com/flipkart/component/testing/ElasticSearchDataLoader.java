@@ -29,14 +29,14 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
 
         for (DocumentsOfIndexAndType documentsOfIndexAndType : elasticSearchIndirectInput.getDocumentsOfIndexAndType()) {
             String mappingFileContent = Utils.getFileString(documentsOfIndexAndType.getMappingFile());
+            if(!esOperations.isIndexPresent(documentsOfIndexAndType.getIndex()))
+                esOperations.createIndex(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType());
+            else if(esOperations.isIndexPresent(documentsOfIndexAndType.getIndex()) && esOperations.isTypePresent(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType()))
+                throw new RuntimeException("Type "+documentsOfIndexAndType.getType()+" is already present under the index "+documentsOfIndexAndType.getIndex());
+
             for (Document document: documentsOfIndexAndType.getDocuments()) {
                 if(document.getDocumentId()==null) throw new IllegalArgumentException("_id(document Id) must be present for each document");
                 Map<String,Object> data = document.getData();
-
-                if(!esOperations.isIndexPresent(documentsOfIndexAndType.getIndex()))
-                    esOperations.createIndex(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType());
-                else if(esOperations.isIndexPresent(documentsOfIndexAndType.getIndex()) && esOperations.isTypePresent(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType()))
-                    throw new RuntimeException("Type "+documentsOfIndexAndType.getType()+" is already present under the index "+documentsOfIndexAndType.getIndex());
 
                 esOperations.executePutMapping(documentsOfIndexAndType.getIndex(),documentsOfIndexAndType.getType(),mappingFileContent);
 
