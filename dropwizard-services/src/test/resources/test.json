@@ -1,0 +1,12 @@
+{
+  "directInput": {
+    "name" : "httpDirectInput",
+    "path" : "/arts/hello",
+    "method" : "GET"
+  },
+  "indirectInputs" : [],
+  "observations" : [
+    {"name" :  "httpObservation"}
+  ]
+
+}
