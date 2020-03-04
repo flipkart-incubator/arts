@@ -7,7 +7,7 @@
     <parent>
         <artifactId>component-testing</artifactId>
         <groupId>com.flipkart</groupId>
-        <version>1.5</version>
+        <version>1.6</version>
     </parent>
 
     <groupId>com.flipkart.api.test.service</groupId>
