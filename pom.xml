@@ -28,7 +28,7 @@
     </modules>
 
     <groupId>com.flipkart</groupId>
-    <version>1.9-SNAPSHOT</version>
+    <version>1.9</version>
 
     <properties>
         <storm.version>1.2.1</storm.version>
@@ -52,7 +52,7 @@
     <scm>
         <developerConnection>scm:git:git@github.fkinternal.com:Flipkart/component-blackbox-testing.git</developerConnection>
         <url>scm:git:git@github.fkinternal.com:Flipkart/component-blackbox-testing.git</url>
-        <tag>component-testing-1.5</tag>
+        <tag>component-testing-1.9</tag>
     </scm>
 
     <build>
