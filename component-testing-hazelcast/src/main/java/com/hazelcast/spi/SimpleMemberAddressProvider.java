@@ -4,13 +4,15 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
+/**
+ * In this class we will pass local hostname instead address incase of VPN connections
+ */
 public class SimpleMemberAddressProvider implements MemberAddressProvider {
 
     @Override
     public InetSocketAddress getBindAddress() {
         try {
-            String hostName = InetAddress.getByName("127.0.0.1").getHostName();
-            return new InetSocketAddress(hostName, 5701);
+            return new InetSocketAddress(InetAddress.getLocalHost().getHostName(), 5701);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
@@ -21,8 +23,7 @@ public class SimpleMemberAddressProvider implements MemberAddressProvider {
     @Override
     public InetSocketAddress getPublicAddress() {
         try {
-            String hostName = InetAddress.getByName("127.0.0.1").getHostName();
-            return new InetSocketAddress(hostName, 5701);
+            return new InetSocketAddress(InetAddress.getLocalHost().getHostName(), 5701);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
