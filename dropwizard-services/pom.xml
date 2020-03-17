@@ -7,7 +7,7 @@
     <parent>
         <artifactId>component-testing</artifactId>
         <groupId>com.flipkart</groupId>
-        <version>1.6</version>
+        <version>1.7-SNAPSHOT</version>
     </parent>
 
     <groupId>com.flipkart.api.test.service</groupId>
@@ -18,29 +18,28 @@
         <dropwizard.version>1.1.0</dropwizard.version>
         <jackson.version>2.8.7</jackson.version>
         <java.version>1.8</java.version>
-        <arts.version>1.5</arts.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-core</artifactId>
-            <version>${arts.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-mysql</artifactId>
-            <version>${arts.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-http-api</artifactId>
-            <version>${arts.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.flipkart</groupId>
             <artifactId>component-testing-redis</artifactId>
-            <version>${arts.version}</version>
+            <version>${project.version}</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <artifactId>component-testing</artifactId>-->

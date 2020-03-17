@@ -7,6 +7,7 @@ import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.nio.serialization.Serializer;
+import com.hazelcast.spi.SimpleMemberAddressProvider;
 import com.hazelcast.spi.properties.GroupProperty;
 import com.hazelcast.zookeeper.ZookeeperDiscoveryProperties;
 import com.hazelcast.zookeeper.ZookeeperDiscoveryStrategyFactory;
@@ -47,6 +48,8 @@ public class HazelcastInstanceInitializer {
         config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
+        config.getNetworkConfig().getMemberAddressProviderConfig().setEnabled(true);
+        config.getNetworkConfig().getMemberAddressProviderConfig().setImplementation(new SimpleMemberAddressProvider());
 
         config.setProperty(GroupProperty.DISCOVERY_SPI_ENABLED.getName(), "true");
         DiscoveryStrategyConfig discoveryStrategyConfig = new DiscoveryStrategyConfig(new ZookeeperDiscoveryStrategyFactory());

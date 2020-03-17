@@ -5,6 +5,7 @@
       "group": "test",
       "password": "test",
       "user": "test",
+      "discoveryPath": "/",
       "hazelcastDS": {
         "maps": {
           "testMap": {
