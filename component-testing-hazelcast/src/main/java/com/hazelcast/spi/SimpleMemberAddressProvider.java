@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
 /**
- * In this class we will pass local hostname instead address incase of VPN connections
+ * In this class we will pass local hostname instead of ip address incase of VPN connections
  */
 public class SimpleMemberAddressProvider implements MemberAddressProvider {
 
