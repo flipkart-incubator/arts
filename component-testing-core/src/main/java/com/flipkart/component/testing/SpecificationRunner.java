@@ -13,25 +13,55 @@ import java.util.List;
 public class SpecificationRunner {
     private static SpecificationRunner specificationRunner;
     private HttpTestOrchestrator httpTestOrchestrator;
-
     private ObjectMapper objectMapper = new ObjectMapper();
-//    private StormTestOrchestrator stormTestOrchestrator;
-
 
     /**
-     * For Dropwizard based services
+     * For Dropwizard based services only
      * @param serviceConfigPath
      * @param serviceUrl
      * @param serviceClass
      */
     private SpecificationRunner(String serviceConfigPath, String serviceUrl, Class<?> serviceClass) {
-        SUT sut = new DropwizardServiceStarter(serviceConfigPath, serviceUrl, serviceClass);
+        SUT sut = new ServiceStarter(serviceConfigPath, serviceUrl, serviceClass);
         httpTestOrchestrator = new HttpTestOrchestrator(sut);
     }
 
+    /**
+     * For any given service type
+     * @param serviceConfigPath
+     * @param serviceUrl
+     * @param serviceClass
+     * @param serviceType
+     */
+    private SpecificationRunner(String serviceConfigPath, String serviceUrl, Class<?> serviceClass, Service serviceType) {
+        SUT sut = new ServiceStarter(serviceConfigPath, serviceUrl, serviceClass, serviceType);
+        httpTestOrchestrator = new HttpTestOrchestrator(sut);
+    }
+
+
+    /**
+     * For Dropwizard based services only
+     * @param serviceConfigPath
+     * @param serviceUrl
+     * @param serviceClass
+     */
     public static SpecificationRunner getInstance(String serviceConfigPath, String serviceUrl, Class<?> serviceClass){
         if(specificationRunner == null){
             specificationRunner = new SpecificationRunner(serviceConfigPath,serviceUrl,serviceClass);
+        }
+        return specificationRunner;
+    }
+
+    /**
+     * For any given service type
+     * @param serviceConfigPath
+     * @param serviceUrl
+     * @param serviceClass
+     * @param serviceType
+     */
+    public static SpecificationRunner getInstance(String serviceConfigPath, String serviceUrl, Class<?> serviceClass, Service serviceType){
+        if(specificationRunner == null){
+            specificationRunner = new SpecificationRunner(serviceConfigPath,serviceUrl,serviceClass,serviceType);
         }
         return specificationRunner;
     }
@@ -47,8 +77,13 @@ public class SpecificationRunner {
      * @return
      * @throws Exception
      */
-    public List<Observation> run(String specFilePath) throws Exception {
-        TestSpecification testSpecification = objectMapper.readValue(new File(specFilePath), TestSpecification.class);
+    public List<Observation> run(String specFilePath)  {
+        TestSpecification testSpecification = null;
+        try {
+            testSpecification = objectMapper.readValue(new File(specFilePath).getAbsoluteFile(), TestSpecification.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to map the given test specification "+e);
+        }
         return httpTestOrchestrator.run(testSpecification);
     }
 
@@ -59,17 +94,22 @@ public class SpecificationRunner {
      * @param specFilePath
      * @return
      */
-    public List<Observation> runLite(String specFilePath) throws Exception {
-        TestSpecification testSpecification = objectMapper.readValue(new File(specFilePath), TestSpecification.class);
+    public List<Observation> runLite(String specFilePath){
+        TestSpecification testSpecification = null;
+        try {
+            testSpecification = objectMapper.readValue(new File(specFilePath).getAbsoluteFile(), TestSpecification.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to map the given test specification "+e);
+        }
         return runLite(testSpecification);
     }
 
-    public List<Observation> runLite(TestSpecification testSpecification) throws Exception{
+    public List<Observation> runLite(TestSpecification testSpecification){
         return httpTestOrchestrator.runLite(testSpecification);
     }
 
     /**
-     * shutsdown all the dependencies that were initialized until now: This should be called in the end the of tests run => end of test suite run
+     * shuts down all the dependencies that were initialized until now: This should be called in the end the of tests run => end of test suite run
      */
     public void shutDown() {
         try {
@@ -78,20 +118,5 @@ public class SpecificationRunner {
             System.out.println("Error in shutting down all dependencies : You may face problems in next run");
         }
     }
-
-
-    /**
-     * runLite for a storm topology
-     * @param specFile
-     * @param tuplesToBeEmitted
-     */
-//    public List<Observation> runLite(String specFile, int tuplesToBeEmitted) throws Exception {
-//        TestSpecification testSpecification = objectMapper.readValue(new File(specFile), TestSpecification.class);
-//        return runLite(testSpecification, tuplesToBeEmitted);
-//    }
-
-//    public List<Observation> runLite(TestSpecification testSpecification, int tuplesToBeEmitted) throws Exception {
-//        return this.stormTestOrchestrator.executeLite(testSpecification, tuplesToBeEmitted);
-//    }
 
 }

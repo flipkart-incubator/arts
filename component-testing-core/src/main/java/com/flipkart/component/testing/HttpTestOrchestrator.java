@@ -25,16 +25,16 @@ class HttpTestOrchestrator extends BaseTestOrchestrator {
      * @param testSpecification
      */
     @SuppressWarnings("unchecked")
-    public List<Observation> run(TestSpecification testSpecification) throws Exception {
-
+    public List<Observation> run(TestSpecification testSpecification){
         //spawn the services required for the test
-
         try {
             dependencyRegistry.registerDependencies(testSpecification);
             this.testDataLoader.load(testSpecification.getIndirectInputs());
             sut.start();
             return this.observationCollector.actualObservations(testSpecification.sanitizeObservations(sut.getUrl()));
-        } finally {
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }finally {
             try {
                 dependencyRegistry.shutDown();
             } catch (Exception e) {
