@@ -15,7 +15,6 @@ public class ZookeeperLocalServer implements DependencyInitializer<ZookeeperIndi
     private static final String ZOOKEEPER_DIR_CONF = "dataDir";
     private static ZookeeperLocalServer instance;
     private ServerCnxnFactory standaloneServerFactory = null;
-    static final String ZOOKEEPER_HOST = String.format("localhost:%d", ZookeeperFactory.ZOOKEEPER_PORT);
     private ZooKeeperServer server = null;
     private static boolean initialized = false;
 
@@ -28,8 +27,8 @@ public class ZookeeperLocalServer implements DependencyInitializer<ZookeeperIndi
 
     @Override
     public void initialize(TestConfig testConfig) {
-        if(this.initialized) return;
-        this.initialized = true;
+        if(initialized) return;
+        initialized = true;
 
         File dir = new File(ZOOKEEPER_DIR_CONF, "zookeeper").getAbsoluteFile();
 
@@ -54,9 +53,11 @@ public class ZookeeperLocalServer implements DependencyInitializer<ZookeeperIndi
 
     @Override
     public void shutDown() {
-        standaloneServerFactory.shutdown();
-        server.shutdown();
-        initialized = false;
+        if (standaloneServerFactory!=null && server!=null) {
+            standaloneServerFactory.shutdown();
+            server.shutdown();
+            initialized = false;
+        }
     }
 
     @Override

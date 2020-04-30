@@ -1,9 +1,8 @@
 package com.flipkart.component.testing;
 
-
-import com.flipkart.component.testing.model.TestConfig;
 import com.flipkart.component.testing.model.kafka.KafkaIndirectInput;
 import com.flipkart.component.testing.model.kafka.KafkaObservation;
+import com.flipkart.component.testing.model.kafka.KafkaTestConfig;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServerStartable;
 
@@ -14,13 +13,16 @@ import java.util.Properties;
 
 /**
  */
-class KafkaLocalServer implements DependencyInitializer<KafkaIndirectInput, KafkaObservation, TestConfig> {
+class KafkaLocalServer implements DependencyInitializer<KafkaIndirectInput, KafkaObservation, KafkaTestConfig> {
     private KafkaServerStartable kafka;
-    private static final String KAFKA_LOG_DIR_CONF = "log.dir";
+    private static final String KAFKA_LOG_DIR_CONF = "dataDir/log.dir";
     private static final String KAFKA_DATA_DIR = "dataDir";
     private static final String LOGS_DIR = "logs";
     private static final int BROKER_ID = 0;
     private ZookeeperLocalServer zookeeperLocalServer = new ZookeeperLocalServer();
+    private KafkaTestConfig testConfig ;
+    public static final String AUTHENTICATION =
+            "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";";
 
 
     private void deleteFolders() {
@@ -29,12 +31,13 @@ class KafkaLocalServer implements DependencyInitializer<KafkaIndirectInput, Kafk
     }
 
     @Override
-    public void initialize(TestConfig testConfig) throws Exception {
-        Properties kafkaProperties = getKafkaProperties();
+    public void initialize(KafkaTestConfig testConfig) {
+        this.testConfig = testConfig;
+        Properties kafkaProperties = getKafkaProperties(testConfig);
 
         deleteFolders();
         KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
-        this.zookeeperLocalServer.initialize(null);
+        this.zookeeperLocalServer.initialize(testConfig);
 
         //start local kafka broker
         kafka = new KafkaServerStartable(kafkaConfig);
@@ -51,7 +54,7 @@ class KafkaLocalServer implements DependencyInitializer<KafkaIndirectInput, Kafk
         kafka.shutdown();
         this.zookeeperLocalServer.shutDown();
         try {
-            this.initialize(null);
+            this.initialize(testConfig);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -68,7 +71,7 @@ class KafkaLocalServer implements DependencyInitializer<KafkaIndirectInput, Kafk
     }
 
 
-    private static Properties getKafkaProperties() {
+    private static Properties getKafkaProperties(KafkaTestConfig testConfig) {
         Properties properties = new Properties();
         properties.put("port", KafkaDataLoader.KAFKA_BROKER_PORT + "");
         properties.put("broker.id", BROKER_ID + "");
@@ -78,6 +81,13 @@ class KafkaLocalServer implements DependencyInitializer<KafkaIndirectInput, Kafk
         properties.put("delete.topic.enable", "true");
         properties.put("auto.create.topics.enable", "true");
         properties.put("host.name", "127.0.0.1");
+        if(testConfig.getAuthentication()!=null) {
+            String jaasCfg = String.format(AUTHENTICATION, testConfig.getAuthentication().getUsername(),
+                    testConfig.getAuthentication().getPassword());
+            properties.put("sasl.jaas.config", jaasCfg);
+            properties.put("security.protocol","SASL_PLAINTEXT");
+            properties.put("sasl.mechanism","PLAIN");
+        }
         return properties;
     }
 

@@ -5,33 +5,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.flipkart.component.testing.model.IndirectInput;
 import com.flipkart.component.testing.model.TestConfig;
+import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
 
 @JsonTypeName("kafkaIndirectInput")
-public class KafkaIndirectInput implements IndirectInput, TestConfig {
+public class KafkaIndirectInput implements IndirectInput, KafkaTestConfig {
 
+    @Getter
     private final List<Object> messages;
 
+    @Getter
     private String topic;
 
 //    private String serializerClass;
 
-    private String name;
+    @Getter
+    private KafkaAuthentication authentication;
 
     @JsonCreator
     public KafkaIndirectInput(@JsonProperty("topic") String topic,
-                              @JsonProperty("messages") List<Object> messages) {
+                              @JsonProperty("messages") List<Object> messages,
+                              @JsonProperty("authentication") KafkaAuthentication authentication ) {
         this.topic = topic;
         this.messages = messages;
+        this.authentication = authentication;
     }
 
-    public List<Object> getMessages() {
-        return messages;
-    }
-
-    public String getTopic() {
-        return topic;
+    public KafkaIndirectInput(String topic, List<Object> messages) {
+       this(topic,messages,null);
     }
 
     /**
@@ -43,4 +47,5 @@ public class KafkaIndirectInput implements IndirectInput, TestConfig {
     public boolean isLoadAfterSUT() {
         return false;
     }
+
 }

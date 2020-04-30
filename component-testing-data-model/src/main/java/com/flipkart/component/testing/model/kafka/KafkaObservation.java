@@ -10,19 +10,27 @@ import lombok.Getter;
 import java.util.List;
 
 @JsonTypeName("kafkaObservation")
-@Getter
-public class KafkaObservation implements Observation, TestConfig {
+public class KafkaObservation implements Observation, KafkaTestConfig {
 
+
+    @Getter
     private final List<String> messages;
-
+    @Getter
     private String topic;
-
-    private String name;
+    @Getter
+    private KafkaAuthentication authentication;
 
     @JsonCreator
-    public KafkaObservation(@JsonProperty("messages") List<String> messages, @JsonProperty("topic") String topic) {
+    public KafkaObservation(@JsonProperty("messages") List<String> messages,
+                            @JsonProperty("topic") String topic,
+                            @JsonProperty("authentication") KafkaAuthentication authentication ) {
         this.messages = messages;
         this.topic = topic;
+        this.authentication = authentication;
+    }
+
+    public KafkaObservation( List<String> messages, String topic) {
+       this(messages,topic,null);
     }
 
 }
