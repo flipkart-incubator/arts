@@ -24,6 +24,7 @@
         <module>component-testing-s3</module>
         <module>component-testing-hbase-0.94.27</module>
         <module>component-testing-storm</module>
+        <module>component-testing-elasticsearch-7.3.1</module>
         <module>dropwizard-services</module>
     </modules>
 

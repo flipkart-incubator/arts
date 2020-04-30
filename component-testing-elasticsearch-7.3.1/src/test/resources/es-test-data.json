@@ -1,0 +1,63 @@
+{
+  "indirectInputs": [
+    {
+      "name": "elasticSearchV2IndirectInput",
+      "connectionInfo": {
+        "connectionType": "REMOTE",
+        "clusterName": "docker-cluster",
+        "host": "10.34.102.130",
+        "port": 31813
+      },
+      "documentsOfIndexAndType": [
+        {
+          "index": "regression_test",
+          "type": "entityinstances",
+          "routingKey": "entity_id",
+          "mappingFile": "src/test/resources/listing_index_mapping.json",
+          "documents": [
+            {
+              "_id": "ACC0_nb:mp:07aed30129",
+              "data" : {
+                "entity_id": "nb:mp:07aed30129",
+                "entity_type": "OFFER",
+                "instance_id": "ACC0",
+                "instance_type": "USER",
+                "created_ts": 1504156875991,
+                "registered_cp_events": [
+                  "nb:mp:07aed30129_PEORem_1504114200000"
+                ],
+                "executed_events": [
+                  {
+                    "event_id": "ACC0_nb:mp:07aed30129_1503059474830",
+                    "execution_ts": 0,
+                    "event_type": "OFFER_MAPPED"
+                  }
+                ],
+                "state": "MAPPED",
+                "last_action_executed_ts": 0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "name": "elasticSearchV2Observation",
+      "connectionInfo": {
+        "connectionType": "REMOTE",
+        "clusterName": "docker-cluster",
+        "host": "10.34.102.130"
+      },
+      "documentsToFetch": [
+        {
+          "index": "regression_test",
+          "typeName": "flash",
+          "routingKey": "nb:mp:07aed30129",
+          "queryFile": "es-search-query.json"
+        }
+      ]
+    }
+  ]
+}

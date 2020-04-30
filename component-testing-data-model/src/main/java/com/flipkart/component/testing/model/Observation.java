@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.flipkart.component.testing.model.aerospike.AerospikeObservation;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchObservation;
+import com.flipkart.component.testing.model.elasticsearch.v2.ElasticSearchV2Observation;
 import com.flipkart.component.testing.model.hazelcast.HazelcastObservation;
 import com.flipkart.component.testing.model.hbase.HBaseObservation;
 import com.flipkart.component.testing.model.http.HttpIndirectObservation;
@@ -27,6 +28,7 @@ import com.flipkart.component.testing.model.zookeeper.ZookeeperObservation;
         @JsonSubTypes.Type(value = HBaseObservation.class, name = "hbaseObservation"),
         @JsonSubTypes.Type(value = RedisObservation.class, name = "redisObservation"),
         @JsonSubTypes.Type(value = ElasticSearchObservation.class, name = "elasticSearchObservation"),
+        @JsonSubTypes.Type(value = ElasticSearchV2Observation.class, name = "elasticSearchV2Observation"),
         @JsonSubTypes.Type(value = AerospikeObservation.class, name = "aerospikeObservation"),
         @JsonSubTypes.Type(value = HttpIndirectObservation.class, name = "httpIndirectObservation"),
         @JsonSubTypes.Type(value = HazelcastObservation.class, name = "hazelcastObservation"),

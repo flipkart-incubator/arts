@@ -1,0 +1,51 @@
+{
+  "properties": {
+    "instance_type": {
+      "type": "keyword"
+    },
+    "id": {
+      "type": "keyword"
+    },
+    "pivot": {
+      "type": "keyword"
+    },
+    "registered_cp_events": {
+      "type": "keyword"
+    },
+    "executed_events": {
+      "properties": {
+        "event_type": {
+          "type": "keyword"
+        },
+        "execution_ts": {
+          "type": "long",
+          "index": false
+        },
+        "event_id": {
+          "type": "keyword"
+        }
+      },
+      "type": "nested"
+    },
+    "state": {
+      "type": "keyword"
+    },
+    "entity_type": {
+      "type": "keyword"
+    },
+    "entity_id": {
+      "type": "keyword"
+    },
+    "last_action_executed_ts": {
+      "type": "long",
+      "index": false
+    },
+    "instance_id": {
+      "type": "keyword"
+    },
+    "created_ts": {
+      "type": "long",
+      "index": false
+    }
+  }
+}

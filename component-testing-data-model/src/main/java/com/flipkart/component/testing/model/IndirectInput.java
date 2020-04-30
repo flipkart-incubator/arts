@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.flipkart.component.testing.model.aerospike.AerospikeIndirectInput;
 import com.flipkart.component.testing.model.elasticsearch.ElasticSearchIndirectInput;
+import com.flipkart.component.testing.model.elasticsearch.v2.ElasticSearchV2IndirectInput;
 import com.flipkart.component.testing.model.hazelcast.EmbeddedHZIndirectInput;
 import com.flipkart.component.testing.model.hazelcast.HazelcastIndirectInput;
 import com.flipkart.component.testing.model.hazelcast.ServerHZIndirectInput;
@@ -32,6 +33,7 @@ import com.flipkart.component.testing.model.zookeeper.ZookeeperIndirectInput;
         @JsonSubTypes.Type(value = HBaseIndirectInput.class, name = "hbaseIndirectInput"),
         @JsonSubTypes.Type(value = RedisIndirectInput.class, name = "redisIndirectInput"),
         @JsonSubTypes.Type(value = ElasticSearchIndirectInput.class,name = "elasticSearchIndirectInput"),
+        @JsonSubTypes.Type(value = ElasticSearchV2IndirectInput.class, name = "elasticSearchV2IndirectInput"),
         @JsonSubTypes.Type(value = ZookeeperIndirectInput.class, name = "zookeeperIndirectInput"),
         @JsonSubTypes.Type(value = AerospikeIndirectInput.class, name = "aerospikeIndirectInput"),
         @JsonSubTypes.Type(value = EmbeddedHZIndirectInput.class, name = "embeddedhzIndirectInput"),

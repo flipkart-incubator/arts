@@ -9,10 +9,7 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.client.Client;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndirectInput> {
 
@@ -68,7 +65,7 @@ public class ElasticSearchDataLoader implements TestDataLoader<ElasticSearchIndi
      */
     @Override
     public List<Class<ElasticSearchIndirectInput>> getIndirectInputClasses() {
-        return Arrays.asList(ElasticSearchIndirectInput.class);
+        return Collections.singletonList(ElasticSearchIndirectInput.class);
     }
 
 }

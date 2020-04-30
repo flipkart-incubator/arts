@@ -85,7 +85,12 @@ public class CompositeDependencyRegistry implements DependencyRegistry{
 
     @Override
     public void clean() {
-        dependencyInitializers.forEach(DependencyInitializer::clean);
+        try {
+            dependencyInitializers.forEach(DependencyInitializer::clean);
+        }catch(Exception e){
+            System.out.println("Exception while cleaning " +  e);
+            e.printStackTrace();
+        }
     }
 
     @Override
