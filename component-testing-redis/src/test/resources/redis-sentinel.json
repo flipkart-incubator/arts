@@ -1,0 +1,29 @@
+{
+  "indirectInputs": [
+    {
+      "name": "redisIndirectInput",
+      "clusterType": "SENTINEL",
+      "masterName": "master",
+      "dbToDSMap": {
+        "1": {
+          "hashMap": {
+            "Japan": {
+              "name":"Japan",
+              "capital":"Tokyo",
+              "language":"Japanese",
+              "currency":"Yen"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "redisObservation",
+      "clusterType": "SENTINEL",
+      "masterName": "master",
+      "dbIndices": [1]
+    }
+  ]
+}
