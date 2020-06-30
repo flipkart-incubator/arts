@@ -61,17 +61,20 @@ class EmbeddedESOperations implements ElasticSearchOperations {
                 else if (new File(new URL(downloadURL).getPath()).isFile() || urlProtocol.equals("https") || urlProtocol.equals("http") )
                     this.cluster = EmbeddedElastic.builder()
                             .withSetting(PopularProperties.HTTP_PORT, ESFactory.ES_CLUSTER_PORT)
+                            .withSetting("script.disable_dynamic", false)
                             .withDownloadUrl(new URL(downloadURL))
                             .build();
                 else
                     this.cluster = EmbeddedElastic.builder()
                             .withSetting(PopularProperties.HTTP_PORT, ESFactory.ES_CLUSTER_PORT)
+                            .withSetting("script.disable_dynamic", false)
                             .withElasticVersion(ESFactory.ES_CLUSTER_VERSION)
                             .build();
             }
             else
                 this.cluster = EmbeddedElastic.builder()
                         .withSetting(PopularProperties.HTTP_PORT, ESFactory.ES_CLUSTER_PORT)
+                        .withSetting("script.disable_dynamic", false)
                         .withElasticVersion(ESFactory.ES_CLUSTER_VERSION)
                         .build();
             this.cluster.start();
