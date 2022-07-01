@@ -12,7 +12,7 @@
 
     <properties>
         <hbase.version>0.94.2-cdh4.2.0</hbase.version>
-        <hadoop.core.version>2.0.0-mr1-cdh4.2.0</hadoop.core.version>
+        <hadoop.core.version>2.7.0</hadoop.core.version>
         <guava.version>27.0-jre</guava.version>
     </properties>
 
