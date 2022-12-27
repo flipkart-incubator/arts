@@ -10,7 +10,7 @@
 
     <properties>
         <hazelcast-zookeeper.version>3.6.3</hazelcast-zookeeper.version>
-        <hazelcast.version>3.11.4</hazelcast.version>
+        <hazelcast.version>3.12.13</hazelcast.version>
     </properties>
 
     <artifactId>component-testing-hazelcast</artifactId>
